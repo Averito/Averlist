@@ -1,0 +1,43 @@
+.animeLibraryItemWrapper {
+  position: relative;
+  border-radius: 10px;
+  width: 100%;
+  height: 350px;
+  cursor: pointer;
+
+  &:hover > div {
+    opacity: 1;
+  }
+}
+
+.animeLibraryItemContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(50, 50, 50, 0.8);
+  opacity: 0;
+  transition: all 0.5s ease;
+
+  div {
+    color: white;
+    text-align: center;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  > h4 {
+    color: white;
+    text-align: center;
+  }
+}

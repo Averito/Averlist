@@ -1,0 +1,75 @@
+.animeLibraryItemMainInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 0 0 0;
+
+  > div:first-of-type {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    width: 100%;
+    max-width: 1200px;
+
+    > div {
+      margin: 0 0 20px 0;
+    }
+
+    @media all and (max-width: 1157px) {
+      justify-content: center;
+    }
+
+    @media all and (max-width: 768px) {
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.animeLibraryItemPoster {
+  width: auto;
+  height: auto;
+  border: 4px solid #001529;
+  border-radius: 10px;
+
+  > img {
+    max-width: 350px;
+    max-height: 500px;
+    border-radius: 5px;
+  }
+}
+
+.descriptions {
+  width: 35%;
+  min-width: 280px;
+
+  @media all and (max-width: 1157px) {
+    width: 280px;
+    margin: 0 20px;
+  }
+}
+
+.description {
+  width: 30%;
+  min-width: 260px;
+
+  > .ant-typography {
+    line-height: 18px;
+  }
+}
+
+.poster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  > button {
+    margin: 20px 0 0 0;
+  }
+}

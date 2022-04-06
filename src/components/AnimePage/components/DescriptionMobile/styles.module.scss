@@ -1,0 +1,10 @@
+.descriptionMobileWrapper {
+  > p {
+    margin: 0;
+
+    > span:first-of-type {
+      color: #2197b7;
+      font-weight: 600;
+    }
+  }
+}

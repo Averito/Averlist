@@ -1,0 +1,47 @@
+.wrapper {
+  position: relative;
+  top: -15px;
+}
+
+.header {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  transform: translateX(-15px);
+  width: calc(100% + 30px);
+  height: 100px;
+  background: #0759a4;
+}
+
+.mainInfo {
+  display: flex;
+  padding: 20px 0 5px 0;
+}
+
+.poster {
+  z-index: 5;
+  max-width: 150px;
+  margin: 0 10px 0 0;
+}
+
+.ruTitle {
+  z-index: 5;
+  height: fit-content;
+  padding: 0 5px 5px 5px;
+  background: #0759a4;
+}
+
+.enTitle {
+  margin: 0;
+}
+
+.blueLine {
+  height: 1px;
+  background: #0759a4;
+  margin: 0 0 10px 0;
+}
+
+.player {
+  display: flex;
+  justify-content: center;
+}

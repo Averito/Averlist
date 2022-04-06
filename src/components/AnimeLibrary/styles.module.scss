@@ -1,0 +1,53 @@
+.animeLibraryWrapper {
+  display: flex;
+  flex-wrap: wrap-reverse;
+
+  > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 80%;
+    margin: 20px 20px 20px 0;
+
+    > div {
+      display: grid;
+      grid-gap: 8px;
+      grid-template-columns: repeat(auto-fit, 276px);
+
+      @media all and (max-width: 400px) {
+        grid-template-columns: repeat(auto-fit, 100%);
+      }
+    }
+
+    > ul {
+      align-self: center;
+    }
+
+    @media all and (max-width: 1110px) {
+      margin: 0 0 20px 0;
+    }
+  }
+
+  > div:last-of-type {
+    flex: 1 1 18%;
+    margin: 28px 0 20px 0;
+
+    > div:first-of-type {
+      span {
+        margin: 0;
+      }
+    }
+
+    > div {
+      margin: 0 0 20px 0;
+    }
+
+    span {
+      margin: 2px;
+    }
+
+    @media all and (max-width: 1110px) {
+      width: 100%;
+      flex: unset;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+.animePageStyled {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 15px 0;
+  color: black;
+
+  p {
+    margin: 0;
+  }
+
+  > form {
+    width: 90%;
+    max-width: 475px;
+
+    > input {
+      margin: 10px 0;
+    }
+  }
+
+  > div:last-of-type {
+    margin: 15px 0 0 0;
+    align-self: flex-start;
+    width: 100%;
+
+    ul {
+      border-left: 1px solid lightgray;
+      border-right: 1px solid lightgray;
+    }
+  }
+}
+
+.animeBlock {
+  display: flex;
+  align-self: flex-start;
+
+  > div {
+    width: 100%;
+    max-width: 50%;
+    margin: 0 20px 0 0;
+  }
+
+  @media all and (max-width: 1200px) {
+    flex-wrap: wrap-reverse;
+
+    > div {
+      max-width: 100%;
+    }
+  }
+}
+
+.animeComponentStyled {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 10px 2px 5px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+
+  > p:first-of-type {
+    max-width: 90%;
+    overflow: auto hidden;
+    word-break: keep-all;
+  }
+
+  > div > span {
+    cursor: pointer;
+    color: gray;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: lightgray;
+    }
+  }
+}
+
+.boldSpan {
+  font-weight: 500;
+}
+
+.editStatusBlock {
+  display: flex;
+  align-items: center;
+
+  > div:first-of-type {
+    width: 100%;
+    max-width: 160px;
+    margin: 0 20px 0 0;
+  }
+}
+
+.deleteAnimeAndStatusBlock {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  svg {
+    margin: 0 0 0 10px;
+  }
+}
