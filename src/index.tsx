@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -17,9 +17,7 @@ const queryClient = new QueryClient({
 	}
 })
 
-const root = ReactDOM.createRoot(document.getElementById('root') as Element)
-
-root.render(
+ReactDOM.render(
 	<BrowserRouter>
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
@@ -27,5 +25,6 @@ root.render(
 				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</Provider>
-	</BrowserRouter>
+	</BrowserRouter>,
+	document.getElementById('root')
 )
