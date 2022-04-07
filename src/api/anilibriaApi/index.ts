@@ -8,16 +8,7 @@ import {
 import { Title } from './types'
 
 export const objectParamsByDefault: QueryObject = {
-	filter: [
-		'id',
-		'names',
-		'type',
-		'posters',
-		'genres',
-		'description',
-		'announce',
-		'player'
-	],
+	filter: ['id', 'names', 'posters', 'description'],
 	limit: -1
 }
 

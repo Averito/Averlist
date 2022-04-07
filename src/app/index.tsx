@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { GlobalRouter } from 'components/Router/GlobalRouter'
-import { MainRouter } from 'components/Router/MainRouter'
-import { DefaultRouter } from 'components/Router/DefaultRouter'
-import { MainLayout } from 'layouts/MainLayout'
+import { Router } from 'components/Router'
 import {
 	authCheckThunk,
 	getUpdatesThunk
@@ -16,7 +13,6 @@ import {
 	getUserThunk
 } from 'store/reducers/userReducer/userThunks'
 import { objectParamsByDefault } from 'api/anilibriaApi'
-import { DefaultLayout } from 'layouts/DefaultLayout'
 
 export const App: React.FC = () => {
 	const dispatch = useDispatch()
@@ -31,22 +27,9 @@ export const App: React.FC = () => {
 		if (isAuth && userId) {
 			dispatch(getUserThunk(userId))
 			dispatch(getAnimeListThunk(userId))
+			dispatch(getUpdatesThunk(objectParamsByDefault))
 		}
-		dispatch(getUpdatesThunk(objectParamsByDefault))
 	}, [dispatch, isAuth, userId])
 
-	return (
-		<>
-			<GlobalRouter />
-			{isAuth ? (
-				<MainLayout>
-					<MainRouter />
-				</MainLayout>
-			) : (
-				<DefaultLayout>
-					<DefaultRouter />
-				</DefaultLayout>
-			)}
-		</>
-	)
+	return <Router />
 }

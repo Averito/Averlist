@@ -18,6 +18,7 @@ import { setAutoCompleteOption } from 'store/reducers/landingReducer'
 import { sortOptionsForAutocomplete } from 'helpers/sortOptionsForAutoComplete'
 import { Anime } from 'api/myApi/anime/types'
 import { useInputValue } from 'hooks/useInputValue'
+import { AnilibriaLoader } from '../Loader/loaderTypes/AnilibriaLoader'
 
 export const AnimeList: FC = () => {
 	const { width } = useWindowSize()
@@ -30,6 +31,9 @@ export const AnimeList: FC = () => {
 	const userId = useAppSelector(state => state.landing.userId)
 	const animeList = useAppSelector(state => state.user.animeList)
 	const titleList = useAppSelector(state => state.landing.titleList)
+	const titleListLoading = useAppSelector(
+		state => state.landing.titleListLoading
+	)
 	const autoCompleteOptions = useAppSelector(
 		state => state.landing.autoCompleteOptions
 	)
@@ -108,16 +112,11 @@ export const AnimeList: FC = () => {
 				<Button type='primary' danger onClick={onClickRemoveSelected}>
 					Удалить выбранные
 				</Button>
+				{titleListLoading && <AnilibriaLoader />}
 			</div>
 			<div className={styles.animeBlock}>
-				{loaded ? (
-					<Loader />
-				) : (
-					<>
-						<Sorting setSelectedAnime={setSelectedAnime} />
-						{width > 1200 && <ChangesOnAnilibria />}
-					</>
-				)}
+				{loaded ? <Loader /> : <Sorting setSelectedAnime={setSelectedAnime} />}
+				{width > 1200 && <ChangesOnAnilibria />}
 			</div>
 		</div>
 	)

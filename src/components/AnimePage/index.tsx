@@ -27,8 +27,9 @@ export const AnimePage: FC = () => {
 			)[0]
 	)
 
-	const { data: titleMain } = useQuery<Title>(['getTitle', titleName], () =>
-		anilibriaApi.getTitle({ id: searchTitle?.id })
+	const { data: titleMain } = useQuery<Title>(
+		['getTitle', titleName, searchTitle],
+		() => anilibriaApi.getTitle({ id: searchTitle?.id })
 	)
 	const [currentStatus, setCurrentStatus] = useState<Status | -1>(-1)
 

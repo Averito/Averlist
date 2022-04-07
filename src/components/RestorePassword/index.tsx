@@ -4,13 +4,18 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
+import formAnimeGirl from 'assets/images/formAnimeGirl.png'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { forgotPasswordThunk } from 'store/reducers/landingReducer/landingThunks'
+import { DefaultLayout } from 'layouts/DefaultLayout'
+import { useWindowSize } from 'hooks/useWindowSize'
 
 export const RestorePassword: React.FC = () => {
-	const navigate = useNavigate()
+	const { height } = useWindowSize()
 
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
 	const forgotPasswordComplete = useAppSelector(
 		state => state.landing.forgotPasswordComplete
 	)
@@ -29,56 +34,62 @@ export const RestorePassword: React.FC = () => {
 	}, [forgotPasswordComplete, navigate])
 
 	return (
-		<Form
-			name='basic'
-			onFinish={onFinish}
-			autoComplete='off'
-			style={{ width: '100%' }}
-		>
-			<Typography.Title level={4} style={{ color: 'white' }}>
-				Восстановление пароля
-			</Typography.Title>
-			<Form.Item
-				name='name'
-				rules={[
-					{
-						required: true,
-						message: 'Пожалуйста, введите свой ник!'
-					}
-				]}
-				style={{ margin: '0 0 10px 0' }}
+		<DefaultLayout>
+			<Form
+				className={styles.form}
+				name='basic'
+				onFinish={onFinish}
+				autoComplete='off'
+				style={{ width: '100%' }}
 			>
-				<Input placeholder='Никнейм' />
-			</Form.Item>
-			<Form.Item
-				name='email'
-				rules={[
-					{
-						required: true,
-						message: 'Пожалуйста, введите свою электронную почту!'
-					}
-				]}
-				style={{ margin: '0 0 10px 0' }}
-			>
-				<Input type='email' placeholder='Электронная почта' />
-			</Form.Item>
-			<Form.Item
-				name='password'
-				rules={[
-					{ required: true, message: 'Пожалуйста, введите свой пароль!' }
-				]}
-			>
-				<Input.Password placeholder='Пароль' />
-			</Form.Item>
-			<div className={styles.loginOrRegistration}>
-				<Link to='/registration'>Регистрация</Link>
-				<Link to='/login'>Логин</Link>
-			</div>
-			<Form.Item>
-				<Button type='primary' htmlType='submit'>
-					Восстановить
-				</Button>
-			</Form.Item>
-		</Form>
+				{height > 575 && (
+					<img className={styles.formGirl} src={formAnimeGirl} alt='' />
+				)}
+				<Typography.Title level={4} style={{ color: 'white' }}>
+					Восстановление пароля
+				</Typography.Title>
+				<Form.Item
+					name='name'
+					rules={[
+						{
+							required: true,
+							message: 'Пожалуйста, введите свой ник!'
+						}
+					]}
+					style={{ margin: '0 0 10px 0' }}
+				>
+					<Input placeholder='Никнейм' />
+				</Form.Item>
+				<Form.Item
+					name='email'
+					rules={[
+						{
+							required: true,
+							message: 'Пожалуйста, введите свою электронную почту!'
+						}
+					]}
+					style={{ margin: '0 0 10px 0' }}
+				>
+					<Input type='email' placeholder='Электронная почта' />
+				</Form.Item>
+				<Form.Item
+					name='password'
+					rules={[
+						{ required: true, message: 'Пожалуйста, введите свой пароль!' }
+					]}
+				>
+					<Input.Password placeholder='Пароль' />
+				</Form.Item>
+				<div className={styles.loginOrRegistration}>
+					<Link to='/registration'>Регистрация</Link>
+					<Link to='/login'>Логин</Link>
+				</div>
+				<Form.Item>
+					<Button type='primary' htmlType='submit'>
+						Восстановить
+					</Button>
+				</Form.Item>
+			</Form>
+		</DefaultLayout>
 	)
 }
