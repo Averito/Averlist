@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, useState } from 'react'
 import { AutoComplete, Button, Typography } from 'antd'
 import { CheckOutlined } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
 
 import styles from './styles.module.scss'
 import { errorMessage, successMessage } from 'helpers/messages'
@@ -19,6 +18,7 @@ import { sortOptionsForAutocomplete } from 'helpers/sortOptionsForAutoComplete'
 import { Anime } from 'api/myApi/anime/types'
 import { useInputValue } from 'hooks/useInputValue'
 import { AnilibriaLoader } from '../Loader/loaderTypes/AnilibriaLoader'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const AnimeList: FC = () => {
 	const { width } = useWindowSize()
@@ -26,7 +26,7 @@ export const AnimeList: FC = () => {
 	const { value: name, setValue: setName } = useInputValue('')
 	const [selectedAnime, setSelectedAnime] = useState<string[]>([])
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const { loading: loaded } = useAppSelector(state => state.user)
 	const userId = useAppSelector(state => state.landing.userId)
 	const animeList = useAppSelector(state => state.user.animeList)

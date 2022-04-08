@@ -1,14 +1,18 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import reduxThunk from 'redux-thunk'
 
 import { userReducer } from './reducers/userReducer'
 import { landingReducer } from './reducers/landingReducer'
 
-const reducers = combineReducers({
-	user: userReducer,
-	landing: landingReducer
+export const store = configureStore({
+	reducer: {
+		user: userReducer,
+		landing: landingReducer
+	},
+	middleware: getDefaultMiddleware => {
+		return getDefaultMiddleware().concat(reduxThunk)
+	}
 })
 
-export const store = createStore(reducers, applyMiddleware(reduxThunk))
-
-export type RootState = ReturnType<typeof reducers>
+export type RootState = ReturnType<typeof store.getState>
+export type RootDispatch = typeof store.dispatch

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { Router } from 'components/Router'
 import {
@@ -13,9 +12,10 @@ import {
 	getUserThunk
 } from 'store/reducers/userReducer/userThunks'
 import { objectParamsByDefault } from 'api/anilibriaApi'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const App: React.FC = () => {
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const { isAuth, userId } = useAppSelector(state => state.landing)
 
 	useEffect(() => {

@@ -1,7 +1,6 @@
 import React, { FC, useEffect } from 'react'
 import { Button, Form, Input, Typography } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 import styles from './styles.module.scss'
 import formAnimeGirl from 'assets/images/formAnimeGirl.png'
@@ -9,12 +8,13 @@ import { loginThunk } from 'store/reducers/landingReducer/landingThunks'
 import { DefaultLayout } from 'layouts/DefaultLayout'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useWindowSize } from 'hooks/useWindowSize'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const Login: FC = () => {
 	const { height } = useWindowSize()
 
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 
 	const isAuth = useAppSelector(state => state.landing.isAuth)
 

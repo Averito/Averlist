@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
 
 import { Button, Modal, Select } from 'antd'
@@ -9,6 +8,7 @@ import { errorMessage, successMessage } from 'helpers/messages'
 import { createAnimeThunk } from 'store/reducers/userReducer/userThunks'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { Anime, Status } from 'api/myApi/anime/types'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 interface AddToListProps {
 	animeName: string
@@ -21,7 +21,7 @@ export const AddToList: FC<AddToListProps> = ({ animeName }) => {
 	const [status, setStatus] = useState<Status>(0)
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const userId = useAppSelector(state => state.landing.userId)
 	const animeList = useAppSelector(state => state.user.animeList)
 

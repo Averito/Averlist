@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { Dropdown, Menu, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 import styles from './styles.module.scss'
 import { Hamburger } from './components/Hamburger'
@@ -10,12 +9,13 @@ import { useWindowSize } from 'hooks/useWindowSize'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { logout, setRandomTitle } from 'store/reducers/landingReducer'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const Header: FC = () => {
 	const { width } = useWindowSize()
 	const isMobile = width <= 768
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const login = useAppSelector(state => state.user.login)
 	const { randomTitle, isAuth } = useAppSelector(state => state.landing)
 

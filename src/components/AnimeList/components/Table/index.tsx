@@ -1,6 +1,5 @@
 import { Button, Grid, Select, Table as TableAntd } from 'antd'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 import styles from '../../styles.module.scss'
 import { selectStatus, selectStatusToNumber } from 'helpers/selectStatus'
@@ -13,6 +12,7 @@ import {
 	editStatusAnimeThunk,
 	removeAnimeThunk
 } from 'store/reducers/userReducer/userThunks'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 const { useBreakpoint } = Grid
 
@@ -25,7 +25,7 @@ interface TableProps {
 export const Table: FC<TableProps> = ({ setSelectedAnime }) => {
 	const { md } = useBreakpoint()
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const titleList = useAppSelector(state => state.landing.titleList)
 	const { animeListSort: sortedAnimeList } = useAppSelector(state => state.user)
 

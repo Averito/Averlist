@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import classnames from 'classnames'
-import { useDispatch } from 'react-redux'
 
 import styles from './styles.module.scss'
 import menuWallpaper from 'assets/images/hamburgerMenuWallpaper.png'
@@ -10,11 +9,12 @@ import { NavLink } from 'react-router-dom'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { logout, setRandomTitle } from 'store/reducers/landingReducer'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const Hamburger: FC = () => {
 	const { value: opened, setValue: setOpened } = useToggle()
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const login = useAppSelector(state => state.user.login)
 	const randomTitle = useAppSelector(state => state.landing.randomTitle)
 

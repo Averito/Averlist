@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Button, Form, Input, Typography } from 'antd'
-import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
@@ -9,12 +8,13 @@ import { useAppSelector } from 'hooks/useAppSelector'
 import { registrationThunk } from 'store/reducers/landingReducer/landingThunks'
 import { DefaultLayout } from 'layouts/DefaultLayout'
 import { useWindowSize } from 'hooks/useWindowSize'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const Registration: React.FC = () => {
 	const { height } = useWindowSize()
 
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 
 	const registrationComplete = useAppSelector(
 		state => state.landing.registrationComplete
