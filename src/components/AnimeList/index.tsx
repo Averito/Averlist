@@ -112,7 +112,7 @@ export const AnimeList: FC = () => {
 				<Button type='primary' danger onClick={onClickRemoveSelected}>
 					Удалить выбранные
 				</Button>
-				{titleListLoading && width <= 1200 && <AnilibriaLoader />}
+				{titleListLoading && <AnilibriaLoader />}
 			</div>
 			<div className={styles.animeBlock}>
 				{loaded ? <Loader /> : <Sorting setSelectedAnime={setSelectedAnime} />}

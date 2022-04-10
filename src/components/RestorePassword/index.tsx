@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Form, Input, Typography } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import formAnimeGirl from 'assets/images/formAnimeGirl.png'
-import { useAppSelector } from 'hooks/useAppSelector'
 import { forgotPasswordThunk } from 'store/reducers/landingReducer/landingThunks'
 import { DefaultLayout } from 'layouts/DefaultLayout'
 import { useWindowSize } from 'hooks/useWindowSize'
@@ -16,22 +15,19 @@ export const RestorePassword: React.FC = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 
-	const forgotPasswordComplete = useAppSelector(
-		state => state.landing.forgotPasswordComplete
-	)
-
 	const onFinish = (values: any) => {
 		const user = {
 			login: values.name,
 			email: values.email,
-			password: values.password
+			password: values.password,
+			oldPassword: values.oldPassword
 		}
-		dispatch(forgotPasswordThunk(user))
+		dispatch(forgotPasswordThunk(user)).then(response => {
+			if (response.payload) {
+				navigate('/login')
+			}
+		})
 	}
-
-	useEffect(() => {
-		if (forgotPasswordComplete) navigate('/login')
-	}, [forgotPasswordComplete, navigate])
 
 	return (
 		<DefaultLayout>
@@ -42,7 +38,7 @@ export const RestorePassword: React.FC = () => {
 				autoComplete='off'
 				style={{ width: '100%' }}
 			>
-				{height > 575 && (
+				{height > 620 && (
 					<img className={styles.formGirl} src={formAnimeGirl} alt='' />
 				)}
 				<Typography.Title level={4} style={{ color: 'white' }}>
@@ -73,12 +69,27 @@ export const RestorePassword: React.FC = () => {
 					<Input type='email' placeholder='Электронная почта' />
 				</Form.Item>
 				<Form.Item
+					name='oldPassword'
+					rules={[
+						{
+							required: true,
+							message: 'Пожалуйста, введите свой текущий пароль!'
+						}
+					]}
+					style={{ margin: '0 0 10px 0' }}
+				>
+					<Input.Password placeholder='Текущий пароль' />
+				</Form.Item>
+				<Form.Item
 					name='password'
 					rules={[
-						{ required: true, message: 'Пожалуйста, введите свой пароль!' }
+						{
+							required: true,
+							message: 'Пожалуйста, введите свой новый пароль!'
+						}
 					]}
 				>
-					<Input.Password placeholder='Пароль' />
+					<Input.Password placeholder='Новый пароль' />
 				</Form.Item>
 				<div className={styles.loginOrRegistration}>
 					<Link to='/registration'>Регистрация</Link>

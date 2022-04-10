@@ -25,7 +25,7 @@ export const App: React.FC = () => {
 			dispatch(authCheckThunk(token))
 		}
 		if (isAuth && userId) {
-			dispatch(getUserThunk(userId))
+			dispatch(getUserThunk())
 			dispatch(getAnimeListThunk(userId))
 			dispatch(getUpdatesThunk(objectParamsByDefault))
 		}
