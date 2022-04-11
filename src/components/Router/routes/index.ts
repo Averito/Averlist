@@ -5,6 +5,7 @@ import { RestorePassword } from 'components/RestorePassword'
 import { AnimePage } from 'components/AnimePage'
 import { AnimeList } from 'components/AnimeList'
 import { AnimeLibrary } from 'components/AnimeLibrary'
+import { Options } from 'components/Options'
 
 export const routes: Routes = [
 	{
@@ -27,6 +28,13 @@ export const routes: Routes = [
 		route: '/restore-password',
 		type: 'rememberPassword',
 		component: RestorePassword
+	},
+	{
+		key: 'options',
+		name: 'Настройки',
+		route: '/options',
+		type: 'options',
+		component: Options
 	},
 	{
 		key: 'animelist',

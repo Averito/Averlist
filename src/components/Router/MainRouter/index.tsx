@@ -9,7 +9,10 @@ export const MainRouter: React.FC = () => {
 			<Routes>
 				{routes
 					.filter(
-						route => route.type === 'another' || route.type === 'children'
+						route =>
+							route.type === 'another' ||
+							route.type === 'children' ||
+							route.type === 'options'
 					)
 					.map(route => {
 						const { component: Component } = route

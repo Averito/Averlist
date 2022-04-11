@@ -6,6 +6,7 @@ type TypeRoute =
 	| 'another'
 	| 'rememberPassword'
 	| 'children'
+	| 'options'
 
 interface Route {
 	name: string

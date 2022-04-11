@@ -1,0 +1,25 @@
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0.65;
+}
+
+.login {
+  margin: 0 0 10px 0;
+
+  @media all and (max-width: 768px) {
+    margin: 20px 0 10px 0;
+  }
+}
+
+.loginText {
+  word-break: break-all;
+}
+
+.description {
+  margin: 0 0 20px 0;
+}
+
+.descriptionText {
+  word-break: break-all;
+}

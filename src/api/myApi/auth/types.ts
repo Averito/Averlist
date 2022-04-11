@@ -3,6 +3,8 @@ export interface User {
 	login?: string
 	email: string
 	password: string
+	description?: string
+	avatar?: string
 }
 
 export interface UserProperties {
@@ -10,6 +12,8 @@ export interface UserProperties {
 	login?: string
 	email?: string
 	password?: string
+	description?: string
+	avatar?: string
 }
 
 export interface Login {

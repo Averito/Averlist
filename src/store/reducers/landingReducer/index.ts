@@ -20,9 +20,7 @@ const landingSlice = createSlice({
 		titleListLoading: true,
 		randomTitle: {} as Title,
 		autoCompleteOptions: [] as Array<{ value: string }>,
-		isAdult: false,
-		registrationComplete: false,
-		forgotPasswordComplete: false
+		isAdult: false
 	},
 	reducers: {
 		setAdult(state, { payload }: PayloadAction<boolean>) {
@@ -64,12 +62,8 @@ const landingSlice = createSlice({
 			.addCase(loginThunk.rejected, state => {
 				errorMessage('Это не те данные, подумай ещё')
 			})
-			.addCase(registrationThunk.fulfilled, state => {
-				state.registrationComplete = true
-			})
 			.addCase(registrationThunk.rejected, state => {
 				errorMessage('Такой пользователь уже существует!')
-				state.registrationComplete = false
 			})
 			.addCase(authCheckThunk.fulfilled, (state, { payload }) => {
 				localStorage.setItem('isAuth', 'true')
@@ -82,12 +76,8 @@ const landingSlice = createSlice({
 				localStorage.setItem('isAuth', 'false')
 				state.isAuth = false
 			})
-			.addCase(forgotPasswordThunk.fulfilled, state => {
-				state.forgotPasswordComplete = true
-			})
 			.addCase(forgotPasswordThunk.rejected, state => {
 				errorMessage('Проверьте введённые данные!')
-				state.forgotPasswordComplete = false
 			})
 			.addCase(getUpdatesThunk.fulfilled, (state, { payload }) => {
 				state.titleListLoading = false

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Form, Input, Typography } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import formAnimeGirl from 'assets/images/formAnimeGirl.png'
-import { useAppSelector } from 'hooks/useAppSelector'
 import { registrationThunk } from 'store/reducers/landingReducer/landingThunks'
 import { DefaultLayout } from 'layouts/DefaultLayout'
 import { useWindowSize } from 'hooks/useWindowSize'
@@ -16,22 +15,20 @@ export const Registration: React.FC = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 
-	const registrationComplete = useAppSelector(
-		state => state.landing.registrationComplete
-	)
-
 	const onFinish = (values: any) => {
 		const user = {
 			login: values.name,
 			email: values.email,
-			password: values.password
+			password: values.password,
+			description: '',
+			avatar: ''
 		}
-		dispatch(registrationThunk(user))
+		dispatch(registrationThunk(user)).then(response => {
+			if (response.payload) {
+				navigate('/login')
+			}
+		})
 	}
-
-	useEffect(() => {
-		if (registrationComplete) navigate('/login')
-	}, [registrationComplete, navigate])
 
 	return (
 		<DefaultLayout>
@@ -86,7 +83,7 @@ export const Registration: React.FC = () => {
 				</div>
 				<Form.Item>
 					<Button type='primary' htmlType='submit'>
-						Зарегестрироваться
+						Зарегистрироваться
 					</Button>
 				</Form.Item>
 			</Form>

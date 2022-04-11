@@ -6,9 +6,13 @@ import {
 	editStatusAnimeThunk,
 	getAnimeListThunk,
 	getUserThunk,
-	removeAnimeThunk
+	removeAnimeThunk,
+	setAvatarThunk,
+	editUserThunk,
+	forgotPasswordThunk
 } from './userThunks'
 import { errorMessage } from 'helpers/messages'
+import { errorToast, successToast } from 'helpers/toast'
 
 const userSlice = createSlice({
 	name: 'user',
@@ -17,6 +21,8 @@ const userSlice = createSlice({
 		login: '',
 		email: '',
 		password: '',
+		description: '' as string | undefined,
+		avatar: '' as string | undefined,
 		animeList: [] as Anime[],
 		animeListSort: [] as Anime[],
 		loading: false,
@@ -59,6 +65,8 @@ const userSlice = createSlice({
 				state.email = payload.email
 				state.password = payload.password
 				state.id = payload._id as string
+				state.description = payload?.description
+				state.avatar = payload?.avatar
 			})
 			.addCase(createAnimeThunk.fulfilled, (state, { payload }) => {
 				state.animeList = [...state.animeList, payload]
@@ -91,6 +99,28 @@ const userSlice = createSlice({
 				state.animeListSort = state.animeListSort.filter(
 					anime => anime._id !== payload._id
 				)
+			})
+			.addCase(setAvatarThunk.fulfilled, (state, { payload }) => {
+				successToast('Новая аватарка успешно загружена!')
+				state.avatar = payload?.avatar
+			})
+			.addCase(setAvatarThunk.rejected, state => {
+				errorToast('Не удалось загрузить аватарку...')
+			})
+			.addCase(editUserThunk.fulfilled, (state, { payload }) => {
+				successToast("Данные успешно сохранены и переданы 'Abobus228'")
+				state.login = payload.login as string
+				state.description = payload?.description
+			})
+			.addCase(editUserThunk.rejected, state => {
+				errorToast('Сохранение не удалось')
+			})
+			.addCase(forgotPasswordThunk.fulfilled, (state, { payload }) => {
+				successToast('Пароль успешно изменён!')
+				state.password = payload.password
+			})
+			.addCase(forgotPasswordThunk.rejected, () => {
+				errorToast('Проверьте введённый пароль')
 			})
 	}
 })
