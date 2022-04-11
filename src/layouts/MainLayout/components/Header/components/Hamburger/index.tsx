@@ -1,12 +1,12 @@
 import { FC } from 'react'
 import classnames from 'classnames'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import menuWallpaper from 'assets/images/hamburgerMenuWallpaper.png'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { routes } from 'components/Router/routes'
 import { useToggle } from 'hooks/useToggle'
-import { NavLink } from 'react-router-dom'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { logout, setRandomTitle } from 'store/reducers/landingReducer'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
@@ -14,12 +14,18 @@ import { useAppDispatch } from 'hooks/useAppDispatch'
 import { MY_URI } from 'variebles'
 
 export const Hamburger: FC = () => {
+	const navigate = useNavigate()
+
 	const { value: opened, setValue: setOpened } = useToggle()
 
 	const dispatch = useAppDispatch()
 	const { login, avatar } = useAppSelector(state => state.user)
 	const { randomTitle, isAuth } = useAppSelector(state => state.landing)
 
+	const onClickAvatar = () => {
+		navigate('/options')
+		setOpened()
+	}
 	const onClickLogout = () => {
 		dispatch(logout())
 		setOpened()
@@ -71,7 +77,12 @@ export const Hamburger: FC = () => {
 					<div className={styles.menu}>
 						<div className={styles.closeButtonInMenu}>{closeButton}</div>
 						{isAuth ? (
-							<img className={styles.userAvatar} src={userAvatar} alt={login} />
+							<img
+								className={styles.userAvatar}
+								src={userAvatar}
+								alt={login}
+								onClick={onClickAvatar}
+							/>
 						) : (
 							<h2 className={styles.menuTitle}>Не авторизован</h2>
 						)}

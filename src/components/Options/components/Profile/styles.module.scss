@@ -1,0 +1,29 @@
+.profile {
+  display: flex;
+
+  @media all and (max-width: 768px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
+.profileItem1 {
+  width: 100%;
+  max-width: 70%;
+}
+
+.profileItem2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: calc(100% - 70%);
+}
+
+.profileItem2Avatar {
+  width: 200px;
+  min-width: 200px;
+  height: 200px;
+  margin: 0 0 10px 0;
+  border-radius: 50%;
+}
