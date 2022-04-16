@@ -65,7 +65,7 @@ export const Login: FC = () => {
 				</Form.Item>
 				<div className={styles.registrationOrRestorePassword}>
 					<Link to='/registration'>Регистрация</Link>
-					<Link to='/restore-password'>Забыли пароль?</Link>
+					{/* <Link to='/restore-password'>Забыли пароль?</Link> */}
 				</div>
 				<Form.Item>
 					<Button type='primary' htmlType='submit'>

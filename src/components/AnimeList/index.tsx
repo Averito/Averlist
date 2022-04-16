@@ -19,6 +19,7 @@ import { Anime } from 'api/myApi/anime/types'
 import { useInputValue } from 'hooks/useInputValue'
 import { AnilibriaLoader } from '../Loader/loaderTypes/AnilibriaLoader'
 import { useAppDispatch } from 'hooks/useAppDispatch'
+import { setTheme } from 'store/reducers/landingReducer'
 
 export const AnimeList: FC = () => {
 	const { width } = useWindowSize()
@@ -103,6 +104,12 @@ export const AnimeList: FC = () => {
 					onKeyPress={onClickCreateAnime}
 				>
 					Сохранить
+				</Button>
+				<Button onClick={() => dispatch(setTheme('dark'))}>
+					Сменить на тёмную
+				</Button>
+				<Button onClick={() => dispatch(setTheme('light'))}>
+					Сменить на светлую
 				</Button>
 			</form>
 			<Typography.Title level={2}>

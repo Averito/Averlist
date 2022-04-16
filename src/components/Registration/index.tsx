@@ -78,7 +78,7 @@ export const Registration: React.FC = () => {
 					<Input.Password placeholder='Пароль' />
 				</Form.Item>
 				<div className={styles.loginOrRestorePassword}>
-					<Link to='/restore-password'>Забыли пароль?</Link>
+					{/* <Link to='/restore-password'>Забыли пароль?</Link> */}
 					<Link to='/login'>Логин</Link>
 				</div>
 				<Form.Item>

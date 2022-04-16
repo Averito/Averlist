@@ -2,7 +2,7 @@
   "name": "anime-list-ts",
   "version": "0.1.0",
   "author": "Averito",
-  "type": "module",
+  "repository": "https://github.com/Averito/AnimeList",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

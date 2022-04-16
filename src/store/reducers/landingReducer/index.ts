@@ -10,6 +10,7 @@ import {
 	getUpdatesThunk
 } from './landingThunks'
 import { errorMessage, successMessage, warningMessage } from 'helpers/messages'
+import { Theme } from './types'
 
 const landingSlice = createSlice({
 	name: 'landing',
@@ -20,7 +21,8 @@ const landingSlice = createSlice({
 		titleListLoading: true,
 		randomTitle: {} as Title,
 		autoCompleteOptions: [] as Array<{ value: string }>,
-		isAdult: false
+		isAdult: false,
+		theme: (localStorage.getItem('averlistTheme') ?? 'light') as Theme
 	},
 	reducers: {
 		setAdult(state, { payload }: PayloadAction<boolean>) {
@@ -42,6 +44,10 @@ const landingSlice = createSlice({
 			{ payload }: PayloadAction<Array<{ value: string }>>
 		) {
 			state.autoCompleteOptions = payload
+		},
+		setTheme(state, { payload }: PayloadAction<Theme>) {
+			state.theme = payload
+			localStorage.setItem('averlistTheme', payload)
 		}
 	},
 	extraReducers: builder => {
@@ -95,5 +101,10 @@ const landingSlice = createSlice({
 })
 
 export const { reducer: landingReducer } = landingSlice
-export const { setAdult, logout, setRandomTitle, setAutoCompleteOption } =
-	landingSlice.actions
+export const {
+	setAdult,
+	logout,
+	setRandomTitle,
+	setAutoCompleteOption,
+	setTheme
+} = landingSlice.actions
