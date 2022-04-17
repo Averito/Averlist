@@ -105,13 +105,6 @@ export const AnimeList: FC = () => {
 				>
 					Сохранить
 				</Button>
-				{/* TODO: Убрать эти 2 кнопки со сменой темы */}
-				<Button onClick={() => dispatch(setTheme('dark'))}>
-					Сменить на тёмную
-				</Button>
-				<Button onClick={() => dispatch(setTheme('light'))}>
-					Сменить на светлую
-				</Button>
 			</form>
 			<Typography.Title level={2}>
 				Всего аниме: {animeList.length}
