@@ -19,7 +19,6 @@ import { Anime } from 'api/myApi/anime/types'
 import { useInputValue } from 'hooks/useInputValue'
 import { AnilibriaLoader } from '../Loader/loaderTypes/AnilibriaLoader'
 import { useAppDispatch } from 'hooks/useAppDispatch'
-import { setTheme } from 'store/reducers/landingReducer'
 
 export const AnimeList: FC = () => {
 	const { width } = useWindowSize()
