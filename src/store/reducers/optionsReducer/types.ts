@@ -1,1 +1,1 @@
-export type ViewType = 'profile' | 'security'
+export type ViewType = 'profile' | 'security' | 'themes'

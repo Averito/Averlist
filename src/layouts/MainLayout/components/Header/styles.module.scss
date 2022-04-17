@@ -4,7 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #001529;
+  background-color: var(--header-background-color);
+  transition: all 0.3s ease;
 }
 
 .headerItem1 {
@@ -20,14 +21,35 @@
 
 .headerItem2 {
   flex: 0 0 60%;
+
+  > ul {
+    background: var(--antd-header-background-color) !important;
+    transition: all 0.3s ease;
+  }
+}
+
+.dropdown {
+  border: 1px solid var(--antd-menu-border-color);
+  background-color: var(--antd-menu-background-color) !important;
+  transition: all 0.3s ease;
+
+  li {
+    color: var(--text-color) !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--antd-menu-background-hover-color);
+    }
+  }
 }
 
 .accountButton {
   text-decoration: underline;
-  color: white;
+  color: var(--text-color);
   margin: 0;
   font-size: 18px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .userAvatar {

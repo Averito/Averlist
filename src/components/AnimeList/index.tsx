@@ -105,6 +105,7 @@ export const AnimeList: FC = () => {
 				>
 					Сохранить
 				</Button>
+				{/* TODO: Убрать эти 2 кнопки со сменой темы */}
 				<Button onClick={() => dispatch(setTheme('dark'))}>
 					Сменить на тёмную
 				</Button>

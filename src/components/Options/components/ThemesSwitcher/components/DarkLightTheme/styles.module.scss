@@ -1,0 +1,22 @@
+.themeSwitcherText {
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.themeSwitcher {
+  display: flex;
+  align-items: center;
+}
+
+.lightThemeIcon {
+  margin: 0 0 0 8px;
+}
+
+.darkThemeIcon {
+  margin: 0 8px 0 0;
+}
+
+.darkThemeIcon,.lightThemeIcon {
+  width: 20px;
+  height: 20px;
+}

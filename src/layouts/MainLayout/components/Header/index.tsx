@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Dropdown, Menu, Typography } from 'antd'
+import { Dropdown, Typography, Menu } from 'antd'
 import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
@@ -30,7 +30,7 @@ export const Header: FC = () => {
 	}
 
 	const Account = (
-		<Menu>
+		<Menu className={styles.dropdown}>
 			{routes
 				.filter(route => route.type === 'options')
 				.map(route => (

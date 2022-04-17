@@ -5,12 +5,13 @@ import { HomeOutlined } from '@ant-design/icons'
 
 import { routes } from 'components/Router/routes'
 import { decodeAnimeName } from 'helpers/decodeAnimeName'
+import { UIBreadcrumb } from 'ui/Breadcrumb'
 
 export const Breadcrumb: FC = () => {
 	const location = useLocation()
 
 	return (
-		<BreadcrumbAntd>
+		<UIBreadcrumb>
 			<BreadcrumbAntd.Item>
 				<Link to='/'>
 					<HomeOutlined />
@@ -34,6 +35,6 @@ export const Breadcrumb: FC = () => {
 						</BreadcrumbAntd.Item>
 					)
 				})}
-		</BreadcrumbAntd>
+		</UIBreadcrumb>
 	)
 }

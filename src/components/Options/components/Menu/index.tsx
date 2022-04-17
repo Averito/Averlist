@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Menu as MenuAntd } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { UserOutlined, LockOutlined, SwapOutlined } from '@ant-design/icons'
 
+import { UIMenu } from 'ui/Menu'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'store/reducers/optionsReducer/types'
@@ -18,7 +19,7 @@ export const Menu: FC = () => {
 	}
 
 	return (
-		<MenuAntd
+		<UIMenu
 			mode='horizontal'
 			selectedKeys={[viewType]}
 			onClick={onClickSetViewType}
@@ -29,6 +30,9 @@ export const Menu: FC = () => {
 			<MenuAntd.Item key='security' icon={<LockOutlined />}>
 				Безопасность
 			</MenuAntd.Item>
-		</MenuAntd>
+			<MenuAntd.Item key='themes' icon={<SwapOutlined />}>
+				Темы
+			</MenuAntd.Item>
+		</UIMenu>
 	)
 }

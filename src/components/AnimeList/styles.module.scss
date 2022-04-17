@@ -5,9 +5,15 @@
   width: 100%;
   min-height: 100%;
   padding: 15px 0;
-  color: black;
 
-  p {
+  > h2 {
+    color: var(--text-color) !important;
+    transition: all 0.3s ease;
+  }
+
+  > p {
+    color: var(--text-color);
+    transition: all 0.3s ease;
     margin: 0;
   }
 
