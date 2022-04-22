@@ -11,7 +11,8 @@ import 'antd/es/slider/style'
 
 import { store } from 'store'
 import { App } from 'app'
-import './normalize.css'
+import 'styles/antdCustomStyles/antdCustomStyles.scss'
+import 'styles/normalize.css'
 
 const queryClient = new QueryClient({
 	defaultOptions: {

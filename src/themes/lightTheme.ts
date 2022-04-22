@@ -8,7 +8,7 @@ export const lightTheme: ThemeVariables = {
 	'antd-breadcrumb-text-color': '#000',
 	'antd-breadcrumb-text-hover-color': '#18aeff',
 	'header-background-color': '#001529',
-	'hamburger-background-color': '#001529',
+	'hamburger-background-color': '#fff',
 	'hamburger-button-color': '#000',
 	'main-background-color': '#f0f2f5',
 	'text-color': '#000'

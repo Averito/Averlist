@@ -28,21 +28,6 @@
   }
 }
 
-.dropdown {
-  border: 1px solid var(--antd-menu-border-color);
-  background-color: var(--antd-menu-background-color) !important;
-  transition: all 0.3s ease;
-
-  li {
-    color: var(--text-color) !important;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: var(--antd-menu-background-hover-color);
-    }
-  }
-}
-
 .accountButton {
   text-decoration: underline;
   color: var(--text-color);

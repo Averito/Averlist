@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap");
-@import "~antd/dist/antd.min.css";
+@import "../../node_modules/antd/dist/antd.min.css";
 
 /* Указываем box sizing */
 *,

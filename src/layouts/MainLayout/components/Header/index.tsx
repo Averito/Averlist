@@ -30,7 +30,7 @@ export const Header: FC = () => {
 	}
 
 	const Account = (
-		<Menu className={styles.dropdown}>
+		<Menu>
 			{routes
 				.filter(route => route.type === 'options')
 				.map(route => (

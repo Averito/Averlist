@@ -20,7 +20,7 @@ export const DefaultLayout: FC<DefaultLayoutProps> = ({ children }) => {
 				style={{
 					background: `url("${
 						!isMobile && wallpaper2
-					}") 100% 100%/ 250px 600px no-repeat`
+					}") 100% 100%/ 450px 600px no-repeat`
 				}}
 			>
 				<div
