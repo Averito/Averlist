@@ -14,7 +14,7 @@ export const UserPage: FC = () => {
 		state => state.users.users.filter(user => user._id === userId)[0]
 	)
 
-	const userAvatar = user.avatar ? MY_URI + user.avatar : defaultAvatar
+	const userAvatar = user?.avatar ? MY_URI + user?.avatar : defaultAvatar
 
 	return (
 		<div className={styles.profileWrapper}>
@@ -22,12 +22,12 @@ export const UserPage: FC = () => {
 				<div className={styles.profileItem1}>
 					<div className={styles.nickname}>
 						<p className={styles.title}>Никнейм:</p>
-						<p className={styles.nicknameText}>{user.login}</p>
+						<p className={styles.nicknameText}>{user?.login}</p>
 					</div>
 					<div className={styles.description}>
 						<p className={styles.title}>О себе:</p>
 						<p className={styles.descriptionText}>
-							{user.description || 'Не заполнено'}
+							{user?.description || 'Не заполнено'}
 						</p>
 					</div>
 				</div>
