@@ -95,7 +95,7 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 			)}
 			<DescriptionMobile titleMain={titleMain} status={currentStatus} />
 			<hr className={styles.blueLine} />
-			<div>{titleMain?.description}</div>
+			<div className={styles.description}>{titleMain?.description}</div>
 			<div className={styles.player}>
 				<Player
 					titleMain={titleMain}

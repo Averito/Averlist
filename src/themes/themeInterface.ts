@@ -30,6 +30,14 @@ export interface ThemeVariables {
 	'antd-table-tbody-background-color': string
 	'antd-table-tbody-border-color': string
 	'antd-table-tbody-row-background-hover-color': string
+	'antd-modal-background-color': string
+	'antd-modal-border-color': string
+	'antd-checkbox-background-color': string
+	'antd-checkbox-border-color': string
+	'antd-accordion-background-color': string
+	'antd-accordion-border-color': string
+	'antd-description-border-color': string
+	'antd-description-label-background-color': string
 	'header-background-color': string
 	'hamburger-background-color': string
 	'hamburger-button-color': string

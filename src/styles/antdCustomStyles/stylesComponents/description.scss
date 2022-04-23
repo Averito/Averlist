@@ -1,0 +1,16 @@
+.ant-descriptions-view {
+  border: 1px solid var(--antd-description-border-color) !important;
+
+  span {
+    color: var(--text-color) !important;
+  }
+}
+
+.ant-descriptions-row {
+  border-bottom: 1px solid var(--antd-description-border-color) !important;
+}
+
+.ant-descriptions-item-label {
+  background-color: var(--antd-description-label-background-color) !important;
+  border-right: 1px solid var(--antd-description-border-color) !important;
+}

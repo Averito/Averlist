@@ -24,9 +24,7 @@ export const DarkLightTheme: FC = () => {
 
 	return (
 		<div>
-			<p className={styles.themeSwitcherText}>
-				Тёмная/Светлая (Эксперементально)
-			</p>
+			<p className={styles.themeSwitcherText}>Тёмная/Светлая</p>
 			<div className={styles.themeSwitcher}>
 				<img
 					className={styles.darkThemeIcon}

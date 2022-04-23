@@ -9,6 +9,10 @@
   }
 }
 
+.ant-table {
+  background-color: transparent !important;
+}
+
 .ant-table-cell {
   background-color: var(--antd-table-tbody-background-color) !important;
   border-bottom: 1px solid var(--antd-table-tbody-border-color) !important;

@@ -50,7 +50,11 @@ export const Header: FC = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.headerItem1}>
-				<Typography.Title level={4} style={{ color: 'white', margin: 0 }}>
+				<Typography.Title
+					className='whiteColor'
+					level={4}
+					style={{ color: 'white', margin: 0 }}
+				>
 					Averlist
 				</Typography.Title>
 			</div>

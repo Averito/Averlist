@@ -1,0 +1,24 @@
+.ant-modal-header, .ant-modal-body, .ant-modal-footer {
+  background-color: var(--antd-modal-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+.ant-modal-header {
+  border-bottom: 1px solid var(--antd-modal-border-color) !important;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid var(--antd-modal-border-color) !important;
+}
+
+.ant-modal-content {
+  background-color: var(--antd-modal-background-color) !important;
+}
+
+.ant-modal-title {
+  color: var(--text-color) !important;
+}
+
+.ant-modal-close-x {
+  color: var(--text-color) !important;
+}
