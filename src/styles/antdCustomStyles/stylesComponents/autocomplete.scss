@@ -1,0 +1,16 @@
+.ant-select-auto-complete > .ant-select-selector {
+  background: var(--antd-autocomplete-background-color) !important;
+  border: 1px solid var(--antd-autocomplete-border-color) !important;
+
+  .ant-select-selection-search-input {
+    color: var(--text-color) !important;
+  }
+
+  &:hover {
+    border-color: var(--antd-autocomplete-border-hover-color) !important;
+  }
+}
+
+.ant-select-auto-complete.ant-select-focused > .ant-select-selector {
+  box-shadow: 0 0 0 2px var(--antd-autocomplete-box-shadow-focus-color) !important;
+}

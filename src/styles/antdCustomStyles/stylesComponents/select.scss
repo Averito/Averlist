@@ -1,0 +1,20 @@
+.ant-select > .ant-select-selector {
+  background: var(--antd-select-background-color) !important;
+  border: 1px solid var(--antd-select-border-color) !important;
+
+  .ant-select-selection-search-input, .ant-select-selection-item {
+    color: var(--text-color) !important;
+  }
+
+  &:hover {
+    border-color: var(--antd-select-border-hover-color) !important;
+  }
+}
+
+.ant-select.ant-select-focused > .ant-select-selector {
+  box-shadow: 0 0 0 2px var(--antd-select-box-shadow-focus-color) !important;
+}
+
+.ant-select-arrow {
+  color: var(--antd-select-arrow-color) !important;
+}

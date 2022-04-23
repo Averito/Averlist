@@ -14,7 +14,7 @@ export const DefaultLayout: FC<DefaultLayoutProps> = ({ children }) => {
 	const isMobile = width <= 768
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapper} id='defaultLayout'>
 			<div
 				className={styles.defaultLayout}
 				style={{

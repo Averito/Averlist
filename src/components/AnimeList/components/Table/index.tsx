@@ -66,7 +66,7 @@ export const Table: FC<TableProps> = ({ setSelectedAnime }) => {
 						{titleList.some(title => title.names.ru === name) ? (
 							<NavLink to={`/titles/${animeName}`}>{name}</NavLink>
 						) : (
-							<span>{name}</span>
+							<span className={styles.nameCol}>{name}</span>
 						)}
 					</>
 				)
@@ -129,7 +129,7 @@ export const Table: FC<TableProps> = ({ setSelectedAnime }) => {
 			size='small'
 			dataSource={dataSource}
 			columns={columns}
-			pagination={{ pageSize: 30 }}
+			pagination={{ pageSize: 30, position: ['topCenter'], size: 'default' }}
 		/>
 	)
 }

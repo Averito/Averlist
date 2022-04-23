@@ -30,11 +30,6 @@
     margin: 15px 0 0 0;
     align-self: flex-start;
     width: 100%;
-
-    ul {
-      border-left: 1px solid lightgray;
-      border-right: 1px solid lightgray;
-    }
   }
 }
 
@@ -105,4 +100,8 @@
   svg {
     margin: 0 0 0 10px;
   }
+}
+
+.nameCol {
+  color: var(--text-color);
 }

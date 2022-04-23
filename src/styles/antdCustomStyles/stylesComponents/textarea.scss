@@ -1,0 +1,17 @@
+.ant-input-textarea-show-count::after {
+  color: var(--text-color) !important;
+}
+
+.ant-input-textarea > textarea {
+  background: var(--antd-textarea-background-color) !important;
+  border: 1px solid var(--antd-textarea-border-color) !important;
+  color: var(--text-color) !important;
+
+  &:hover {
+    border-color: var(--antd-textarea-border-hover-color) !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--antd-textarea-box-shadow-focus-color) !important;
+  }
+}
