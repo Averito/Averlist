@@ -40,7 +40,11 @@ export const Login: FC = () => {
 				{height > 530 && (
 					<img className={styles.formGirl} src={formAnimeGirl} alt='' />
 				)}
-				<Typography.Title level={4} style={{ color: 'white' }}>
+				<Typography.Title
+					className='whiteColor'
+					level={4}
+					style={{ color: 'white' }}
+				>
 					Вход
 				</Typography.Title>
 				<Form.Item

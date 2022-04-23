@@ -42,7 +42,11 @@ export const Registration: React.FC = () => {
 				{height > 575 && (
 					<img className={styles.formGirl} src={formAnimeGirl} alt='' />
 				)}
-				<Typography.Title level={4} style={{ color: 'white' }}>
+				<Typography.Title
+					className='whiteColor'
+					level={4}
+					style={{ color: 'white' }}
+				>
 					Регистрация
 				</Typography.Title>
 				<Form.Item
