@@ -1,4 +1,4 @@
-import { User } from '../auth/types'
+import { User, UserSafity } from '../auth/types'
 import { api } from 'api'
 import { LoginAndDescription } from 'types'
 
@@ -18,6 +18,12 @@ export const user = {
 		const response = await api.put<LoginAndDescription, User>(
 			'/users/me',
 			editedData
+		)
+		return response
+	},
+	async getAll() {
+		const response = await api.get<{ count: number; users: UserSafity[] }>(
+			'/users'
 		)
 		return response
 	}

@@ -5,9 +5,12 @@ import { HomeOutlined } from '@ant-design/icons'
 
 import { routes } from 'components/Router/routes'
 import { decodeAnimeName } from 'helpers/decodeAnimeName'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const Breadcrumb: FC = () => {
 	const location = useLocation()
+
+	const users = useAppSelector(state => state.users.users)
 
 	return (
 		<BreadcrumbAntd>
@@ -27,6 +30,7 @@ export const Breadcrumb: FC = () => {
 						?.name as string
 					const BreadcrumbName =
 						routeName ||
+						users.filter(user => user._id === path)[0]?.login ||
 						`${decodedPath[0].toUpperCase()}${decodedPath.slice(1)}`
 					return (
 						<BreadcrumbAntd.Item key={path}>

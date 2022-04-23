@@ -8,6 +8,12 @@ export const useTheme = () => {
 	const theme = useAppSelector(state => state.landing.theme)
 
 	useEffect(() => {
+		if (!localStorage.getItem('averlistTheme')) {
+			localStorage.setItem('averlistTheme', 'light')
+		}
+	}, [])
+
+	useEffect(() => {
 		if (theme === 'light') {
 			for (const key in lightTheme) {
 				document.documentElement.style.setProperty(`--${key}`, lightTheme[key])

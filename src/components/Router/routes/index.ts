@@ -6,6 +6,8 @@ import { AnimePage } from 'pages/AnimePage'
 import { AnimeList } from 'pages/AnimeList'
 import { AnimeLibrary } from 'pages/AnimeLibrary'
 import { Options } from 'pages/Options'
+import { Users } from 'pages/Users'
+import { UserPage } from 'pages/UserPage'
 
 export const routes: Routes = [
 	{
@@ -56,5 +58,19 @@ export const routes: Routes = [
 		route: 'anime-library/:titleName',
 		type: 'children',
 		component: AnimePage
+	},
+	{
+		name: 'Пользователи',
+		key: 'users',
+		route: '/users',
+		type: 'another',
+		component: Users
+	},
+	{
+		name: 'user page',
+		key: 'userPage',
+		route: 'users/:userId',
+		type: 'children',
+		component: UserPage
 	}
 ]

@@ -13,7 +13,7 @@ export const api = {
 	async get<T>(path: string) {
 		const response = await axios.get<T>(MY_API_URI + path, {
 			headers: {
-				Authorization: `Bearer ${this.token}`
+				Authorization: `Bearer ${this.token || localStorage.getItem('token')}`
 			}
 		})
 		return response.data

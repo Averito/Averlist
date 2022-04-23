@@ -1,3 +1,5 @@
+import { Anime } from '../anime/types'
+
 export interface User {
 	_id?: string
 	login?: string
@@ -5,6 +7,17 @@ export interface User {
 	password: string
 	description?: string
 	avatar?: string
+	animeList?: Anime[]
+}
+
+export interface UserSafity {
+	_id: string
+	login: string
+	email?: string
+	password?: string
+	description: string
+	avatar: string
+	animeList?: Anime[]
 }
 
 export interface UserProperties {

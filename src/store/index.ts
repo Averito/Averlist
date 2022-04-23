@@ -4,12 +4,14 @@ import reduxThunk from 'redux-thunk'
 import { userReducer } from './reducers/userReducer'
 import { landingReducer } from './reducers/landingReducer'
 import { optionsReducer } from './reducers/optionsReducer'
+import { usersReducer } from './reducers/usersReducer'
 
 export const store = configureStore({
 	reducer: {
 		user: userReducer,
 		landing: landingReducer,
-		options: optionsReducer
+		options: optionsReducer,
+		users: usersReducer
 	},
 	middleware: getDefaultMiddleware => {
 		return getDefaultMiddleware().concat(reduxThunk)

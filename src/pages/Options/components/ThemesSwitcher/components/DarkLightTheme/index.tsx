@@ -31,7 +31,12 @@ export const DarkLightTheme: FC = () => {
 					src={darkThemeIcon}
 					alt='darkThemeIcon'
 				/>
-				<Switch checked={lightDarkChecked} onChange={onChangeTheme} />
+				<Switch
+					checked={lightDarkChecked}
+					onChange={onChangeTheme}
+					checkedChildren='Светлая'
+					unCheckedChildren='Тёмная'
+				/>
 				<img
 					className={styles.lightThemeIcon}
 					src={lightThemeIcon}
