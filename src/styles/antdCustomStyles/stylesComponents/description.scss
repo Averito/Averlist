@@ -1,7 +1,7 @@
 .ant-descriptions-view {
   border: 1px solid var(--antd-description-border-color) !important;
 
-  span {
+  .ant-descriptions-item-label, .ant-descriptions-item-content {
     color: var(--text-color) !important;
   }
 }
