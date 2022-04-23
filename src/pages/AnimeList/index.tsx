@@ -11,13 +11,13 @@ import {
 import { Sorting } from './components/Sorting'
 import { ChangesOnAnilibria } from './components/ChangesFromAnilibria'
 import { useWindowSize } from 'hooks/useWindowSize'
-import { Loader } from '../Loader'
+import { Loader } from '../../components/Loader'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { setAutoCompleteOption } from 'store/reducers/landingReducer'
 import { sortOptionsForAutocomplete } from 'helpers/sortOptionsForAutoComplete'
 import { Anime } from 'api/myApi/anime/types'
 import { useInputValue } from 'hooks/useInputValue'
-import { AnilibriaLoader } from '../Loader/loaderTypes/AnilibriaLoader'
+import { AnilibriaLoader } from '../../components/Loader/loaderTypes/AnilibriaLoader'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const AnimeList: FC = () => {

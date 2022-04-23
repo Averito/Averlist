@@ -72,7 +72,9 @@ export const Header: FC = () => {
 									</Menu.Item>
 								))}
 							<Menu.Item key='random-title' onClick={onClickRandomAnime}>
-								<Link to={`/titles/${randomAnimeName}`}>Рандомный тайтл</Link>
+								<Link to={`/anime-library/${randomAnimeName}`}>
+									Рандомный тайтл
+								</Link>
 							</Menu.Item>
 						</Menu>
 					</div>

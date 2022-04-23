@@ -9,7 +9,7 @@ import { DescriptionMobile } from '../DescriptionMobile'
 import { AddToList } from 'components/AddToList'
 import { Player } from '../Player'
 import { Status } from 'api/myApi/anime/types'
-import { Title } from '../../../../api/anilibriaApi/types'
+import { Title } from 'api/anilibriaApi/types'
 
 interface AnimePageDesktopProps {
 	titleMain: Title

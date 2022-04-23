@@ -49,36 +49,13 @@ export const Registration: React.FC = () => {
 				>
 					Регистрация
 				</Typography.Title>
-				<Form.Item
-					name='name'
-					rules={[
-						{
-							required: true,
-							message: 'Пожалуйста, введите свой ник!'
-						}
-					]}
-					style={{ margin: '0 0 10px 0' }}
-				>
+				<Form.Item name='name' style={{ margin: '0 0 10px 0' }}>
 					<Input placeholder='Никнейм' />
 				</Form.Item>
-				<Form.Item
-					name='email'
-					rules={[
-						{
-							required: true,
-							message: 'Пожалуйста, введите свою электронную почту!'
-						}
-					]}
-					style={{ margin: '0 0 10px 0' }}
-				>
+				<Form.Item name='email' style={{ margin: '0 0 10px 0' }}>
 					<Input type='email' placeholder='Электронная почта' />
 				</Form.Item>
-				<Form.Item
-					name='password'
-					rules={[
-						{ required: true, message: 'Пожалуйста, введите свой пароль!' }
-					]}
-				>
+				<Form.Item name='password'>
 					<Input.Password placeholder='Пароль' />
 				</Form.Item>
 				<div className={styles.loginOrRestorePassword}>

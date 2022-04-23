@@ -95,7 +95,7 @@ export const Hamburger: FC = () => {
 									</li>
 								))}
 							<li onClick={onClickRandomAnime}>
-								<NavLink to={`/titles/${randomAnimeName}`}>
+								<NavLink to={`/anime-library/${randomAnimeName}`}>
 									Рандомный тайтл
 								</NavLink>
 							</li>

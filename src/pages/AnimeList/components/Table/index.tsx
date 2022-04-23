@@ -64,7 +64,7 @@ export const Table: FC<TableProps> = ({ setSelectedAnime }) => {
 				return (
 					<>
 						{titleList.some(title => title.names.ru === name) ? (
-							<NavLink to={`/titles/${animeName}`}>{name}</NavLink>
+							<NavLink to={`/anime-library/${animeName}`}>{name}</NavLink>
 						) : (
 							<span className={styles.nameCol}>{name}</span>
 						)}

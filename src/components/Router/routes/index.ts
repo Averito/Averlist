@@ -1,11 +1,11 @@
 import { Routes } from './types'
-import { Login } from 'components/Login'
-import { Registration } from 'components/Registration'
-import { RestorePassword } from 'components/RestorePassword'
-import { AnimePage } from 'components/AnimePage'
-import { AnimeList } from 'components/AnimeList'
-import { AnimeLibrary } from 'components/AnimeLibrary'
-import { Options } from 'components/Options'
+import { Login } from 'pages/Login'
+import { Registration } from 'pages/Registration'
+import { RestorePassword } from 'pages/RestorePassword'
+import { AnimePage } from 'pages/AnimePage'
+import { AnimeList } from 'pages/AnimeList'
+import { AnimeLibrary } from 'pages/AnimeLibrary'
+import { Options } from 'pages/Options'
 
 export const routes: Routes = [
 	{
@@ -53,7 +53,7 @@ export const routes: Routes = [
 	{
 		name: 'title list',
 		key: 'titleList',
-		route: 'titles/:titleName',
+		route: 'anime-library/:titleName',
 		type: 'children',
 		component: AnimePage
 	}
