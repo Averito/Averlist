@@ -33,7 +33,10 @@ export const AnimeLibraryItem: FC<AnimeLibraryItemProps> = ({ title }) => {
 					</NavLink>
 				</Typography.Title>
 				<div>
-					<Typography.Paragraph style={{ lineHeight: '15px' }}>
+					<Typography.Paragraph
+						className='whiteColor'
+						style={{ lineHeight: '15px' }}
+					>
 						{title?.description?.slice(0, maxDescriptionLenght)}
 						{title?.description?.length > 300 ? '...' : ''}
 					</Typography.Paragraph>

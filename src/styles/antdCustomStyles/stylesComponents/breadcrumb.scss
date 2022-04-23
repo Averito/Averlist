@@ -1,0 +1,10 @@
+.ant-breadcrumb {
+  span, a {
+    color: var(--antd-breadcrumb-text-color) !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--antd-breadcrumb-text-hover-color) !important;
+    }
+  }
+}

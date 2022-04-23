@@ -1,25 +1,19 @@
-import { toast as toastLib } from 'react-toastify'
+import { toast, ToastOptions } from 'react-toastify'
+
+const toastOptionsByDefault: ToastOptions = {
+	position: 'top-right',
+	autoClose: 3000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: false,
+	draggable: true,
+	progress: undefined
+}
 
 export const successToast = (text: string) => {
-	toastLib.success(text, {
-		position: 'top-right',
-		autoClose: 3000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: false,
-		draggable: true,
-		progress: undefined
-	})
+	toast.success(text, toastOptionsByDefault)
 }
 
 export const errorToast = (text: string) => {
-	toastLib.error(text, {
-		position: 'top-right',
-		autoClose: 3000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: false,
-		draggable: true,
-		progress: undefined
-	})
+	toast.error(text, toastOptionsByDefault)
 }

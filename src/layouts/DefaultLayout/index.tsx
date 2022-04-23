@@ -14,13 +14,13 @@ export const DefaultLayout: FC<DefaultLayoutProps> = ({ children }) => {
 	const isMobile = width <= 768
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapper} id='defaultLayout'>
 			<div
 				className={styles.defaultLayout}
 				style={{
 					background: `url("${
 						!isMobile && wallpaper2
-					}") 100% 100%/ 250px 600px no-repeat`
+					}") 100% 100%/ 450px 600px no-repeat`
 				}}
 			>
 				<div

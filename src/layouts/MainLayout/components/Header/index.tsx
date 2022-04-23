@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Dropdown, Menu, Typography } from 'antd'
+import { Dropdown, Typography, Menu } from 'antd'
 import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
@@ -50,7 +50,11 @@ export const Header: FC = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.headerItem1}>
-				<Typography.Title level={4} style={{ color: 'white', margin: 0 }}>
+				<Typography.Title
+					className='whiteColor'
+					level={4}
+					style={{ color: 'white', margin: 0 }}
+				>
 					Averlist
 				</Typography.Title>
 			</div>

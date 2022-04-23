@@ -1,13 +1,17 @@
 import React, { FC } from 'react'
 import { Menu as MenuAntd } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { UserOutlined, LockOutlined, SwapOutlined } from '@ant-design/icons'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'store/reducers/optionsReducer/types'
 import { setViewType } from 'store/reducers/optionsReducer'
+import { useWindowSize } from 'hooks/useWindowSize'
 
 export const Menu: FC = () => {
+	const { width } = useWindowSize()
+	const isMobile = width <= 768
+
 	const dispatch = useAppDispatch()
 
 	const viewType = useAppSelector(state => state.options.viewType)
@@ -19,7 +23,7 @@ export const Menu: FC = () => {
 
 	return (
 		<MenuAntd
-			mode='horizontal'
+			mode={isMobile ? 'inline' : 'horizontal'}
 			selectedKeys={[viewType]}
 			onClick={onClickSetViewType}
 		>
@@ -28,6 +32,9 @@ export const Menu: FC = () => {
 			</MenuAntd.Item>
 			<MenuAntd.Item key='security' icon={<LockOutlined />}>
 				Безопасность
+			</MenuAntd.Item>
+			<MenuAntd.Item key='themes' icon={<SwapOutlined />}>
+				Темы
 			</MenuAntd.Item>
 		</MenuAntd>
 	)

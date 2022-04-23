@@ -1,0 +1,33 @@
+.ant-menu-item-selected {
+  &:not(.ant-menu-horizontal > .ant-menu-item) {
+    background: var(--antd-menu-background-hover-color) !important;
+  }
+}
+
+.ant-menu,
+.ant-menu-vertical,
+.ant-menu-horizontal,
+.ant-dropdown-menu,
+.ant-select-dropdown,
+.ant-select-item {
+  border: 0 0 1px 0 solid var(--antd-menu-border-color) !important;
+  background-color: var(--antd-menu-background-color) !important;
+  transition: all 0.3s ease !important;
+
+  &:not(.ant-menu-horizontal) {
+    border: 1px solid var(--antd-menu-border-color) !important;
+  }
+}
+
+.ant-dropdown-menu-item,
+.ant-menu-item,
+.ant-select-item {
+  color: var(--text-color) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    &:not(.ant-menu-horizontal > .ant-menu-item) {
+      background-color: var(--antd-menu-background-hover-color) !important;
+    }
+  }
+}

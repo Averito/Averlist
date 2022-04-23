@@ -40,7 +40,11 @@ export const Login: FC = () => {
 				{height > 530 && (
 					<img className={styles.formGirl} src={formAnimeGirl} alt='' />
 				)}
-				<Typography.Title level={4} style={{ color: 'white' }}>
+				<Typography.Title
+					className='whiteColor'
+					level={4}
+					style={{ color: 'white' }}
+				>
 					Вход
 				</Typography.Title>
 				<Form.Item
@@ -65,7 +69,7 @@ export const Login: FC = () => {
 				</Form.Item>
 				<div className={styles.registrationOrRestorePassword}>
 					<Link to='/registration'>Регистрация</Link>
-					<Link to='/restore-password'>Забыли пароль?</Link>
+					{/* <Link to='/restore-password'>Забыли пароль?</Link> */}
 				</div>
 				<Form.Item>
 					<Button type='primary' htmlType='submit'>

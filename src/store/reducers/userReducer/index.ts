@@ -108,7 +108,9 @@ const userSlice = createSlice({
 				errorToast('Не удалось загрузить аватарку...')
 			})
 			.addCase(editUserThunk.fulfilled, (state, { payload }) => {
-				successToast("Данные успешно сохранены и переданы 'Abobus228'")
+				successToast(
+					'Данные успешно сохранены и переданы пользователю AnnDegtyareva'
+				)
 				state.login = payload.login as string
 				state.description = payload?.description
 			})
