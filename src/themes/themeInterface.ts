@@ -42,5 +42,6 @@ export interface ThemeVariables {
 	'hamburger-background-color': string
 	'hamburger-button-color': string
 	'main-background-color': string
+	'anilibria-loader-color': string
 	'text-color': string
 }

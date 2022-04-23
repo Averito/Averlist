@@ -45,5 +45,6 @@ export const lightTheme: ThemeVariables = {
 	'hamburger-background-color': '#fff',
 	'hamburger-button-color': '#000',
 	'main-background-color': '#f0f2f5',
+	'anilibria-loader-color': '#535353',
 	'text-color': '#000'
 }

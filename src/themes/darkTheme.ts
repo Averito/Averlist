@@ -45,5 +45,6 @@ export const darkTheme: ThemeVariables = {
 	'hamburger-background-color': '#232323',
 	'hamburger-button-color': '#fff',
 	'main-background-color': '#272626',
+	'anilibria-loader-color': '#b7b7b7',
 	'text-color': '#fff'
 }
