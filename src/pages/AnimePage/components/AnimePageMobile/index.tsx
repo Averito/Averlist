@@ -1,5 +1,6 @@
 import { Typography } from 'antd'
 import React, { FC } from 'react'
+import classnames from 'classnames'
 
 import styles from './styles.module.scss'
 import { ANILIBRIA_URI } from 'variebles'
@@ -55,8 +56,8 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 				{width <= 400 ? (
 					<>
 						<Typography.Paragraph
-							className={styles.ruTitle}
-							style={{ fontWeight: 600, margin: 0, background, color: 'white' }}
+							className={classnames(styles.ruTitle, 'whiteColor')}
+							style={{ fontWeight: 600, margin: 0, background }}
 						>
 							{titleMain?.names?.ru}
 						</Typography.Paragraph>
@@ -64,8 +65,8 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 				) : (
 					<>
 						<Typography.Title
-							className={styles.ruTitle}
-							style={{ color: 'white', margin: 0, background }}
+							className={classnames(styles.ruTitle, 'whiteColor')}
+							style={{ margin: 0, background }}
 							level={5}
 						>
 							{titleMain?.names?.ru}
