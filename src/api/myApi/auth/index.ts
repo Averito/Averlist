@@ -26,7 +26,7 @@ export const auth = {
 		return await api.post<UserProperties, User>('/forgot-password', user)
 	},
 	async getUser() {
-		const user = await api.get<User>(`/users/me`)
+		const user = await api.get<[User]>(`/users/me`)
 		return user
 	}
 }

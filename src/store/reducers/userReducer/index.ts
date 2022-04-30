@@ -13,6 +13,8 @@ import {
 } from './userThunks'
 import { errorMessage } from 'helpers/messages'
 import { errorToast, successToast } from 'helpers/toast'
+import { User } from 'api/myApi/auth/types'
+import { InvitationResponse } from '../../../api/myApi/invitation/types'
 
 const userSlice = createSlice({
 	name: 'user',
@@ -21,8 +23,11 @@ const userSlice = createSlice({
 		login: '',
 		email: '',
 		password: '',
-		description: '' as string | undefined,
-		avatar: '' as string | undefined,
+		description: '' as string,
+		avatar: '' as string,
+		friendList: [] as User[],
+		meInvitations: [] as InvitationResponse[],
+		myInvitations: [] as InvitationResponse[],
 		animeList: [] as Anime[],
 		animeListSort: [] as Anime[],
 		loading: false,
@@ -61,12 +66,14 @@ const userSlice = createSlice({
 				state.error = true
 			})
 			.addCase(getUserThunk.fulfilled, (state, { payload }) => {
-				state.login = payload.login as string
-				state.email = payload.email
-				state.password = payload.password
-				state.id = payload._id as string
-				state.description = payload?.description
-				state.avatar = payload?.avatar
+				const [user] = payload
+				state.login = user.login as string
+				state.id = user._id as string
+				state.description = user?.description || ''
+				state.avatar = user?.avatar || ''
+				state.friendList = user?.friendList || []
+				state.meInvitations = user?.meInvitations || []
+				state.myInvitations = user?.myInvitations || []
 			})
 			.addCase(createAnimeThunk.fulfilled, (state, { payload }) => {
 				state.animeList = [...state.animeList, payload]
@@ -102,7 +109,7 @@ const userSlice = createSlice({
 			})
 			.addCase(setAvatarThunk.fulfilled, (state, { payload }) => {
 				successToast('Новая аватарка успешно загружена!')
-				state.avatar = payload?.avatar
+				state.avatar = payload?.avatar || ''
 			})
 			.addCase(setAvatarThunk.rejected, state => {
 				errorToast('Не удалось загрузить аватарку...')
@@ -112,7 +119,7 @@ const userSlice = createSlice({
 					'Данные успешно сохранены и переданы пользователю AnnDegtyareva'
 				)
 				state.login = payload.login as string
-				state.description = payload?.description
+				state.description = payload?.description || ''
 			})
 			.addCase(editUserThunk.rejected, state => {
 				errorToast('Сохранение не удалось')
