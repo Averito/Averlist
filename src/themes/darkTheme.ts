@@ -42,6 +42,7 @@ export const darkTheme: ThemeVariables = {
 	'antd-description-border-color': '#333333',
 	'antd-description-label-background-color': '#333333',
 	'antd-icon-color': '#fff',
+	'antd-cofirmpopover-background-color': '#303030',
 	'header-background-color': '#202020',
 	'hamburger-background-color': '#232323',
 	'hamburger-button-color': '#fff',

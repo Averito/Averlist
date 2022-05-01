@@ -39,6 +39,7 @@ export interface ThemeVariables {
 	'antd-description-border-color': string
 	'antd-description-label-background-color': string
 	'antd-icon-color': string
+	'antd-cofirmpopover-background-color': string
 	'header-background-color': string
 	'hamburger-background-color': string
 	'hamburger-button-color': string

@@ -42,6 +42,7 @@ export const lightTheme: ThemeVariables = {
 	'antd-description-border-color': '#fff',
 	'antd-description-label-background-color': '#fff',
 	'antd-icon-color': '#000',
+	'antd-cofirmpopover-background-color': '#fff',
 	'header-background-color': '#001529',
 	'hamburger-background-color': '#fff',
 	'hamburger-button-color': '#000',

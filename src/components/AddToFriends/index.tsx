@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Button, ButtonProps } from 'antd'
+import { Button, ButtonProps, Popconfirm } from 'antd'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -55,9 +55,16 @@ export const AddToFriends: FC<AddToFriendsProps> = ({
 
 	if (checkFriend) {
 		return (
-			<Button size={size} type='primary' danger onClick={onClickRemoveFriend}>
-				Удалить из друзей
-			</Button>
+			<Popconfirm
+				title='Вы уверены, что хотите удалить этого пользователя из друзей?'
+				onConfirm={onClickRemoveFriend}
+				okText='Да'
+				cancelText='Нет'
+			>
+				<Button size={size} type='primary' danger>
+					Удалить из друзей
+				</Button>
+			</Popconfirm>
 		)
 	}
 

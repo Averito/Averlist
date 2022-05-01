@@ -1,0 +1,9 @@
+.ant-popover-inner,
+.ant-popover-arrow-content,
+.ant-popover-arrow > span::before {
+  background: var(--antd-cofirmpopover-background-color) !important;
+}
+
+.ant-popover-message-title {
+  color: var(--text-color) !important;
+}
