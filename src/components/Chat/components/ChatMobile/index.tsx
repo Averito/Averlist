@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { Typography } from 'antd'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { Dialog } from '../Dialog'
@@ -17,6 +18,9 @@ export const ChatMobile: FC = () => {
 			{friendList.map(friend => (
 				<Dialog key={friend._id} user={friend} />
 			))}
+			{friendList.length === 0 && (
+				<Typography.Paragraph>У вас нет друзей(</Typography.Paragraph>
+			)}
 		</>
 	)
 }

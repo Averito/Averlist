@@ -58,7 +58,10 @@ export const Footer: FC<FooterProps> = ({ viewType, setViewType }) => {
 					)}
 					{menuItem.name === 'Входящие' ? (
 						<Badge count={meInvitations.length}>
-							<p className={styles.paragraph} style={{ fontSize }}>
+							<p
+								className={styles.paragraph}
+								style={{ fontSize, margin: '2.5px 0 0 0' }}
+							>
 								{menuItem.name}
 							</p>
 						</Badge>
