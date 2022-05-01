@@ -41,11 +41,16 @@ export const darkTheme: ThemeVariables = {
 	'antd-accordion-border-color': '#222222',
 	'antd-description-border-color': '#333333',
 	'antd-description-label-background-color': '#333333',
+	'antd-icon-color': '#fff',
 	'header-background-color': '#202020',
 	'hamburger-background-color': '#232323',
 	'hamburger-button-color': '#fff',
 	'main-background-color': '#272626',
 	'anilibria-loader-color': '#b7b7b7',
 	'user-component-background-color': '#232323',
-	'text-color': '#fff'
+	'dialog-component-background-color': '#232323',
+	'chat-background-color': '#232323',
+	'body-scrollbar-thumb-color': '#202020',
+	'text-color': '#fff',
+	'friends-footer-background-color': '#202020'
 }

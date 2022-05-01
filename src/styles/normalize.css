@@ -41,6 +41,22 @@ body {
     font-family: "IBM Plex Sans", sans-serif;
 }
 
+
+/* Кастомизируем скроллбар */
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--body-scrollbar-thumb-color);
+    border-radius: 20px;
+    border: 2px solid white;
+}
+
 /* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
 ul[class],
 ol[class] {

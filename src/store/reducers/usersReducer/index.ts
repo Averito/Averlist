@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { UserSafity } from 'api/myApi/auth/types'
+import { User } from 'api/myApi/auth/types'
 import { getAllUsersThunk } from './usersThunks'
 import { errorMessage } from 'helpers/messages'
 import {
@@ -12,7 +12,7 @@ const usersSlice = createSlice({
 	name: 'users',
 	initialState: {
 		getUsersError: false,
-		users: [] as UserSafity[]
+		users: [] as User[]
 	},
 	reducers: {
 		setGetUsersError(state, { payload }: PayloadAction<boolean>) {
@@ -22,18 +22,8 @@ const usersSlice = createSlice({
 	extraReducers: builder => {
 		builder
 			.addCase(getAllUsersThunk.fulfilled, (state, { payload }) => {
-				const mappedUsersArr = payload.users.map(user => {
-					return {
-						_id: user._id,
-						login: user.login,
-						description: user?.description || '',
-						avatar: user?.avatar || '',
-						animeList: user.animeList,
-						friendList: user.friendList
-					}
-				})
 				state.getUsersError = false
-				state.users = mappedUsersArr
+				state.users = payload.users
 			})
 			.addCase(getAllUsersThunk.rejected, state => {
 				state.getUsersError = true

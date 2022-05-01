@@ -1,0 +1,7 @@
+.placeholder {
+  height: 56px;
+
+  @media all and (max-width: 430px) {
+    height: 45px;
+  }
+}

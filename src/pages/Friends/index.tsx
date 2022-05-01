@@ -1,31 +1,31 @@
 import { FC, useState } from 'react'
 
 import styles from './styles.module.scss'
-import { ViewTypeDesktop, ViewTypeMobile } from './types'
+import { ViewType } from './types'
 import { FriendsMobile } from './components/FriendsMobile'
 import { FriendsDesktop } from './components/FriendsDesktop'
 import { useWindowSize } from 'hooks/useWindowSize'
 
 export const Friends: FC = () => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
-	const [viewTypeMobile] = useState<ViewTypeMobile>('friends')
-	const [viewTypeDesktop, setViewTypeDesktop] =
-		useState<ViewTypeDesktop>('chat')
+	const [viewType, setViewType] = useState<ViewType>('chat')
 
-	const onClickSetViewTypeDesktop = (viewType: ViewTypeDesktop) => {
-		setViewTypeDesktop(viewType)
+	const onClickSetViewTypeDesktop = (viewType: ViewType) => {
+		setViewType(viewType)
 	}
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.container}>
 				{isMobile ? (
-					<FriendsMobile viewType={viewTypeMobile} />
+					<FriendsMobile
+						viewType={viewType}
+						setViewType={onClickSetViewTypeDesktop}
+					/>
 				) : (
 					<FriendsDesktop
-						viewType={viewTypeDesktop}
+						viewType={viewType}
 						setViewType={onClickSetViewTypeDesktop}
 					/>
 				)}

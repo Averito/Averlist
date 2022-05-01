@@ -14,8 +14,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch'
 import { MY_URI } from 'variebles'
 
 export const Header: FC = () => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	const dispatch = useAppDispatch()
 	const { randomTitle, isAuth } = useAppSelector(state => state.landing)

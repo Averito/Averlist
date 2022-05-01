@@ -5,13 +5,15 @@ import { userReducer } from './reducers/userReducer'
 import { landingReducer } from './reducers/landingReducer'
 import { optionsReducer } from './reducers/optionsReducer'
 import { usersReducer } from './reducers/usersReducer'
+import { chatReducer } from './reducers/chatReducer'
 
 export const store = configureStore({
 	reducer: {
 		user: userReducer,
 		landing: landingReducer,
 		options: optionsReducer,
-		users: usersReducer
+		users: usersReducer,
+		chat: chatReducer
 	},
 	middleware: getDefaultMiddleware => {
 		return getDefaultMiddleware().concat(reduxThunk)

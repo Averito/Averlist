@@ -8,6 +8,7 @@ import { registrationThunk } from 'store/reducers/landingReducer/landingThunks'
 import { DefaultLayout } from 'layouts/DefaultLayout'
 import { useWindowSize } from 'hooks/useWindowSize'
 import { useAppDispatch } from 'hooks/useAppDispatch'
+import { User } from '../../api/myApi/auth/types'
 
 export const Registration: React.FC = () => {
 	const { height } = useWindowSize()
@@ -16,7 +17,7 @@ export const Registration: React.FC = () => {
 	const dispatch = useAppDispatch()
 
 	const onFinish = (values: any) => {
-		const user = {
+		const user: Omit<User, '_id'> = {
 			login: values.name,
 			email: values.email,
 			password: values.password,

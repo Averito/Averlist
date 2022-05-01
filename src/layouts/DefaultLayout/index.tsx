@@ -10,8 +10,7 @@ interface DefaultLayoutProps {
 }
 
 export const DefaultLayout: FC<DefaultLayoutProps> = ({ children }) => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	return (
 		<div className={styles.wrapper} id='defaultLayout'>

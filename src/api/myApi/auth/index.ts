@@ -5,8 +5,8 @@ import { User, UserProperties, Login, Token } from './types'
 import { MY_API_URI } from 'variebles'
 
 export const auth = {
-	async registration(user: User) {
-		const response = await axios.post<User, AxiosResponse<User>>(
+	async registration(user: Omit<User, '_id'>) {
+		const response = await axios.post<Omit<User, '_id'>, AxiosResponse<User>>(
 			MY_API_URI + '/registration',
 			user
 		)

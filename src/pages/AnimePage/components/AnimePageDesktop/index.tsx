@@ -20,8 +20,7 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 	titleMain,
 	currentStatus
 }) => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { width, isMobile } = useWindowSize()
 
 	return (
 		<div>

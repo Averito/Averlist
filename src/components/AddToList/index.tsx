@@ -15,8 +15,7 @@ interface AddToListProps {
 }
 
 export const AddToList: FC<AddToListProps> = ({ animeName }) => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	const [status, setStatus] = useState<Status>(0)
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
