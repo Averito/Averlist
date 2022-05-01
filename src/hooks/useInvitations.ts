@@ -7,7 +7,7 @@ export const useInvitations = () => {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		let interval = setInterval(() => {
+		const interval = setInterval(() => {
 			dispatch(getMeInvitationsThunk())
 		}, 60000)
 		return () => clearInterval(interval)
