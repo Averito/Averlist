@@ -67,6 +67,7 @@
 .menuContainer {
   width: 100%;
   height: 100%;
+  overflow: hidden auto;
 }
 
 .menuWrapper {
@@ -81,7 +82,6 @@
 
 .menu {
   position: relative;
-  overflow: hidden auto;
   display: flex;
   flex-direction: column;
   align-items: center;

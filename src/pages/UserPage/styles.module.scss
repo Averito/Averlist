@@ -24,6 +24,10 @@
 .profileItem1 {
   width: 100%;
   max-width: 70%;
+
+  @media all and (max-width: 800px) {
+    max-width: unset;
+  }
 }
 
 .profileItem2 {
@@ -79,4 +83,16 @@
   word-break: break-all;
   white-space: break-spaces;
   transition: color 0.3s ease;
+}
+
+
+.friendList {
+  max-height: 200px;
+  overflow: hidden auto;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }

@@ -27,3 +27,27 @@ export const forgotPasswordThunk = createAsyncThunk(
 	'user/forgotPasswordComplete',
 	myApi.auth.forgotPassword
 )
+export const createInvitationThunk = createAsyncThunk(
+	'user/createInvitation',
+	myApi.invitation.create
+)
+export const removeInvitationThunk = createAsyncThunk(
+	'user/removeInvitation',
+	myApi.invitation.delete
+)
+export const removeFriendThunk = createAsyncThunk(
+	'user/removeFriend',
+	myApi.user.removeFriend
+)
+export const acceptInvitationThunk = createAsyncThunk(
+	'user/acceptInvitation',
+	myApi.invitation.accept
+)
+export const declineInvitationThunk = createAsyncThunk(
+	'user/declineInvitation',
+	myApi.invitation.decline
+)
+export const getMeInvitationsThunk = createAsyncThunk(
+	'user/getMeInvitations',
+	myApi.invitation.getAll
+)

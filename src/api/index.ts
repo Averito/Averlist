@@ -3,6 +3,7 @@ import { MY_API_URI } from 'variebles'
 import { auth } from './myApi/auth'
 import { anime } from './myApi/anime'
 import { user } from './myApi/user'
+import { invitation } from './myApi/invitation'
 import { anilibria } from './anilibriaApi'
 
 export const api = {
@@ -54,6 +55,7 @@ export const api = {
 export const myApi = {
 	auth,
 	anime,
-	user
+	user,
+	invitation
 }
 export const anilibriaApi = anilibria

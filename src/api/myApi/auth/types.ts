@@ -1,5 +1,5 @@
 import { Anime } from '../anime/types'
-import { InvitationResponse } from '../invitation/types'
+import { InvitationWithUsers } from '../invitation/types'
 
 export interface User {
 	_id?: string
@@ -10,8 +10,8 @@ export interface User {
 	avatar?: string
 	animeList?: Anime[]
 	friendList?: User[]
-	meInvitations?: InvitationResponse[]
-	myInvitations?: InvitationResponse[]
+	meInvitations?: InvitationWithUsers[]
+	myInvitations?: InvitationWithUsers[]
 }
 
 export interface UserSafity {
@@ -21,7 +21,8 @@ export interface UserSafity {
 	password?: string
 	description: string
 	avatar: string
-	animeList?: Anime[]
+	animeList: Anime[]
+	friendList: UserSafity[]
 }
 
 export type UserProperties = Partial<User>

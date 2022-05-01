@@ -9,12 +9,18 @@ import {
 	removeAnimeThunk,
 	setAvatarThunk,
 	editUserThunk,
-	forgotPasswordThunk
+	forgotPasswordThunk,
+	createInvitationThunk,
+	removeInvitationThunk,
+	removeFriendThunk,
+	acceptInvitationThunk,
+	declineInvitationThunk,
+	getMeInvitationsThunk
 } from './userThunks'
 import { errorMessage } from 'helpers/messages'
 import { errorToast, successToast } from 'helpers/toast'
 import { User } from 'api/myApi/auth/types'
-import { InvitationResponse } from '../../../api/myApi/invitation/types'
+import { NormalInvitation } from 'api/myApi/invitation/types'
 
 const userSlice = createSlice({
 	name: 'user',
@@ -26,8 +32,8 @@ const userSlice = createSlice({
 		description: '' as string,
 		avatar: '' as string,
 		friendList: [] as User[],
-		meInvitations: [] as InvitationResponse[],
-		myInvitations: [] as InvitationResponse[],
+		meInvitations: [] as NormalInvitation[],
+		myInvitations: [] as NormalInvitation[],
 		animeList: [] as Anime[],
 		animeListSort: [] as Anime[],
 		loading: false,
@@ -67,13 +73,28 @@ const userSlice = createSlice({
 			})
 			.addCase(getUserThunk.fulfilled, (state, { payload }) => {
 				const [user] = payload
+
+				const meInvitations =
+					user?.meInvitations?.map(invitation => ({
+						...invitation,
+						senderUser: invitation.senderUser[0],
+						invitedUser: invitation.invitedUser[0]
+					})) || []
+				const myInvitations =
+					user?.myInvitations?.map(invitation => ({
+						...invitation,
+						senderUser: invitation.senderUser[0],
+						invitedUser: invitation.invitedUser[0]
+					})) || []
+
 				state.login = user.login as string
 				state.id = user._id as string
+				state.email = user.email
 				state.description = user?.description || ''
 				state.avatar = user?.avatar || ''
 				state.friendList = user?.friendList || []
-				state.meInvitations = user?.meInvitations || []
-				state.myInvitations = user?.myInvitations || []
+				state.meInvitations = meInvitations
+				state.myInvitations = myInvitations
 			})
 			.addCase(createAnimeThunk.fulfilled, (state, { payload }) => {
 				state.animeList = [...state.animeList, payload]
@@ -130,6 +151,48 @@ const userSlice = createSlice({
 			})
 			.addCase(forgotPasswordThunk.rejected, () => {
 				errorToast('Проверьте введённый пароль')
+			})
+			.addCase(createInvitationThunk.fulfilled, (state, { payload }) => {
+				successToast('Заявка в друзья отправлена!')
+				state.myInvitations = [...state.myInvitations, payload]
+			})
+			.addCase(removeInvitationThunk.fulfilled, (state, { payload }) => {
+				successToast('Заявка в друзья отменена')
+				state.myInvitations = state.myInvitations.filter(
+					invitation => invitation.invitedUser._id !== payload
+				)
+			})
+			.addCase(removeFriendThunk.fulfilled, (state, { payload }) => {
+				successToast('Пользователь был удалён из друзей')
+				state.friendList = state.friendList.filter(
+					friend => friend._id !== payload.friendId
+				)
+			})
+			.addCase(acceptInvitationThunk.fulfilled, (state, { payload }) => {
+				state.friendList = [...state.friendList, payload.senderUser]
+				state.meInvitations = state.meInvitations.filter(
+					invitation =>
+						!(
+							invitation.invitedUser._id === payload.invitedUser._id &&
+							invitation.senderUser._id === payload.senderUser._id
+						)
+				)
+			})
+			.addCase(declineInvitationThunk.fulfilled, (state, { payload }) => {
+				state.meInvitations = state.meInvitations.filter(
+					invitation => invitation._id !== payload
+				)
+			})
+			.addCase(getMeInvitationsThunk.fulfilled, (state, { payload }) => {
+				const [user] = payload
+				const meInvitations =
+					user?.meInvitations?.map(invitation => ({
+						...invitation,
+						senderUser: invitation.senderUser[0],
+						invitedUser: invitation.invitedUser[0]
+					})) || []
+
+				state.meInvitations = meInvitations
 			})
 	}
 })

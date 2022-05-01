@@ -1,0 +1,27 @@
+.invitation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background-color: var(--user-component-background-color);
+  transition: all 0.5s ease;
+  border-radius: 4px;
+
+  &:hover {
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  border-radius: 50%;
+  margin: 0 0 5px 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-radius: 10%;
+  }
+}

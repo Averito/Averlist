@@ -1,11 +1,14 @@
 import React, { FC } from 'react'
 import { useParams } from 'react-router-dom'
+import { Typography } from 'antd'
 
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { MY_URI } from 'variebles'
 import { Table } from './components/Table'
+import { UserComponent } from 'components/UserComponent'
+import { AddToFriends } from '../../components/AddToFriends'
 
 export const UserPage: FC = () => {
 	const userId = useParams().userId
@@ -30,6 +33,20 @@ export const UserPage: FC = () => {
 							{user?.description || 'Не заполнено'}
 						</p>
 					</div>
+					<div>
+						<p className={styles.title}>Список друзей:</p>
+						{user?.friendList?.length !== 0 ? (
+							<div className={styles.friendList}>
+								{user?.friendList?.map(friend => {
+									return <UserComponent key={friend._id} user={friend} />
+								})}
+							</div>
+						) : (
+							<Typography.Paragraph>
+								У данного человечка нет друзей(
+							</Typography.Paragraph>
+						)}
+					</div>
 				</div>
 				<div className={styles.profileItem2}>
 					<img
@@ -37,6 +54,7 @@ export const UserPage: FC = () => {
 						src={userAvatar}
 						alt='Ава'
 					/>
+					<AddToFriends invitedUserId={user?._id} />
 				</div>
 			</div>
 			<div className={styles.profileAnimeList}>

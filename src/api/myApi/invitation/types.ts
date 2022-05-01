@@ -1,6 +1,13 @@
 import { User } from '../auth/types'
 
-export interface InvitationResponse {
+export interface InvitationWithUsers {
+	_id: string
+	status: boolean
+	senderUser: User[]
+	invitedUser: User[]
+}
+
+export interface NormalInvitation {
 	_id: string
 	status: boolean
 	senderUser: User
@@ -12,4 +19,9 @@ export interface Invitation {
 	status: boolean
 	senderUser: string
 	invitedUser: string
+}
+
+export interface AcceptInvitationResponse {
+	senderUser: User
+	invitedUser: User
 }

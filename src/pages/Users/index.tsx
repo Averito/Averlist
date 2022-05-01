@@ -5,7 +5,7 @@ import styles from './styles.module.scss'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { getAllUsersThunk } from 'store/reducers/usersReducer/usersThunks'
-import { UserComponent } from './components/UserComponent'
+import { UserComponent } from 'components/UserComponent'
 
 export const Users: FC = () => {
 	const pageSize = 15

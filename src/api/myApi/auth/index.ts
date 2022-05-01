@@ -23,7 +23,7 @@ export const auth = {
 		return await api.get<Token>('/auth-check')
 	},
 	async forgotPassword(user: UserProperties) {
-		return await api.post<UserProperties, User>('/forgot-password', user)
+		return await api.post<UserProperties, User>('/restore-password', user)
 	},
 	async getUser() {
 		const user = await api.get<[User]>(`/users/me`)

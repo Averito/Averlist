@@ -26,5 +26,10 @@ export const user = {
 			'/users'
 		)
 		return response
+	},
+	async removeFriend(friendId: string) {
+		return await api.delete<{ myId: string; friendId: string }>(
+			`/users/me/friends/${friendId}`
+		)
 	}
 }

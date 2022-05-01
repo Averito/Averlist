@@ -8,6 +8,7 @@ import { UserSafity } from 'api/myApi/auth/types'
 import { MY_URI } from 'variebles'
 import { useWindowSize } from 'hooks/useWindowSize'
 import { useAppSelector } from 'hooks/useAppSelector'
+import { AddToFriends } from 'components/AddToFriends'
 
 interface UserComponentProps {
 	user: UserSafity
@@ -37,10 +38,11 @@ export const UserComponent: FC<UserComponentProps> = ({ user }) => {
 					{user._id === currentUserId && '(Вы)'}
 				</Link>
 				<Typography.Paragraph style={{ margin: 0 }}>
-					{user.description.length > maxLingth
+					{user?.description?.length > maxLingth
 						? user.description.slice(0, maxLingth) + '...'
 						: user.description}
 				</Typography.Paragraph>
+				<AddToFriends size='small' invitedUserId={user._id} />
 			</div>
 		</div>
 	)
