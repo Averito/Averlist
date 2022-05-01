@@ -56,7 +56,9 @@ export const DialogDisplay: FC = () => {
 			{friendList.length !== 0 && (
 				<div className={styles.header}>
 					<div className={styles.headerAvatarAndLogin}>
-						<img className={styles.avatar} alt='Ава' src={currentAvatar} />
+						<Link to={to}>
+							<img className={styles.avatar} alt='Ава' src={currentAvatar} />
+						</Link>
 						<Link to={to}>{login}</Link>
 					</div>
 					{isMobile && (
