@@ -7,7 +7,7 @@ import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { getMongoDbConfig } from './config/mongo.config'
 import { AnimeModule } from './anime/anime.module'
-import { InvitationModule } from './invitation/invitation.module';
+import { InvitationModule } from './invitation/invitation.module'
 
 @Module({
 	imports: [
