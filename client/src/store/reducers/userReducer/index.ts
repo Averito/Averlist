@@ -21,6 +21,8 @@ import { errorMessage } from 'helpers/messages'
 import { errorToast, successToast } from 'helpers/toast'
 import { User } from 'api/myApi/auth/types'
 import { NormalInvitation } from 'api/myApi/invitation/types'
+import { mapInvitations } from 'utils/mapInvitations'
+import { uniqueFriendList } from 'utils/uniqueFriendList'
 
 const userSlice = createSlice({
 	name: 'user',
@@ -74,18 +76,8 @@ const userSlice = createSlice({
 			.addCase(getUserThunk.fulfilled, (state, { payload }) => {
 				const [user] = payload
 
-				const meInvitations =
-					user?.meInvitations?.map(invitation => ({
-						...invitation,
-						senderUser: invitation.senderUser[0],
-						invitedUser: invitation.invitedUser[0]
-					})) || []
-				const myInvitations =
-					user?.myInvitations?.map(invitation => ({
-						...invitation,
-						senderUser: invitation.senderUser[0],
-						invitedUser: invitation.invitedUser[0]
-					})) || []
+				const meInvitations = mapInvitations(user.meInvitations || [])
+				const myInvitations = mapInvitations(user.myInvitations || [])
 
 				state.login = user.login as string
 				state.id = user._id as string
@@ -169,7 +161,10 @@ const userSlice = createSlice({
 				)
 			})
 			.addCase(acceptInvitationThunk.fulfilled, (state, { payload }) => {
-				state.friendList = [...state.friendList, payload.senderUser]
+				state.friendList = uniqueFriendList([
+					...state.friendList,
+					payload.senderUser
+				])
 				state.meInvitations = state.meInvitations.filter(
 					invitation =>
 						!(
@@ -185,14 +180,12 @@ const userSlice = createSlice({
 			})
 			.addCase(getMeInvitationsThunk.fulfilled, (state, { payload }) => {
 				const [user] = payload
-				const meInvitations =
-					user?.meInvitations?.map(invitation => ({
-						...invitation,
-						senderUser: invitation.senderUser[0],
-						invitedUser: invitation.invitedUser[0]
-					})) || []
+				const meInvitations = mapInvitations(user.meInvitations || [])
+				const myInvitations = mapInvitations(user.myInvitations || [])
 
+				state.friendList = user.friendList
 				state.meInvitations = meInvitations
+				state.myInvitations = myInvitations
 			})
 	}
 })

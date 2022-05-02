@@ -1,0 +1,32 @@
+version: '3.3'
+
+services:
+  dev:
+    container_name: nestjs_api_dev
+    image: nestjs-api-dev:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    ports:
+      - 8080:8080
+      - 3001:9229
+    networks:
+      - nesjs-network
+    restart: unless-stopped
+  prod:
+    container_name: nestjs_api_prod
+    image: nestjs-api-prod:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - 8080:8080
+      - 9229:9229
+    networks:
+      - nesjs-network
+    restart: unless-stopped
+networks:
+  nesjs-network:
+    driver: bridge
