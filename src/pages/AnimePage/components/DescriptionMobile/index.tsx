@@ -18,8 +18,7 @@ export const DescriptionMobile: FC<DescriptionMobileProps> = ({
 	titleMain,
 	status
 }) => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	return (
 		<div className={styles.descriptionMobileWrapper}>

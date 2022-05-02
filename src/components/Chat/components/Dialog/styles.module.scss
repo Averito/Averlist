@@ -1,0 +1,32 @@
+.user {
+  display: flex;
+  border-radius: 8px;
+  background-color: var(--user-component-background-color);
+  padding: 7px;
+  margin: 5px 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.avatar {
+  margin: 0 8px 0 0;
+  cursor: pointer;
+  min-width: 50px;
+  width: 50px;
+  min-height: 50px;
+  height: 50px;
+  transition: all 0.5s ease;
+  border-radius: 50%;
+
+  &:hover {
+    border-radius: 10%;
+  }
+}
+
+.login {
+  font-weight: 600;
+}

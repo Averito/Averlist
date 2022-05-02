@@ -1,33 +1,20 @@
 import { Anime } from '../anime/types'
+import { InvitationWithUsers } from '../invitation/types'
 
 export interface User {
-	_id?: string
-	login?: string
-	email: string
-	password: string
-	description?: string
-	avatar?: string
-	animeList?: Anime[]
-}
-
-export interface UserSafity {
 	_id: string
 	login: string
-	email?: string
-	password?: string
+	email: string
+	password: string
 	description: string
 	avatar: string
 	animeList?: Anime[]
+	friendList: User[]
+	meInvitations?: InvitationWithUsers[]
+	myInvitations?: InvitationWithUsers[]
 }
 
-export interface UserProperties {
-	_id?: string
-	login?: string
-	email?: string
-	password?: string
-	description?: string
-	avatar?: string
-}
+export type UserProperties = Partial<User>
 
 export interface Login {
 	access_token: string

@@ -1,4 +1,4 @@
-import { User, UserSafity } from '../auth/types'
+import { User } from '../auth/types'
 import { api } from 'api'
 import { LoginAndDescription } from 'types'
 
@@ -22,9 +22,12 @@ export const user = {
 		return response
 	},
 	async getAll() {
-		const response = await api.get<{ count: number; users: UserSafity[] }>(
-			'/users'
-		)
+		const response = await api.get<{ count: number; users: User[] }>('/users')
 		return response
+	},
+	async removeFriend(friendId: string) {
+		return await api.delete<{ myId: string; friendId: string }>(
+			`/users/me/friends/${friendId}`
+		)
 	}
 }

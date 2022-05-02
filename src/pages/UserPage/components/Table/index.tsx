@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import { Anime, Status } from 'api/myApi/anime/types'
-import { UserSafity } from 'api/myApi/auth/types'
+import { User } from 'api/myApi/auth/types'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { selectStatus, selectStatusColor } from 'helpers/selectStatus'
@@ -13,7 +13,7 @@ import { SelectStatusIcon } from 'components/SelectStatusIcon'
 const { useBreakpoint } = Grid
 
 interface TableProps {
-	user: UserSafity
+	user: User
 }
 
 export const Table: FC<TableProps> = ({ user }) => {

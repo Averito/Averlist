@@ -38,11 +38,17 @@ export interface ThemeVariables {
 	'antd-accordion-border-color': string
 	'antd-description-border-color': string
 	'antd-description-label-background-color': string
+	'antd-icon-color': string
+	'antd-cofirmpopover-background-color': string
 	'header-background-color': string
 	'hamburger-background-color': string
 	'hamburger-button-color': string
 	'main-background-color': string
 	'anilibria-loader-color': string
 	'user-component-background-color': string
+	'dialog-component-background-color': string
+	'chat-background-color': string
+	'body-scrollbar-thumb-color': string
 	'text-color': string
+	'friends-footer-background-color': string
 }

@@ -12,8 +12,7 @@ import { anilibriaApi } from 'api'
 import { Title } from 'api/anilibriaApi/types'
 
 export const AnimePage: FC = () => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	const titleName = decodeAnimeName(useParams().titleName as string)
 

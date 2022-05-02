@@ -9,8 +9,7 @@ import { setViewType } from 'store/reducers/optionsReducer'
 import { useWindowSize } from 'hooks/useWindowSize'
 
 export const Menu: FC = () => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	const dispatch = useAppDispatch()
 

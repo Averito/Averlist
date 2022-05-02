@@ -1,5 +1,5 @@
 import { Typography } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import classnames from 'classnames'
 
 import styles from './styles.module.scss'
@@ -22,24 +22,28 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 }) => {
 	const { width } = useWindowSize()
 
-	const randomHeaderBackground = () => {
-		const color = [
-			'#cc0000',
-			'#ff00ff',
-			'#660066',
-			'#3333ff',
-			'#00ffcc',
-			'#00ff00',
-			'#99cc00',
-			'#ff9900',
-			'#ff9999',
-			'#6600cc'
-		]
-		const randomIdx = Math.floor(Math.random() * 10)
-		return color[randomIdx]
-	}
+	const [background, setBackground] = useState<string>('#cc0000')
 
-	const background = randomHeaderBackground()
+	useEffect(() => {
+		const randomHeaderBackground = () => {
+			const color = [
+				'#cc0000',
+				'#ff00ff',
+				'#660066',
+				'#3333ff',
+				'#00ffcc',
+				'#00ff00',
+				'#99cc00',
+				'#ff9900',
+				'#ff9999',
+				'#6600cc'
+			]
+			const randomIdx = Math.floor(Math.random() * 10)
+			return color[randomIdx]
+		}
+		setBackground(randomHeaderBackground())
+	}, [])
+
 	const heightAdaptive =
 		width <= 612 ? (width <= 440 ? (width <= 346 ? 120 : 150) : 200) : 300
 

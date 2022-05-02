@@ -41,11 +41,17 @@ export const lightTheme: ThemeVariables = {
 	'antd-accordion-border-color': '#d9d9d9',
 	'antd-description-border-color': '#fff',
 	'antd-description-label-background-color': '#fff',
+	'antd-icon-color': '#000',
+	'antd-cofirmpopover-background-color': '#fff',
 	'header-background-color': '#001529',
 	'hamburger-background-color': '#fff',
 	'hamburger-button-color': '#000',
 	'main-background-color': '#f0f2f5',
 	'anilibria-loader-color': '#535353',
 	'user-component-background-color': '#fff',
-	'text-color': '#000'
+	'dialog-component-background-color': '#fff',
+	'chat-background-color': '#fff',
+	'body-scrollbar-thumb-color': '#001529',
+	'text-color': '#000',
+	'friends-footer-background-color': '#001529'
 }

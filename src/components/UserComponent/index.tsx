@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
-import { UserSafity } from 'api/myApi/auth/types'
+import { User } from 'api/myApi/auth/types'
 import { MY_URI } from 'variebles'
 import { useWindowSize } from 'hooks/useWindowSize'
 import { useAppSelector } from 'hooks/useAppSelector'
+import { AddToFriends } from 'components/AddToFriends'
 
 interface UserComponentProps {
-	user: UserSafity
+	user: User
 }
 
 export const UserComponent: FC<UserComponentProps> = ({ user }) => {
-	const { width } = useWindowSize()
-	const isMobile = width <= 768
+	const { isMobile } = useWindowSize()
 
 	const maxLingth = isMobile ? 30 : 100
 	const userAvatar = user.avatar ? MY_URI + user.avatar : defaultAvatar
@@ -37,10 +37,11 @@ export const UserComponent: FC<UserComponentProps> = ({ user }) => {
 					{user._id === currentUserId && '(Вы)'}
 				</Link>
 				<Typography.Paragraph style={{ margin: 0 }}>
-					{user.description.length > maxLingth
+					{user?.description?.length > maxLingth
 						? user.description.slice(0, maxLingth) + '...'
 						: user.description}
 				</Typography.Paragraph>
+				<AddToFriends size='small' invitedUserId={user._id} />
 			</div>
 		</div>
 	)

@@ -13,5 +13,5 @@ export const useWindowSize = () => {
 		return () => window.removeEventListener('resize', setProps)
 	}, [])
 
-	return { width, height }
+	return { width, height, isMobile: width <= 768 }
 }

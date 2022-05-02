@@ -8,6 +8,7 @@ import { AnimeLibrary } from 'pages/AnimeLibrary'
 import { Options } from 'pages/Options'
 import { Users } from 'pages/Users'
 import { UserPage } from 'pages/UserPage'
+import { Friends } from 'pages/Friends'
 
 export const routes: Routes = [
 	{
@@ -72,5 +73,12 @@ export const routes: Routes = [
 		route: 'users/:userId',
 		type: 'children',
 		component: UserPage
+	},
+	{
+		name: 'Друзья',
+		key: 'friends',
+		route: '/friends',
+		type: 'another',
+		component: Friends
 	}
 ]
