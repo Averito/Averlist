@@ -33,7 +33,8 @@ export class NewsService {
 		const user = await this.userModel.findById(id)
 		if (user.role !== 'admin') throw new ForbiddenException(NOT_ALLOWED)
 
-		return await this.newsModel.findByIdAndUpdate(newsId, news)
+		await this.newsModel.findByIdAndUpdate(newsId, news)
+		return await this.newsModel.findById(newsId)
 	}
 	async removeNews(id: string, newsId: string) {
 		const user = await this.userModel.findById(id)

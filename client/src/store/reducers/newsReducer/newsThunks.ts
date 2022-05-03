@@ -8,7 +8,7 @@ export const createNewsThunk = createAsyncThunk(
 	myApi.news.create
 )
 export const editNewsThunk = createAsyncThunk('news/edit', myApi.news.edit)
-export const deleteNewsThunk = createAsyncThunk(
+export const removeNewsThunk = createAsyncThunk(
 	'news/delete',
 	myApi.news.delete
 )

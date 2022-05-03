@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { News } from 'api/myApi/news/types'
 import {
 	createNewsThunk,
-	deleteNewsThunk,
+	removeNewsThunk,
 	editNewsThunk,
 	getNewsThunk
 } from './newsThunks'
@@ -11,13 +11,18 @@ import {
 const newsSlice = createSlice({
 	name: 'news',
 	initialState: {
-		news: [] as News[]
+		news: [] as News[],
+		loading: false
 	},
 	reducers: {},
 	extraReducers: builder => {
 		builder
 			.addCase(getNewsThunk.fulfilled, (state, { payload }) => {
+				state.loading = false
 				state.news = payload
+			})
+			.addCase(getNewsThunk.pending, state => {
+				state.loading = true
 			})
 			.addCase(createNewsThunk.fulfilled, (state, { payload }) => {
 				state.news = [...state.news, payload]
@@ -26,7 +31,7 @@ const newsSlice = createSlice({
 				const newsIndex = state.news.findIndex(news => news._id === payload._id)
 				state.news[newsIndex] = payload
 			})
-			.addCase(deleteNewsThunk.fulfilled, (state, { payload }) => {
+			.addCase(removeNewsThunk.fulfilled, (state, { payload }) => {
 				state.news = state.news.filter(news => news._id !== payload)
 			})
 	}

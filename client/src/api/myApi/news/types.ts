@@ -4,3 +4,5 @@ export interface News {
 	description: string
 	lastUpdate: number
 }
+
+export type EditType = { newsId: string; news: Omit<News, '_id'> }
