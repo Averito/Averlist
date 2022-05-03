@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { User } from 'api/myApi/auth/types'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import { useWindowSize } from 'hooks/useWindowSize'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { AddToFriends } from 'components/AddToFriends'
@@ -18,7 +18,7 @@ export const UserComponent: FC<UserComponentProps> = ({ user }) => {
 	const { isMobile } = useWindowSize()
 
 	const maxLingth = isMobile ? 30 : 100
-	const userAvatar = user.avatar ? MY_URI + user.avatar : defaultAvatar
+	const userAvatar = user.avatar ? MY_AVATAR_URI + user.avatar : defaultAvatar
 
 	const to = `/users/${user._id}`
 

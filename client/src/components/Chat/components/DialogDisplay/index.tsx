@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import {
 	setChatViewType,
 	setCurrentDialogMember
@@ -42,7 +42,7 @@ export const DialogDisplay: FC = () => {
 
 	const to = `/users/${_id}`
 
-	const currentAvatar = avatar ? MY_URI + avatar : defaultAvatar
+	const currentAvatar = avatar ? MY_AVATAR_URI + avatar : defaultAvatar
 
 	return (
 		<div

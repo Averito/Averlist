@@ -19,7 +19,7 @@ import {
 } from './userThunks'
 import { errorMessage } from 'helpers/messages'
 import { errorToast, successToast } from 'helpers/toast'
-import { User } from 'api/myApi/auth/types'
+import { Role, User } from 'api/myApi/auth/types'
 import { NormalInvitation } from 'api/myApi/invitation/types'
 import { mapInvitations } from 'utils/mapInvitations'
 import { uniqueFriendList } from 'utils/uniqueFriendList'
@@ -34,6 +34,7 @@ const userSlice = createSlice({
 		description: '' as string,
 		avatar: '' as string,
 		friendList: [] as User[],
+		role: 'user' as Role,
 		meInvitations: [] as NormalInvitation[],
 		myInvitations: [] as NormalInvitation[],
 		animeList: [] as Anime[],
@@ -85,6 +86,7 @@ const userSlice = createSlice({
 				state.description = user?.description || ''
 				state.avatar = user?.avatar || ''
 				state.friendList = user?.friendList || []
+				state.role = user.role
 				state.meInvitations = meInvitations
 				state.myInvitations = myInvitations
 			})

@@ -43,6 +43,7 @@ export const darkTheme: ThemeVariables = {
 	'antd-description-label-background-color': '#333333',
 	'antd-icon-color': '#fff',
 	'antd-cofirmpopover-background-color': '#303030',
+	'antd-upload-drag-background-color': '#303030',
 	'header-background-color': '#202020',
 	'hamburger-background-color': '#232323',
 	'hamburger-button-color': '#fff',
@@ -53,5 +54,7 @@ export const darkTheme: ThemeVariables = {
 	'chat-background-color': '#232323',
 	'body-scrollbar-thumb-color': '#202020',
 	'text-color': '#fff',
-	'friends-footer-background-color': '#202020'
+	'friends-footer-background-color': '#202020',
+	'news-block-background-color': '#232323',
+	'news-form-background-color': '#232323'
 }

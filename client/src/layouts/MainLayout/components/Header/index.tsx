@@ -11,7 +11,7 @@ import { useAppSelector } from 'hooks/useAppSelector'
 import { logout, setRandomTitle } from 'store/reducers/landingReducer'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
 import { useAppDispatch } from 'hooks/useAppDispatch'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 
 export const Header: FC = () => {
 	const { isMobile } = useWindowSize()
@@ -43,19 +43,21 @@ export const Header: FC = () => {
 		</Menu>
 	)
 
-	const userAvatar = avatar ? `${MY_URI}${avatar}` : defaultAvatar
+	const userAvatar = avatar ? `${MY_AVATAR_URI}${avatar}` : defaultAvatar
 	const randomAnimeName = encodeAnimeName(randomTitle?.names?.ru)
 
 	return (
 		<header className={styles.header}>
 			<div className={styles.headerItem1}>
-				<Typography.Title
-					className='whiteColor'
-					level={4}
-					style={{ color: 'white', margin: 0 }}
-				>
-					Averlist
-				</Typography.Title>
+				<Link to='/'>
+					<Typography.Title
+						className='whiteColor'
+						level={4}
+						style={{ color: 'white', margin: 0 }}
+					>
+						Averlist
+					</Typography.Title>
+				</Link>
 			</div>
 			{isMobile ? (
 				<Hamburger />

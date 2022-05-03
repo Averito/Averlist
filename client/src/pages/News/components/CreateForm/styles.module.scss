@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  background: var(--news-block-background-color);
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.picture {
+  max-height: 250px;
+  height: 100%;
+  width: 100%;
+}
+
+.icon {
+  font-size: 50px;
+  color: var(--text-color);
+}

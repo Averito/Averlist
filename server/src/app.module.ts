@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module'
 import { getMongoDbConfig } from './config/mongo.config'
 import { AnimeModule } from './anime/anime.module'
 import { InvitationModule } from './invitation/invitation.module'
+import { NewsModule } from './news/news.module'
 
 @Module({
 	imports: [
@@ -24,7 +25,8 @@ import { InvitationModule } from './invitation/invitation.module'
 		InvitationModule,
 		AuthModule,
 		AnimeModule,
-		InvitationModule
+		InvitationModule,
+		NewsModule
 	]
 })
 export class AppModule {}

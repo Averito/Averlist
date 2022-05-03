@@ -38,7 +38,8 @@ export class UserService {
 					animeList: 1,
 					description: 1,
 					avatar: 1,
-					friendList: 1
+					friendList: 1,
+					role: 1
 				}
 			}
 		])
@@ -80,6 +81,7 @@ export class UserService {
 					animeList: 1,
 					description: 1,
 					avatar: 1,
+					role: 1,
 					friendList: 1
 				}
 			}
@@ -212,6 +214,7 @@ export class UserService {
 					animeList: 1,
 					description: 1,
 					avatar: 1,
+					role: 1,
 					friendList: 1,
 					meInvitations: 1,
 					myInvitations: 1

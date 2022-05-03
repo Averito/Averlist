@@ -80,7 +80,8 @@ export class AuthService {
 			email,
 			password: hash,
 			description,
-			avatar
+			avatar,
+			role: 'user'
 		})
 		return newUser.save()
 	}

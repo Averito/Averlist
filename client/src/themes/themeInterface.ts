@@ -40,6 +40,7 @@ export interface ThemeVariables {
 	'antd-description-label-background-color': string
 	'antd-icon-color': string
 	'antd-cofirmpopover-background-color': string
+	'antd-upload-drag-background-color': string
 	'header-background-color': string
 	'hamburger-background-color': string
 	'hamburger-button-color': string
@@ -51,4 +52,6 @@ export interface ThemeVariables {
 	'body-scrollbar-thumb-color': string
 	'text-color': string
 	'friends-footer-background-color': string
+	'news-block-background-color': string
+	'news-form-background-color': string
 }
