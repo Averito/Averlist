@@ -10,9 +10,12 @@ export interface User {
 	avatar: string
 	animeList?: Anime[]
 	friendList: User[]
+	role: Role
 	meInvitations?: InvitationWithUsers[]
 	myInvitations?: InvitationWithUsers[]
 }
+
+export type Role = 'user' | 'admin'
 
 export type UserProperties = Partial<User>
 

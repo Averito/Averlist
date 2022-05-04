@@ -4,7 +4,7 @@ import { Typography } from 'antd'
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { User } from 'api/myApi/auth/types'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
 	setChatViewType,
@@ -30,7 +30,7 @@ export const Dialog: FC<DialogProps> = ({ user }) => {
 		dispatch(setCurrentDialogMember(user))
 	}
 
-	const userAvatar = user.avatar ? MY_URI + user.avatar : defaultAvatar
+	const userAvatar = user.avatar ? MY_AVATAR_URI + user.avatar : defaultAvatar
 
 	return (
 		<div className={styles.user} onClick={onClickDialog}>

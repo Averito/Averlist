@@ -43,6 +43,7 @@ export const lightTheme: ThemeVariables = {
 	'antd-description-label-background-color': '#fff',
 	'antd-icon-color': '#000',
 	'antd-cofirmpopover-background-color': '#fff',
+	'antd-upload-drag-background-color': '#fafafa',
 	'header-background-color': '#001529',
 	'hamburger-background-color': '#fff',
 	'hamburger-button-color': '#000',
@@ -53,5 +54,7 @@ export const lightTheme: ThemeVariables = {
 	'chat-background-color': '#fff',
 	'body-scrollbar-thumb-color': '#001529',
 	'text-color': '#000',
-	'friends-footer-background-color': '#001529'
+	'friends-footer-background-color': '#001529',
+	'news-block-background-color': '#fff',
+	'news-form-background-color': '#fff'
 }

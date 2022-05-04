@@ -23,7 +23,8 @@ export const Registration: React.FC = () => {
 			password: values.password,
 			description: '',
 			avatar: '',
-			friendList: []
+			friendList: [],
+			role: 'user'
 		}
 		dispatch(registrationThunk(user)).then(response => {
 			if (response.payload) {

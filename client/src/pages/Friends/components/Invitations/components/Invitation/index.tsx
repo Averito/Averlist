@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import { NormalInvitation } from 'api/myApi/invitation/types'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
@@ -26,7 +26,7 @@ export const Invitation: FC<InvitationProps> = ({ invitation, type }) => {
 
 	const to = `/users/${_id}`
 
-	const userAvatar = avatar ? MY_URI + avatar : defaultAvatar
+	const userAvatar = avatar ? MY_AVATAR_URI + avatar : defaultAvatar
 
 	const onClickAcceptInvitation = () => {
 		dispatch(acceptInvitationThunk(invitation._id))

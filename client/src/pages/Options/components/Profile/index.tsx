@@ -6,7 +6,7 @@ import { UploadOutlined } from '@ant-design/icons'
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { setAvatarThunk } from 'store/reducers/userReducer/userThunks'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { ProfileForm } from './components/ProfileForm'
@@ -21,7 +21,7 @@ export const Profile: FC = () => {
 		dispatch(setAvatarThunk(avatar as File))
 	}
 
-	const currentAvatar = avatar ? `${MY_URI}${avatar}` : defaultAvatar
+	const currentAvatar = avatar ? `${MY_AVATAR_URI}${avatar}` : defaultAvatar
 	return (
 		<div className={styles.profile}>
 			<div className={styles.profileItem1}>

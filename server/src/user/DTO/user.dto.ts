@@ -36,4 +36,7 @@ export class UserDto {
 	})
 	@IsArray()
 	friendList?: string[]
+
+	@ApiProperty()
+	role?: 'user' | 'admin'
 }

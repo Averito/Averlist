@@ -5,7 +5,7 @@ import { Typography } from 'antd'
 import styles from './styles.module.scss'
 import defaultAvatar from 'assets/icons/defaultAvatar.png'
 import { useAppSelector } from 'hooks/useAppSelector'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 import { Table } from './components/Table'
 import { UserComponent } from 'components/UserComponent'
 import { AddToFriends } from '../../components/AddToFriends'
@@ -17,7 +17,7 @@ export const UserPage: FC = () => {
 		state => state.users.users.filter(user => user._id === userId)[0]
 	)
 
-	const userAvatar = user?.avatar ? MY_URI + user?.avatar : defaultAvatar
+	const userAvatar = user?.avatar ? MY_AVATAR_URI + user?.avatar : defaultAvatar
 
 	return (
 		<div className={styles.profileWrapper}>

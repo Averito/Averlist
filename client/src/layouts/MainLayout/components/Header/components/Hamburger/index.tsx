@@ -11,7 +11,7 @@ import { useAppSelector } from 'hooks/useAppSelector'
 import { logout, setRandomTitle } from 'store/reducers/landingReducer'
 import { encodeAnimeName } from 'helpers/encodeAnimeName'
 import { useAppDispatch } from 'hooks/useAppDispatch'
-import { MY_URI } from 'variebles'
+import { MY_AVATAR_URI } from 'variebles'
 
 export const Hamburger: FC = () => {
 	const navigate = useNavigate()
@@ -36,7 +36,7 @@ export const Hamburger: FC = () => {
 		setOpened()
 	}
 
-	const userAvatar = avatar ? `${MY_URI}${avatar}` : defaultAvatar
+	const userAvatar = avatar ? `${MY_AVATAR_URI}${avatar}` : defaultAvatar
 	const randomAnimeName = encodeAnimeName(randomTitle?.names?.ru)
 
 	const closeButton = (

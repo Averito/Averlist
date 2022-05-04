@@ -27,6 +27,9 @@ export class User {
 		unique: false
 	})
 	friendList: string[]
+
+	@Prop({ type: String, required: true, unique: false })
+	role: 'user' | 'admin'
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

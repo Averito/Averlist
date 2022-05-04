@@ -85,7 +85,7 @@ export const AnimeList: FC = () => {
 
 	return (
 		<div className={styles.animePageStyled}>
-			<h2>Создание Аниме</h2>
+			<h2>Добавление в список</h2>
 			<form action='#' method='POST' onSubmit={prevent}>
 				<AutoComplete
 					style={{ width: '100%', marginBottom: '10px' }}

@@ -9,6 +9,7 @@ import { Options } from 'pages/Options'
 import { Users } from 'pages/Users'
 import { UserPage } from 'pages/UserPage'
 import { Friends } from 'pages/Friends'
+import { News } from 'pages/News'
 
 export const routes: Routes = [
 	{
@@ -38,6 +39,13 @@ export const routes: Routes = [
 		route: '/options',
 		type: 'options',
 		component: Options
+	},
+	{
+		key: 'news',
+		name: 'Новости',
+		route: '/news',
+		type: 'another',
+		component: News
 	},
 	{
 		key: 'animelist',
