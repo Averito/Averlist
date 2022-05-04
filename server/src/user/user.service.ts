@@ -14,7 +14,8 @@ import { UserEntity } from './user.entity'
 export class UserService {
 	constructor(
 		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-		@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
+		@InjectRepository(UserEntity)
+		private readonly userRepository: Repository<UserEntity>
 	) {}
 
 	public async getAllUsers() {

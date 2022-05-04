@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	Param,
 	Post,
@@ -25,12 +24,6 @@ export class AnimeController {
 	@UseGuards(JwtAuthGuard)
 	getAllAnime() {
 		return this.animeService.getAllAnime()
-	}
-
-	@Get(':id')
-	@UseGuards(JwtAuthGuard)
-	getAnimeByUserId(@Param() params) {
-		return this.animeService.getAnimeByUserId(params.id)
 	}
 
 	@Post()

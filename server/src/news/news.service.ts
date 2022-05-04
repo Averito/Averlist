@@ -15,7 +15,8 @@ export class NewsService {
 	constructor(
 		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
 		@InjectModel(News.name) private readonly newsModel: Model<NewsDocument>,
-		@InjectRepository(NewsEntity) private readonly newsRepository: Repository<NewsEntity>
+		@InjectRepository(NewsEntity)
+		private readonly newsRepository: Repository<NewsEntity>
 	) {}
 
 	async getNews() {

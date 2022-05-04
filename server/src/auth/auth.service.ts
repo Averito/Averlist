@@ -25,7 +25,8 @@ import { UserEntity } from '../user/user.entity'
 export class AuthService {
 	constructor(
 		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-		@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+		@InjectRepository(UserEntity)
+		private readonly userRepository: Repository<UserEntity>,
 		private readonly JwtService: JwtService,
 		private readonly userService: UserService
 	) {}
