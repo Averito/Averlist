@@ -35,7 +35,7 @@ export class NewsController {
 	}
 
 	@Post()
-	@UseGuards(JwtAuthGuard)
+	//@UseGuards(JwtAuthGuard)
 	@UseInterceptors(
 		FileInterceptor('picture', {
 			storage: diskStorage({

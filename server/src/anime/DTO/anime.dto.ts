@@ -17,6 +17,10 @@ export class AnimeDto {
 	@IsString()
 	name: string
 
+	@ApiProperty()
+	@IsNotEmpty()
+	userId: number
+
 	@ApiProperty({
 		description: 'Статус определяющий состояние аниме в списке'
 	})

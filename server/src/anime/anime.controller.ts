@@ -45,17 +45,4 @@ export class AnimeController {
 	editStatusAnime(@Param() params, @Body() anime: AnimeDto) {
 		return this.animeService.editStatusAnime(params.id, anime)
 	}
-
-	@Delete()
-	@UseGuards(JwtAuthGuard)
-	deleteAllAnime() {
-		return this.animeService.deleteAllAnime()
-	}
-
-	@Delete(':id')
-	@UseGuards(JwtAuthGuard)
-	@UsePipes(new ValidationPipe({ transform: true }))
-	deleteAnimeById(@Param() params) {
-		return this.animeService.deleteAnimeById(params.id)
-	}
 }

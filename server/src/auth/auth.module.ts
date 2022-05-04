@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'
@@ -11,6 +12,7 @@ import { UserService } from '../user/user.service'
 import { getJWTConfig } from '../config/jwt.config'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { UserModule } from '../user/user.module'
+import { UserEntity } from '../user/user.entity'
 
 @Module({
 	imports: [
@@ -21,6 +23,7 @@ import { UserModule } from '../user/user.module'
 			inject: [ConfigService],
 			useFactory: getJWTConfig
 		}),
+		TypeOrmModule.forFeature([UserEntity]),
 		PassportModule,
 		UserModule,
 		PassportModule.register({ defaultStrategy: 'jwt' })

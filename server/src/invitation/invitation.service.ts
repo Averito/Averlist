@@ -20,6 +20,7 @@ export class InvitationService {
 	) {}
 
 	public async sendInvitation(meId: string, foreignId: string) {
+		// todo: PostgreSQL
 		const guardInvite = await this.invitationModel.findOne({
 			invitedUser: foreignId,
 			senderUser: meId
@@ -48,6 +49,7 @@ export class InvitationService {
 		return savedInvitation
 	}
 	public async removeInvitation(meId: string, foreignId: string) {
+		// todo: PostgreSQL
 		const inviteForRemove = await this.invitationModel.findOne({
 			invitedUser: foreignId,
 			senderUser: meId
@@ -63,6 +65,7 @@ export class InvitationService {
 		})
 	}
 	public async acceptInvitation(invitationId: string) {
+		// todo: PostgreSQL
 		const currentInvitation = await this.invitationModel.findById(invitationId)
 
 		if (!currentInvitation) {
@@ -97,6 +100,7 @@ export class InvitationService {
 		}
 	}
 	public async declineInvitation(invitationId: string) {
+		// todo: PostgreSQL
 		return await this.invitationModel.findByIdAndDelete(invitationId)
 	}
 }

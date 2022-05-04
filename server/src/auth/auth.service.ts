@@ -1,4 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import * as bcrypt from 'bcrypt'
@@ -17,22 +19,23 @@ import {
 	NOT_FOUND_USER_ON_EMAIL_ERROR,
 	USER_FOUND_ERROR
 } from './auth.constants'
+import { UserEntity } from '../user/user.entity'
 
 @Injectable()
 export class AuthService {
 	constructor(
 		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+		@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
 		private readonly JwtService: JwtService,
 		private readonly userService: UserService
 	) {}
 
-	public async authUser(user: UserDocument) {
-		const { _id: id, login, email, password, description, avatar } = user
-		const dataForToken = {
+	public async authUser(user: UserEntity) {
+		const { id, login, email, description, avatar } = user
+		const dataForToken: any = {
 			id,
 			login,
 			email,
-			password,
 			description,
 			avatar
 		}
@@ -42,7 +45,7 @@ export class AuthService {
 		return { access_token, userId: id }
 	}
 	public async validateUser(user: UserDto) {
-		const hasUser = await this.userModel.findOne({ email: user.email })
+		const hasUser = await this.userRepository.findOneBy({ email: user.email })
 
 		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ERROR)
 
@@ -56,6 +59,7 @@ export class AuthService {
 		return hasUser
 	}
 	public async checkAuth(token: string) {
+		// todo: PostgreSQL
 		const valid = this.JwtService.verify(token, {
 			secret: process.env.JWT_KEY
 		})
@@ -71,21 +75,22 @@ export class AuthService {
 	public async registrationUser(user: UserDto) {
 		const { login, password, email, description, avatar } = user
 		const hash = await this.hashPassword(password, 10)
-		const hasUser = await this.userModel.findOne({ email })
+		const hasUser = await this.userRepository.findOneBy({ email })
 
 		if (hasUser) throw new BadRequestException(USER_FOUND_ERROR)
 
-		const newUser = new this.userModel({
+		const newUser = {
 			login,
 			email,
 			password: hash,
 			description,
 			avatar,
-			role: 'user'
-		})
-		return newUser.save()
+			friendList: []
+		}
+		return this.userRepository.save(newUser)
 	}
 	public async forgotPassword(user: UserDto & { oldPassword: string }) {
+		// todo: PostgreSQL
 		const { login, email, password, oldPassword } = user
 
 		const hasUser = await this.userModel.findOne({ email, login })
@@ -103,7 +108,7 @@ export class AuthService {
 
 		return userUpdated
 	}
-	private async generateToken(payload: UserDto) {
+	private async generateToken(payload: any) {
 		return await this.JwtService.signAsync(payload)
 	}
 	private async hashPassword(enteredPassword: string, rounds: number) {

@@ -1,4 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import * as mongoose from 'mongoose'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
@@ -6,51 +8,59 @@ import { Express } from 'express'
 
 import { User, UserDocument } from './user.schema'
 import { NOT_FOUND_USER_ON_ID_ERROR } from './user.constants'
+import { UserEntity } from './user.entity'
 
 @Injectable()
 export class UserService {
 	constructor(
-		@InjectModel(User.name) private readonly userModel: Model<UserDocument>
+		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+		@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
 	) {}
 
 	public async getAllUsers() {
-		const users = await this.userModel.aggregate([
-			{
-				$lookup: {
-					from: 'animes',
-					foreignField: 'userId',
-					localField: '_id',
-					as: 'animeList'
-				}
-			},
-			{
-				$lookup: {
-					from: 'users',
-					foreignField: '_id',
-					localField: 'friendList',
-					as: 'friendList'
-				}
-			},
-			{
-				$project: {
-					_id: 1,
-					login: 1,
-					animeList: 1,
-					description: 1,
-					avatar: 1,
-					friendList: 1,
-					role: 1
-				}
-			}
-		])
+		// todo: PostgreSQL
+		// const users = await this.userModel.aggregate([
+		// 	{
+		// 		$lookup: {
+		// 			from: 'animes',
+		// 			foreignField: 'userId',
+		// 			localField: '_id',
+		// 			as: 'animeList'
+		// 		}
+		// 	},
+		// 	{
+		// 		$lookup: {
+		// 			from: 'users',
+		// 			foreignField: '_id',
+		// 			localField: 'friendList',
+		// 			as: 'friendList'
+		// 		}
+		// 	},
+		// 	{
+		// 		$project: {
+		// 			_id: 1,
+		// 			login: 1,
+		// 			animeList: 1,
+		// 			description: 1,
+		// 			avatar: 1,
+		// 			friendList: 1,
+		// 			role: 1
+		// 		}
+		// 	}
+		// ])
+
+		const users = await this.userRepository.find({
+			relations: ['friendList', 'animeList']
+		})
 
 		const allUsers = {
 			users,
-			count: await this.userModel.countDocuments()
+			count: await this.userRepository.count()
 		}
 		return allUsers
 	}
 	public async getUserById(id: string) {
+		// todo: PostgreSQL
 		const hasUser = await this.userModel.findOne({ _id: id })
 		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ON_ID_ERROR)
 
@@ -90,6 +100,7 @@ export class UserService {
 		return user
 	}
 	public async getMe(id: string) {
+		// todo: PostgreSQL
 		const user = this.userModel.aggregate([
 			{
 				$match: { _id: new mongoose.Types.ObjectId(id) }
@@ -228,22 +239,26 @@ export class UserService {
 		login: string,
 		id: string
 	) {
+		// todo: PostgreSQL
 		const currentUser = await this.userModel.findById(id)
 		currentUser.description = description
 		if (login) currentUser.login = login
 		return currentUser.save()
 	}
 	public async uploadAvatar(avatar: Express.Multer.File, id: string) {
+		// todo: PostgreSQL
 		const currentUser = await this.userModel.findById(id)
 		currentUser.avatar = avatar.filename
 		return currentUser.save()
 	}
 	public async removeAvatar(id: string) {
+		// todo: PostgreSQL
 		const currentUser = await this.userModel.findById(id)
 		currentUser.avatar = ''
 		return currentUser.save()
 	}
 	public async removeFriend(myId: string, friendId: string) {
+		// todo: PostgreSQL
 		const me = await this.userModel.findById(myId)
 		const friend = await this.userModel.findById(friendId)
 
