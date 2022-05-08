@@ -41,7 +41,9 @@ export const Invitation: FC<InvitationProps> = ({ invitation, type }) => {
 
 	return (
 		<div className={styles.invitation}>
-			<img className={styles.avatar} alt='Ава' src={userAvatar} />
+			<Link to={to}>
+				<img className={styles.avatar} alt='Ава' src={userAvatar} />
+			</Link>
 			<Link to={to} style={{ margin: '0 0 5px 0' }}>
 				{login}
 			</Link>
