@@ -13,7 +13,6 @@
 .animeLibraryItemContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   position: absolute;
   top: 0;
   left: 0;
@@ -29,15 +28,21 @@
     color: white;
     text-align: center;
   }
+}
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.animeLibraryItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0 1 100%;
+}
 
-  > h4 {
-    color: white;
-    text-align: center;
-  }
+.animeLibraryItemTitle {
+  color: white;
+  text-align: center;
+}
+
+.animeLibraryItemDescription {
+  display: flex;
+  justify-content: center;
 }

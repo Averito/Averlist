@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEventHandler } from 'react'
 import { Typography } from 'antd'
-import { NavLink } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import { ANILIBRIA_URI } from 'variebles'
@@ -13,35 +13,40 @@ interface AnimeLibraryItemProps {
 }
 
 export const AnimeLibraryItem: FC<AnimeLibraryItemProps> = ({ title }) => {
-	const maxDescriptionLenght = 200
+	const navigate = useNavigate()
 
 	const animeName = encodeAnimeName(title.names.ru)
+	const to = `/anime-library/${animeName}`
+
+	const onClickCard: MouseEventHandler<HTMLDivElement> = event => {
+		navigate(to)
+	}
+
+	const maxDescriptionLenght = 200
 
 	return (
 		<div
 			className={styles.animeLibraryItemWrapper}
 			style={{
-				background: `url("${
-					ANILIBRIA_URI + title.posters.original.url
-				}") 0 0/ 100% 100%`
+				background: `url("${`${ANILIBRIA_URI}${title.posters.original.url}`}") 0 0/ 100% 100%`
 			}}
 		>
 			<div className={styles.animeLibraryItemContainer}>
-				<Typography.Title level={4}>
-					<NavLink to={`/anime-library/${animeName}`}>
-						{title.names.ru || title.names.en}
-					</NavLink>
-				</Typography.Title>
-				<div>
-					<Typography.Paragraph
-						className='whiteColor'
-						style={{ lineHeight: '15px' }}
-					>
-						{title?.description?.slice(0, maxDescriptionLenght)}
-						{title?.description?.length > 300 ? '...' : ''}
-					</Typography.Paragraph>
-					<AddToList animeName={title.names.ru} />
+				<div className={styles.animeLibraryItem} onClick={onClickCard}>
+					<Typography.Title className={styles.animeLibraryItemTitle} level={4}>
+						<Link to={to}>{title.names.ru}</Link>
+					</Typography.Title>
+					<div className={styles.animeLibraryItemDescription}>
+						<Typography.Paragraph
+							className='whiteColor'
+							style={{ lineHeight: '15px' }}
+						>
+							{title?.description?.slice(0, maxDescriptionLenght)}
+							{title?.description?.length > 300 ? '...' : ''}
+						</Typography.Paragraph>
+					</div>
 				</div>
+				<AddToList animeName={title.names.ru} />
 			</div>
 		</div>
 	)

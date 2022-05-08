@@ -1,6 +1,6 @@
 export const MY_API_URI = 'https://www.averlist.xyz/api'
 export const MY_AVATAR_URI = 'https://www.averlist.xyz/api/users/me/avatar/'
-export const MY_PICTURE_URI = 'http://www.averlist.xyz/api/news/picture/'
+export const MY_PICTURE_URI = 'https://www.averlist.xyz/api/news/picture/'
 // export const MY_API_URI = 'http://localhost:8080'
 // export const MY_AVATAR_URI = 'http://localhost:8080/users/me/avatar/'
 // export const MY_PICTURE_URI = 'http://localhost:8080/news/picture/'
