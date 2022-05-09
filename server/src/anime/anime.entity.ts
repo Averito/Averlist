@@ -1,7 +1,7 @@
 import {
 	Column,
 	Entity,
-	JoinTable,
+	JoinColumn,
 	ManyToOne,
 	PrimaryGeneratedColumn
 } from 'typeorm'
@@ -17,8 +17,8 @@ export class AnimeEntity {
 	name: string
 
 	@ManyToOne(() => UserEntity, user => user.animeList)
-	@JoinTable()
-	user: number
+	@JoinColumn()
+	user: number | UserEntity
 
 	@Column({ type: 'int' })
 	status: number

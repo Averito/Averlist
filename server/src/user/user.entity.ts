@@ -7,6 +7,7 @@ import {
 	OneToMany
 } from 'typeorm'
 import { AnimeEntity } from '../anime/anime.entity'
+import { InvitationEntity } from '../invitation/invitation.entity'
 
 @Entity({
 	name: 'user'
@@ -32,13 +33,21 @@ export class UserEntity {
 
 	@OneToMany(() => AnimeEntity, anime => anime.user)
 	@JoinTable()
-	animeList: AnimeEntity[]
+	animeList: Array<number | AnimeEntity>
 
 	@ManyToMany(() => UserEntity, user => user.id, {
 		cascade: true
 	})
 	@JoinTable()
-	friendList: number[]
+	friendList: Array<number | UserEntity>
+
+	@OneToMany(() => InvitationEntity, invitation => invitation.invitedUser)
+	@JoinTable()
+	meInvitations: Array<number | InvitationEntity>
+
+	@OneToMany(() => InvitationEntity, invitation => invitation.senderUser)
+	@JoinTable()
+	myInvitations: Array<number | InvitationEntity>
 
 	@Column({ type: 'varchar', length: 10, default: 'user' })
 	role: 'user' | 'admin'

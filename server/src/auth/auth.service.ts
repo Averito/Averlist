@@ -1,15 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JwtService } from '@nestjs/jwt'
 
 import { UserDto } from '../user/DTO/user.dto'
-import { User, UserDocument } from '../user/user.schema'
 import { UserService } from '../user/user.service'
 import {
 	NOT_FOUND_USER_ERROR,
@@ -24,7 +21,6 @@ import { UserEntity } from '../user/user.entity'
 @Injectable()
 export class AuthService {
 	constructor(
-		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
 		@InjectRepository(UserEntity)
 		private readonly userRepository: Repository<UserEntity>,
 		private readonly JwtService: JwtService,
@@ -60,7 +56,6 @@ export class AuthService {
 		return hasUser
 	}
 	public async checkAuth(token: string) {
-		// todo: PostgreSQL
 		const valid = this.JwtService.verify(token, {
 			secret: process.env.JWT_KEY
 		})
@@ -68,7 +63,7 @@ export class AuthService {
 		if (!valid) throw new BadRequestException(UNVERIFY_TOKEN_ERROR)
 
 		const user = jwt.decode(token) as { email: string }
-		const hasUser = this.userModel.findOne({ email: user.email })
+		const hasUser = this.userRepository.findOneBy({ email: user.email })
 		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ERROR)
 
 		return valid
@@ -91,23 +86,20 @@ export class AuthService {
 		return this.userRepository.save(newUser)
 	}
 	public async forgotPassword(user: UserDto & { oldPassword: string }) {
-		// todo: PostgreSQL
 		const { login, email, password, oldPassword } = user
 
-		const hasUser = await this.userModel.findOne({ email, login })
-		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ON_EMAIL_ERROR)
+		const dbuser = await this.userRepository.findOneBy({ email, login })
+		if (!dbuser) throw new BadRequestException(NOT_FOUND_USER_ON_EMAIL_ERROR)
 
-		const validOldPassword = await bcrypt.compare(oldPassword, hasUser.password)
+		const validOldPassword = await bcrypt.compare(oldPassword, dbuser.password)
 		if (!validOldPassword) {
 			throw new BadRequestException(INCORRECT_OLD_PASSWORD_ERROR)
 		}
 
 		const passwordHash = await this.hashPassword(password, 10)
-		user.password = passwordHash
+		dbuser.password = passwordHash
 
-		const userUpdated = await this.userModel.findOneAndUpdate({ email }, user)
-
-		return userUpdated
+		return await this.userRepository.save(dbuser)
 	}
 	private async generateToken(payload: any) {
 		return await this.JwtService.signAsync(payload)

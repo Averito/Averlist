@@ -4,8 +4,8 @@ import {
 	Delete,
 	Get,
 	Param,
+	Patch,
 	Post,
-	Put,
 	Req,
 	Res,
 	UploadedFile,
@@ -48,7 +48,7 @@ export class UserController {
 		res.sendFile(avatarId, { root: 'uploads/avatars' })
 	}
 
-	@Put('me')
+	@Patch('me')
 	@UseGuards(JwtAuthGuard)
 	editDescription(
 		@Body('description') description: string,
