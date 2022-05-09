@@ -1,106 +1,144 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
-import { User, UserDocument } from '../user/user.schema'
-import { Invitation, InvitationDocument } from './invitation.schema'
 import {
 	INVITATION_WAS_FOUND_ERROR,
 	INVITATION_NOT_FOUND_ERROR,
 	FRIEND_WAS_FOUND_ERROR
 } from './invitation.constants'
-import { uniqueCheck } from '../helpers/uniqueCheck'
+import { InvitationEntity } from './invitation.entity'
+import { UserEntity } from '../user/user.entity'
+import { uniqueFriendList } from '../helpers/uniqueFriendList'
 
 @Injectable()
 export class InvitationService {
 	constructor(
-		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-		@InjectModel(Invitation.name)
-		private readonly invitationModel: Model<InvitationDocument>
+		@InjectRepository(InvitationEntity)
+		private readonly invitationRepository: Repository<InvitationEntity>,
+		@InjectRepository(UserEntity)
+		private readonly userRepository: Repository<UserEntity>
 	) {}
 
-	public async sendInvitation(meId: string, foreignId: string) {
-		// todo: PostgreSQL
-		const guardInvite = await this.invitationModel.findOne({
-			invitedUser: foreignId,
-			senderUser: meId
-		})
-		const friendContain = await this.userModel.findOne({
-			_id: meId,
-			friendList: {
-				$all: [foreignId]
+	public async sendInvitation(meId: number, foreignIdStr: string) {
+		const foreignId = +foreignIdStr
+
+		const guardInvite = await this.invitationRepository.findOneBy({
+			invitedUser: {
+				id: foreignId
+			},
+			senderUser: {
+				id: meId
 			}
 		})
+		const meFriendList = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: meId
+			}
+		})
+		const friendContain = meFriendList.friendList.find(
+			friend => (friend as UserEntity).id === foreignId
+		)
 
 		if (friendContain) throw new BadRequestException(FRIEND_WAS_FOUND_ERROR)
 		if (guardInvite) throw new BadRequestException(INVITATION_WAS_FOUND_ERROR)
 
 		const newInvitation = {
-			status: false,
 			invitedUser: foreignId,
 			senderUser: meId
 		}
-		const createdInvitation = new this.invitationModel(newInvitation)
-		const savedCreatedInvitation = await createdInvitation.save()
-		const savedInvitation = this.invitationModel
-			.findById(savedCreatedInvitation._id)
-			.populate('invitedUser')
-			.populate('senderUser')
+		const createdInvitation = await this.invitationRepository.save(
+			newInvitation
+		)
+		const savedInvitation = await this.invitationRepository.findOne({
+			relations: ['senderUser', 'invitedUser'],
+			where: {
+				id: createdInvitation.id
+			}
+		})
 		return savedInvitation
 	}
-	public async removeInvitation(meId: string, foreignId: string) {
-		// todo: PostgreSQL
-		const inviteForRemove = await this.invitationModel.findOne({
-			invitedUser: foreignId,
-			senderUser: meId
+	public async removeInvitation(meId: number, foreignIdStr: string) {
+		const foreignId = +foreignIdStr
+		const inviteForRemove = await this.invitationRepository.findOneBy({
+			invitedUser: {
+				id: foreignId
+			},
+			senderUser: {
+				id: meId
+			}
 		})
 
 		if (!inviteForRemove) {
 			throw new BadRequestException(INVITATION_NOT_FOUND_ERROR)
 		}
 
-		return await this.invitationModel.deleteOne({
-			invitedUser: foreignId,
-			senderUser: meId
-		})
+		return await this.invitationRepository.remove(inviteForRemove)
 	}
-	public async acceptInvitation(invitationId: string) {
-		// todo: PostgreSQL
-		const currentInvitation = await this.invitationModel.findById(invitationId)
+	public async acceptInvitation(invitationIdStr: string) {
+		const invitationId = +invitationIdStr
+		const currentInvitation = await this.invitationRepository.findOne({
+			relations: ['senderUser', 'invitedUser'],
+			where: {
+				id: invitationId
+			}
+		})
 
 		if (!currentInvitation) {
 			throw new BadRequestException(INVITATION_NOT_FOUND_ERROR)
 		}
 
-		let senderUser = await this.userModel.findById(currentInvitation.senderUser)
-		let invitedUser = await this.userModel.findById(
-			currentInvitation.invitedUser
+		const senderUser = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: (currentInvitation.senderUser as UserEntity).id
+			}
+		})
+		const invitedUser = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: (currentInvitation.invitedUser as UserEntity).id
+			}
+		})
+
+		senderUser.friendList.push(invitedUser)
+		senderUser.friendList = uniqueFriendList(
+			senderUser.friendList as UserEntity[]
 		)
+		await this.userRepository.save(senderUser)
 
-		senderUser.friendList.push(invitedUser._id)
-		senderUser.friendList = uniqueCheck(senderUser.friendList)
-		await senderUser.save()
+		invitedUser.friendList.push(senderUser)
+		invitedUser.friendList = uniqueFriendList(
+			invitedUser.friendList as UserEntity[]
+		)
+		await this.userRepository.save(invitedUser)
 
-		invitedUser.friendList.push(senderUser._id)
-		invitedUser.friendList = uniqueCheck(invitedUser.friendList)
-		await invitedUser.save()
+		const savedSenderUser = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: senderUser.id
+			}
+		})
+		const savedInvitedUser = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: invitedUser.id
+			}
+		})
 
-		senderUser = await this.userModel
-			.findById(currentInvitation.senderUser)
-			.populate('friendList')
-		invitedUser = await this.userModel
-			.findById(currentInvitation.invitedUser)
-			.populate('friendList')
-
-		await this.invitationModel.findByIdAndDelete(invitationId)
+		await this.invitationRepository.remove(currentInvitation)
 
 		return {
-			senderUser,
-			invitedUser
+			savedSenderUser,
+			savedInvitedUser
 		}
 	}
-	public async declineInvitation(invitationId: string) {
-		// todo: PostgreSQL
-		return await this.invitationModel.findByIdAndDelete(invitationId)
+	public async declineInvitation(invitationIdStr: string) {
+		const invitationId = +invitationIdStr
+		const invitation = await this.invitationRepository.findOneBy({
+			id: invitationId
+		})
+		return await this.invitationRepository.remove(invitation)
 	}
 }

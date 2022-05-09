@@ -4,8 +4,8 @@ import {
 	Delete,
 	Get,
 	Param,
+	Patch,
 	Post,
-	Put,
 	Req,
 	Res,
 	UploadedFile,
@@ -35,7 +35,7 @@ export class NewsController {
 	}
 
 	@Post()
-	//@UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAuthGuard)
 	@UseInterceptors(
 		FileInterceptor('picture', {
 			storage: diskStorage({
@@ -62,10 +62,10 @@ export class NewsController {
 		res.sendFile(pictureId, { root: 'uploads/news-pictures' })
 	}
 
-	@Put(':newsId')
+	@Patch(':newsId')
 	@UseGuards(JwtAuthGuard)
-	editNews(@Req() req, @Param('newsId') newsId: string, @Body() news: NewsDto) {
-		return this.newsService.editNews(req.user.id, newsId, news)
+	editNews(@Req() req, @Param('newsId') newsId: string, @Body('description') description: string) {
+		return this.newsService.editNews(req.user.id, newsId, description)
 	}
 
 	@Delete(':newsId')

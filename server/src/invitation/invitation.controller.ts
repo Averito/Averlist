@@ -28,22 +28,22 @@ export class InvitationController {
 	}
 
 	@Post(':userId')
-	sendInvitation(@Req() req, @Param('userId') userId) {
+	sendInvitation(@Req() req, @Param('userId') userId: string) {
 		return this.invitationService.sendInvitation(req.user.id, userId)
 	}
 
 	@Delete(':userId')
-	removeInvitation(@Req() req, @Param('userId') userId) {
+	removeInvitation(@Req() req, @Param('userId') userId: string) {
 		return this.invitationService.removeInvitation(req.user.id, userId)
 	}
 
 	@Get('accept/:invitationId')
-	acceptInvitation(@Param('invitationId') invitationId) {
+	acceptInvitation(@Param('invitationId') invitationId: string) {
 		return this.invitationService.acceptInvitation(invitationId)
 	}
 
 	@Delete('decline/:invitationId')
-	declineInvitation(@Param('invitationId') invitationId) {
+	declineInvitation(@Param('invitationId') invitationId: string) {
 		return this.invitationService.declineInvitation(invitationId)
 	}
 }

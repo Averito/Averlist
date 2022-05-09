@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class UserDto {
@@ -34,7 +34,6 @@ export class UserDto {
 	@ApiProperty({
 		required: false
 	})
-	@IsArray()
 	friendList?: string[]
 
 	@ApiProperty()
