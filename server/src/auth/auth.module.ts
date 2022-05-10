@@ -8,9 +8,10 @@ import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { UserService } from '../user/user.service'
 import { getJWTConfig } from '../config/jwt.config'
-import { JwtStrategy } from './strategies/jwt.strategy'
+import { AccessTStrategy } from './strategies/accessT.strategy'
 import { UserModule } from '../user/user.module'
 import { UserEntity } from '../user/user.entity'
+import { RefreshTStrategy } from './strategies/refreshT.strategy'
 
 @Module({
 	imports: [
@@ -26,6 +27,6 @@ import { UserEntity } from '../user/user.entity'
 		PassportModule.register({ defaultStrategy: 'jwt' })
 	],
 	controllers: [AuthController],
-	providers: [AuthService, UserService, JwtStrategy]
+	providers: [AuthService, UserService, AccessTStrategy, RefreshTStrategy]
 })
 export class AuthModule {}

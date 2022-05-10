@@ -1,4 +1,4 @@
-export const NOT_FOUND_USER_ERROR = 'Пользователь с таким email не найден'
+export const NOT_FOUND_USER_ERROR = 'Пользователь не найден'
 export const WRONG_PASSWORD = 'Неправильный пароль'
 export const UNVERIFY_TOKEN_ERROR = 'Токен не действительный'
 export const EXPIRED_TOKEN_ERROR = 'Срок действия токена истёк'

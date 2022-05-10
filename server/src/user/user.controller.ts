@@ -20,7 +20,7 @@ import { diskStorage } from 'multer'
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { UserService } from './user.service'
-import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { JwtAuthGuard } from '../auth/guards/accessT.guard'
 import { imageFileFilter } from '../helpers/imageFileFilter'
 import { editFileName } from '../helpers/editFileName'
 

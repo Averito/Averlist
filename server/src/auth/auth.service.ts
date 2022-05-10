@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import { MailerService } from '@nestjs-modules/mailer'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import * as bcrypt from 'bcrypt'
@@ -14,7 +15,7 @@ import {
 	WRONG_PASSWORD,
 	INCORRECT_OLD_PASSWORD_ERROR,
 	NOT_FOUND_USER_ON_EMAIL_ERROR,
-	USER_FOUND_ERROR
+	USER_FOUND_ERROR, EXPIRED_TOKEN_ERROR
 } from './auth.constants'
 import { UserEntity } from '../user/user.entity'
 
@@ -23,23 +24,26 @@ export class AuthService {
 	constructor(
 		@InjectRepository(UserEntity)
 		private readonly userRepository: Repository<UserEntity>,
-		private readonly JwtService: JwtService,
-		private readonly userService: UserService
+		private readonly jwtService: JwtService,
+		private readonly userService: UserService,
+		private readonly mailerService: MailerService
 	) {}
 
 	public async authUser(user: UserEntity) {
-		const { id, login, email, description, avatar } = user
-		const dataForToken: any = {
+		const { id, login, email, description, avatar, password } = user
+		const tokenData: any = {
 			id,
 			login,
 			email,
+			password,
 			description,
 			avatar
 		}
 
-		const access_token = await this.generateToken(dataForToken)
+		const { accessToken, refreshToken } = await this.generateTokens(tokenData)
+		await this.updateHashRefreshToken(id, refreshToken)
 
-		return { access_token, userId: id }
+		return { accessToken, refreshToken, userId: id }
 	}
 	public async validateUser(user: UserDto) {
 		const hasUser = await this.userRepository.findOneBy({ email: user.email })
@@ -56,7 +60,7 @@ export class AuthService {
 		return hasUser
 	}
 	public async checkAuth(token: string) {
-		const valid = this.JwtService.verify(token, {
+		const valid = this.jwtService.verify(token, {
 			secret: process.env.JWT_KEY
 		})
 
@@ -68,9 +72,9 @@ export class AuthService {
 
 		return valid
 	}
-	public async registrationUser(user: UserDto) {
+	public async createUser(user: UserDto) {
 		const { login, password, email, description, avatar } = user
-		const hash = await this.hashPassword(password, 10)
+		const hash = await this.genHash(password, 10)
 		const hasUser = await this.userRepository.findOneBy({ email })
 
 		if (hasUser) throw new BadRequestException(USER_FOUND_ERROR)
@@ -80,12 +84,56 @@ export class AuthService {
 			email,
 			password: hash,
 			description,
-			avatar,
-			friendList: []
+			avatar
 		}
-		return this.userRepository.save(newUser)
+
+		const createdUser = await this.userRepository.save(newUser)
+
+		this.sendEmailActivateMessage(createdUser.email, createdUser.activationLink)
+
+		const { accessToken, refreshToken } = await this.generateTokens(newUser)
+		await this.updateHashRefreshToken(createdUser.id, refreshToken)
+
+		return { accessToken, refreshToken, userId: createdUser.id }
 	}
-	public async forgotPassword(user: UserDto & { oldPassword: string }) {
+	public async activateUser(activationLink: string) {
+		const user = await this.userRepository.findOneBy({ activationLink })
+
+		if (!user) throw new BadRequestException(NOT_FOUND_USER_ERROR)
+
+		user.isActive = true
+		await this.userRepository.save(user)
+		return '<h1 style="font-family: Arial">Почта успешно подтверждена!</h1>'
+	}
+	public async logout(userId: number) {
+		const user = await this.userRepository.findOneBy({ id: userId })
+		user.refreshTokenHash = null
+		return await this.userRepository.save(user)
+	}
+	public async refreshTokens(userId: number, refreshToken: string) {
+		const user = await this.userRepository.findOneBy({ id: userId })
+
+		if (!user) throw new BadRequestException(NOT_FOUND_USER_ERROR)
+
+		const refreshTokenCompare = await bcrypt.compare(refreshToken, user.refreshTokenHash)
+
+		if (!refreshTokenCompare) throw new ForbiddenException(EXPIRED_TOKEN_ERROR)
+
+		const { id, login, email, description, avatar, password } = user
+		const tokenData: any = {
+			id,
+			login,
+			email,
+			password,
+			description,
+			avatar
+		}
+
+		const { accessToken, refreshToken: rt } = await this.generateTokens(tokenData)
+		await this.updateHashRefreshToken(id, rt)
+		return { accessToken, refreshToken: rt }
+	}
+	public async updatePassword(user: UserDto & { oldPassword: string }) {
 		const { login, email, password, oldPassword } = user
 
 		const dbuser = await this.userRepository.findOneBy({ email, login })
@@ -96,17 +144,48 @@ export class AuthService {
 			throw new BadRequestException(INCORRECT_OLD_PASSWORD_ERROR)
 		}
 
-		const passwordHash = await this.hashPassword(password, 10)
+		const passwordHash = await this.genHash(password, 10)
 		dbuser.password = passwordHash
 
 		return await this.userRepository.save(dbuser)
 	}
-	private async generateToken(payload: any) {
-		return await this.JwtService.signAsync(payload)
+	private sendEmailActivateMessage(to: string, link: string) {
+		const formattedLink = `${process.env.API_URI}/activate/${link}`
+
+		this.mailerService.sendMail({
+			to,
+			from: process.env.MAILER_FROM_EMAIL,
+			subject: 'Подтверждение регистрации',
+			text: 'Это сообщение было сгенерировано автоматически. Пожалуйста, не отвечайте на это сообщение.',
+			html: `
+				<div>
+					<p>Подтверждение почты на сайте ${process.env.MAILER_FROM_NAME}</p>
+					<p>Чтобы подтвердить почту перейдите по ссылке ниже:</p>
+					<a href='${formattedLink}'>${formattedLink}</a>
+				</div>
+			`
+		})
 	}
-	private async hashPassword(enteredPassword: string, rounds: number) {
+	private async generateTokens(payload: any) {
+		const accessToken = await this.jwtService.signAsync(payload, {
+			expiresIn: '1d',
+			secret: process.env.JWT_ACCESS_SECRET
+		})
+		const refreshToken = await this.jwtService.signAsync(payload, {
+			expiresIn: '30d',
+			secret: process.env.JWT_REFRESH_SECRET
+		})
+		return { accessToken, refreshToken }
+	}
+	private async updateHashRefreshToken(userId: number, refreshToken: string) {
+		const hash = await this.genHash(refreshToken, 15)
+		const user = await this.userRepository.findOneBy({ id: userId })
+		user.refreshTokenHash = hash
+		return await this.userRepository.save(user)
+	}
+	private async genHash(value: string, rounds: number) {
 		const salt = await bcrypt.genSalt(rounds)
-		const hash = await bcrypt.hash(enteredPassword, salt)
+		const hash = await bcrypt.hash(value, salt)
 
 		return hash
 	}

@@ -32,7 +32,8 @@ export class AnimeService {
 		const createdAnime = {
 			name: anime.name,
 			user: anime.user,
-			status: anime.status
+			status: anime.status,
+			anilibriaTitleId: anime.anilibriaTitleId
 		}
 
 		return await this.animeRepository.save(createdAnime)

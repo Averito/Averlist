@@ -4,8 +4,10 @@ import {
 	Column,
 	ManyToMany,
 	JoinTable,
-	OneToMany
+	OneToMany,
+	PrimaryColumn
 } from 'typeorm'
+import { randomUUID } from 'crypto'
 import { AnimeEntity } from '../anime/anime.entity'
 import { InvitationEntity } from '../invitation/invitation.entity'
 
@@ -51,4 +53,17 @@ export class UserEntity {
 
 	@Column({ type: 'varchar', length: 10, default: 'user' })
 	role: 'user' | 'admin'
+
+	@Column({
+		type: 'uuid',
+		default: randomUUID(),
+		select: false
+	})
+	activationLink: string
+
+	@Column({ type: 'boolean', default: false })
+	isActive: boolean
+
+	@Column({ type: 'varchar', nullable: true })
+	refreshTokenHash: string
 }

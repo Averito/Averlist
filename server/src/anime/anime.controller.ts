@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { JwtAuthGuard } from '../auth/guards/accessT.guard'
 import { AnimeService } from './anime.service'
 import { AnimeDto } from './DTO/anime.dto'
 
