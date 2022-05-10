@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MulterModule } from '@nestjs/platform-express'
+import { MailerModule } from '@nestjs-modules/mailer'
 
+import { getMailerConfig } from './config/mailer.config'
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { AnimeModule } from './anime/anime.module'
@@ -17,6 +19,11 @@ import { NewsModule } from './news/news.module'
 		}),
 		MulterModule.register({
 			dest: './uploads'
+		}),
+		MailerModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getMailerConfig
 		}),
 		UserModule,
 		InvitationModule,

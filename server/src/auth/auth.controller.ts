@@ -2,6 +2,7 @@ import {
 	Body,
 	Controller,
 	Get,
+	Param,
 	Post,
 	Req,
 	UseGuards,
@@ -9,10 +10,12 @@ import {
 	ValidationPipe
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { Request } from 'express'
 
 import { AuthService } from './auth.service'
 import { UserDto } from '../user/DTO/user.dto'
-import { JwtAuthGuard } from './guards/jwt.guard'
+import { JwtAuthGuard } from './guards/accessT.guard'
+import { JwtRefreshAuthGuard } from './guards/refreshT.guard'
 
 @ApiTags('Auth')
 @Controller()
@@ -27,14 +30,32 @@ export class AuthController {
 
 	@Get('auth-check')
 	@UseGuards(JwtAuthGuard)
-	async authCheck(@Req() req) {
+	authCheck(@Req() req) {
 		return this.authService.checkAuth(req.headers.authorization.split(' ')[1])
+	}
+
+	@Get('activate/:activationLink')
+	activateUser(@Param('activationList') activationLink: string) {
+		return this.authService.activateUser(activationLink)
 	}
 
 	@Post('registration')
 	@UsePipes(new ValidationPipe({ transform: true }))
-	registrationUser(@Body() user: UserDto) {
-		return this.authService.registrationUser(user)
+	async registrationUser(@Body() user: UserDto) {
+		return await this.authService.createUser(user)
+	}
+
+	@Post('logout')
+	@UseGuards(JwtAuthGuard)
+	logout(@Body('userId') userId: number) {
+		return this.authService.logout(userId)
+	}
+
+	@Post('refresh')
+	@UseGuards(JwtRefreshAuthGuard)
+	refreshTokens(@Req() req: Request) {
+		const user = req.user
+		return this.authService.refreshTokens(user['id'], user['refreshToken'])
 	}
 
 	// @Post('forgot-password')
@@ -46,6 +67,6 @@ export class AuthController {
 	@Post('restore-password')
 	@UsePipes(new ValidationPipe({ transform: true }))
 	forgotPasswordUser(@Body() user: UserDto & { oldPassword: string }) {
-		return this.authService.forgotPassword(user)
+		return this.authService.updatePassword(user)
 	}
 }
