@@ -6,3 +6,4 @@ export const USER_FOUND_ERROR = 'Пользователь с таким email у
 export const NOT_FOUND_USER_ON_EMAIL_ERROR =
 	'Пользователь с таким email или login не найден'
 export const INCORRECT_OLD_PASSWORD_ERROR = 'Не верный пароль'
+export const NOT_ACTIVATED_EMAIL = 'Электронная почта не подтверждена'
