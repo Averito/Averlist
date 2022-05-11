@@ -13,6 +13,11 @@ export type JwtPayload = Omit<
 	| 'animeList'
 	| 'meInvitations'
 	| 'myInvitations'
+	| 'role'
+	| 'activationLink'
+	| 'password'
+	| 'description'
+	| 'avatar'
 >
 
 @Injectable()

@@ -3,19 +3,13 @@ import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Anime } from '../anime/anime.model'
 import { Invitation } from '../invitation/invitation.model'
 
-@ObjectType()
+@ObjectType('User')
 export class User {
 	@Field(() => Int)
 	id: number
 
 	@Field()
 	login: string
-
-	@Field()
-	email: string
-
-	@Field()
-	password: string
 
 	@Field()
 	description: string
@@ -28,6 +22,15 @@ export class User {
 
 	@Field(() => [User])
 	friendList: Array<User>
+}
+
+@ObjectType()
+export class UserMe extends User {
+	@Field()
+	email: string
+
+	@Field()
+	password: string
 
 	@Field()
 	role: 'user' | 'admin'
@@ -35,12 +38,9 @@ export class User {
 	@Field(() => Boolean)
 	isActive: boolean
 
-	@Field()
+	@Field({ nullable: true })
 	refreshTokenHash: string
-}
 
-@ObjectType()
-export class UserMe extends User {
 	@Field(() => [Invitation])
 	meInvitations: Array<Invitation>
 

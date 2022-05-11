@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JwtService } from '@nestjs/jwt'
+import { randomUUID } from 'crypto'
 
 import { UserDto } from '../user/DTO/user.dto'
 import { UserService } from '../user/user.service'
@@ -24,7 +25,7 @@ import {
 	NOT_ACTIVATED_EMAIL
 } from './auth.constants'
 import { UserEntity } from '../user/user.entity'
-import { randomUUID } from 'crypto'
+import { JwtPayload } from './strategies/accessT.strategy'
 
 @Injectable()
 export class AuthService {
@@ -37,14 +38,11 @@ export class AuthService {
 	) {}
 
 	public async authUser(user: UserEntity) {
-		const { id, login, email, description, avatar, password } = user
-		const tokenData: any = {
+		const { id, login, email } = user
+		const tokenData: JwtPayload = {
 			id,
 			login,
-			email,
-			password,
-			description,
-			avatar
+			email
 		}
 
 		const { accessToken, refreshToken } = await this.generateTokens(tokenData)
@@ -52,7 +50,8 @@ export class AuthService {
 
 		return { accessToken, refreshToken, userId: id }
 	}
-	public async validateUser(user: UserDto) {
+
+	public async validateUser(user: Omit<UserDto, 'login'>) {
 		const hasUser = await this.userRepository.findOneBy({ email: user.email })
 
 		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ERROR)
@@ -66,10 +65,11 @@ export class AuthService {
 
 		return hasUser
 	}
+
 	public async checkAuth(token: string) {
 		const valid = this.jwtService.verify(token, {
 			secret: process.env.JWT_KEY
-		})
+		}) as JwtPayload
 
 		if (!valid) throw new BadRequestException(UNVERIFY_TOKEN_ERROR)
 
@@ -79,9 +79,10 @@ export class AuthService {
 
 		return valid
 	}
+
 	public async createUser(user: UserDto) {
-		const { login, password, email, description, avatar } = user
-		const hash = await this.genHash(password, 10)
+		const { login, password, email } = user
+		const hash = await this.genHash(password)
 		const hasUser = await this.userRepository.findOneBy({ email })
 
 		if (hasUser) throw new BadRequestException(USER_FOUND_ERROR)
@@ -90,19 +91,26 @@ export class AuthService {
 			login,
 			email,
 			password: hash,
-			description,
-			avatar
+			description: '',
+			avatar: ''
 		}
 
 		const createdUser = await this.userRepository.save(newUser)
 
 		this.sendEmailActivateMessage(createdUser.email, createdUser.activationLink)
 
-		const { accessToken, refreshToken } = await this.generateTokens(newUser)
+		const jwtPayload: JwtPayload = {
+			id: createdUser.id,
+			login: createdUser.login,
+			email: createdUser.email
+		}
+
+		const { accessToken, refreshToken } = await this.generateTokens(jwtPayload)
 		await this.updateHashRefreshToken(createdUser.id, refreshToken)
 
 		return { accessToken, refreshToken, userId: createdUser.id }
 	}
+
 	public async activateUser(activationLink: string) {
 		const user = await this.userRepository.findOneBy({ activationLink })
 
@@ -112,11 +120,13 @@ export class AuthService {
 		await this.userRepository.save(user)
 		return '<h1 style="font-family: Arial">Почта успешно подтверждена!</h1>'
 	}
+
 	public async logout(userId: number) {
 		const user = await this.userRepository.findOneBy({ id: userId })
 		user.refreshTokenHash = null
 		return await this.userRepository.save(user)
 	}
+
 	public async restorePassword(email: string) {
 		const user = await this.userRepository.findOneBy({ email })
 
@@ -124,13 +134,16 @@ export class AuthService {
 		if (!user.isActive) throw new ForbiddenException(NOT_ACTIVATED_EMAIL)
 
 		const newPassword = randomUUID()
-		const newPasswordHash = await this.genHash(newPassword, 10)
+		const newPasswordHash = await this.genHash(newPassword)
 
 		user.password = newPasswordHash
 		await this.userRepository.save(user)
 
 		this.sendNewPasswordMessage(email, newPassword)
+
+		return user
 	}
+
 	public async refreshTokens(userId: number, refreshToken: string) {
 		const user = await this.userRepository.findOneBy({ id: userId })
 
@@ -143,22 +156,20 @@ export class AuthService {
 
 		if (!refreshTokenCompare) throw new ForbiddenException(EXPIRED_TOKEN_ERROR)
 
-		const { id, login, email, description, avatar, password } = user
-		const tokenData: any = {
+		const { id, login, email } = user
+		const jwtPayload: JwtPayload = {
 			id,
 			login,
-			email,
-			password,
-			description,
-			avatar
+			email
 		}
 
 		const { accessToken, refreshToken: rt } = await this.generateTokens(
-			tokenData
+			jwtPayload
 		)
 		await this.updateHashRefreshToken(id, rt)
 		return { accessToken, refreshToken: rt }
 	}
+
 	public async updatePassword(user: UserDto & { oldPassword: string }) {
 		const { login, email, password, oldPassword } = user
 
@@ -170,11 +181,19 @@ export class AuthService {
 			throw new BadRequestException(INCORRECT_OLD_PASSWORD_ERROR)
 		}
 
-		const passwordHash = await this.genHash(password, 10)
+		const passwordHash = await this.genHash(password)
 		dbuser.password = passwordHash
+		await this.userRepository.save(dbuser)
 
-		return await this.userRepository.save(dbuser)
+		const jwtPayload: JwtPayload = {
+			id: dbuser.id,
+			login: dbuser.login,
+			email: dbuser.email
+		}
+
+		return await this.generateTokens(jwtPayload)
 	}
+
 	private sendEmailActivateMessage(to: string, link: string) {
 		const formattedLink = `${process.env.API_URI}/activate/${link}`
 
@@ -192,6 +211,7 @@ export class AuthService {
 			`
 		})
 	}
+
 	private sendNewPasswordMessage(to: string, newPassword: string) {
 		this.mailerService.sendMail({
 			to,
@@ -202,28 +222,33 @@ export class AuthService {
 				<div>
 					<h2>Сброс пароля на сайте ${process.env.MAILER_FROM_NAME}</h2>
 					<p>Ваш новый пароль: ${newPassword}</p>
+					<strong>Не забудьте поменять пароль!</strong>
 				</div>
 			`
 		})
 	}
-	private async generateTokens(payload: any) {
-		const accessToken = await this.jwtService.signAsync(payload, {
+
+	private async generateTokens(payload: JwtPayload) {
+		const accessToken = this.jwtService.sign(payload, {
 			expiresIn: '1d',
 			secret: process.env.JWT_ACCESS_SECRET
 		})
-		const refreshToken = await this.jwtService.signAsync(payload, {
+		const refreshToken = this.jwtService.sign(payload, {
 			expiresIn: '30d',
 			secret: process.env.JWT_REFRESH_SECRET
 		})
 		return { accessToken, refreshToken }
 	}
+
 	private async updateHashRefreshToken(userId: number, refreshToken: string) {
-		const hash = await this.genHash(refreshToken, 15)
+		const hash = await this.genHash(refreshToken)
 		const user = await this.userRepository.findOneBy({ id: userId })
 		user.refreshTokenHash = hash
 		return await this.userRepository.save(user)
 	}
-	private async genHash(value: string, rounds: number) {
+
+	private async genHash(value: string) {
+		const rounds = Math.floor(Math.random() * 10) + 10
 		const salt = await bcrypt.genSalt(rounds)
 		const hash = await bcrypt.hash(value, salt)
 

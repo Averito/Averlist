@@ -28,7 +28,7 @@ export class NewsService {
 		}
 		return await this.newsRepository.save(newNews)
 	}
-	async editNews(id: number, newsIdStr: string, description: string) {
+	async editNews(id: number, newsIdStr: string | number, description: string) {
 		const newsId = +newsIdStr
 		const user = await this.userRepository.findOneBy({ id })
 		if (user.role !== 'admin') throw new ForbiddenException(NOT_ALLOWED)
@@ -37,7 +37,7 @@ export class NewsService {
 		newsForUpdate.description = description
 		return await this.newsRepository.save(newsForUpdate)
 	}
-	async removeNews(id: number, newsIdStr: string) {
+	async removeNews(id: number, newsIdStr: string | number) {
 		const newsId = +newsIdStr
 
 		const user = await this.userRepository.findOneBy({ id })

@@ -21,10 +21,12 @@ import * as jwt from 'jsonwebtoken'
 			playground: true,
 			autoSchemaFile: true,
 			context: ({ req }) => {
-				const user = jwt.decode(req.headers?.authorization?.split(' ')[1])
+				const token = req.headers?.authorization?.split(' ')[1]
+				const user = jwt.decode(token)
 				return {
 					...req,
-					user
+					user,
+					authorizeToken: token
 				}
 			}
 		}),

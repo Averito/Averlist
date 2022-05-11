@@ -48,8 +48,8 @@ export class AuthController {
 
 	@Post('logout')
 	@UseGuards(JwtAuthGuard)
-	logout(@Body('userId') userId: number) {
-		return this.authService.logout(userId)
+	logout(@Req() req: Request) {
+		return this.authService.logout(req.user['id'])
 	}
 
 	@Post('refresh')
@@ -65,9 +65,9 @@ export class AuthController {
 		return this.authService.restorePassword(email)
 	}
 
-	@Post('restore-password')
+	@Post('update-password')
 	@UsePipes(new ValidationPipe({ transform: true }))
-	forgotPasswordUser(@Body() user: UserDto & { oldPassword: string }) {
+	updatePassword(@Body() user: UserDto & { oldPassword: string }) {
 		return this.authService.updatePassword(user)
 	}
 }
