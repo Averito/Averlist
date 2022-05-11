@@ -42,6 +42,13 @@ export class UserController {
 		return this.userService.getMe(request.user.id)
 	}
 
+	@Get(':id')
+	@UseGuards(JwtAuthGuard)
+	@UsePipes(new ValidationPipe({ transform: true }))
+	getUserbyId(@Param() param) {
+		return this.userService.getUserById(param.id)
+	}
+
 	@ApiQuery({ name: 'getAvatar' })
 	@Get('me/avatar/:avatarId')
 	serveAvatar(@Param('avatarId') avatarId, @Res() res) {
@@ -75,19 +82,6 @@ export class UserController {
 	)
 	editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() request) {
 		return this.userService.uploadAvatar(avatar, request.user.id)
-	}
-
-	@Delete('me/avatar')
-	@UseGuards(JwtAuthGuard)
-	removeAvatar(@Req() req) {
-		return this.userService.removeAvatar(req.user.id)
-	}
-
-	@Get(':id')
-	@UseGuards(JwtAuthGuard)
-	@UsePipes(new ValidationPipe({ transform: true }))
-	getUserbyId(@Param() param) {
-		return this.userService.getUserById(param.id)
 	}
 
 	@Delete('me/friends/:friendId')

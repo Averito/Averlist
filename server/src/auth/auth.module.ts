@@ -12,6 +12,7 @@ import { AccessTStrategy } from './strategies/accessT.strategy'
 import { UserModule } from '../user/user.module'
 import { UserEntity } from '../user/user.entity'
 import { RefreshTStrategy } from './strategies/refreshT.strategy'
+import { AuthResolver } from './auth.resolver';
 
 @Module({
 	imports: [
@@ -27,6 +28,6 @@ import { RefreshTStrategy } from './strategies/refreshT.strategy'
 		PassportModule.register({ defaultStrategy: 'jwt' })
 	],
 	controllers: [AuthController],
-	providers: [AuthService, UserService, AccessTStrategy, RefreshTStrategy]
+	providers: [AuthService, UserService, AccessTStrategy, RefreshTStrategy, AuthResolver]
 })
 export class AuthModule {}

@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	UpdateDateColumn,
+	CreateDateColumn
+} from 'typeorm'
 
 @Entity({
 	name: 'news'
@@ -13,6 +19,9 @@ export class NewsEntity {
 	@Column({ type: 'varchar', length: 1000, nullable: false })
 	description: string
 
-	@Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+	@CreateDateColumn()
+	createdAt: number
+
+	@UpdateDateColumn()
 	lastUpdate: number
 }

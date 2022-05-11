@@ -3,6 +3,23 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { ConfigService } from '@nestjs/config'
 import { Injectable } from '@nestjs/common'
 
+import { UserEntity } from '../../user/user.entity'
+
+export type JwtPayload = Omit<
+	UserEntity,
+	| 'isActive'
+	| 'friendList'
+	| 'refreshTokenHash'
+	| 'animeList'
+	| 'meInvitations'
+	| 'myInvitations'
+	| 'role'
+	| 'activationLink'
+	| 'password'
+	| 'description'
+	| 'avatar'
+>
+
 @Injectable()
 export class AccessTStrategy extends PassportStrategy(Strategy, 'jwt') {
 	constructor(private readonly configService: ConfigService) {
@@ -12,7 +29,7 @@ export class AccessTStrategy extends PassportStrategy(Strategy, 'jwt') {
 		})
 	}
 
-	validate(payload: any) {
+	validate(payload: JwtPayload) {
 		return payload
 	}
 }

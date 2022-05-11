@@ -4,8 +4,7 @@ import {
 	Column,
 	ManyToMany,
 	JoinTable,
-	OneToMany,
-	PrimaryColumn
+	OneToMany
 } from 'typeorm'
 import { randomUUID } from 'crypto'
 import { AnimeEntity } from '../anime/anime.entity'
