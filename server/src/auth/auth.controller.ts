@@ -3,7 +3,7 @@ import {
 	Controller,
 	Get,
 	Param,
-	Post,
+	Post, Query,
 	Req,
 	UseGuards,
 	UsePipes,
@@ -58,11 +58,11 @@ export class AuthController {
 		return this.authService.refreshTokens(user['id'], user['refreshToken'])
 	}
 
-	// @Post('forgot-password')
-	// @UsePipes(new ValidationPipe({ transform: true }))
-	// forgotPasswordUser(@Body() user: UserDto & { oldPassword: string }) {
-	// 	return this.authService.forgotPassword(user)
-	// }
+	@Post('restore-password')
+	@UsePipes(new ValidationPipe({ transform: true }))
+	restorePassword(@Query('email') email: string) {
+		return this.authService.restorePassword(email)
+	}
 
 	@Post('restore-password')
 	@UsePipes(new ValidationPipe({ transform: true }))

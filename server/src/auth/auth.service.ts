@@ -15,9 +15,10 @@ import {
 	WRONG_PASSWORD,
 	INCORRECT_OLD_PASSWORD_ERROR,
 	NOT_FOUND_USER_ON_EMAIL_ERROR,
-	USER_FOUND_ERROR, EXPIRED_TOKEN_ERROR
+	USER_FOUND_ERROR, EXPIRED_TOKEN_ERROR, NOT_ACTIVATED_EMAIL
 } from './auth.constants'
 import { UserEntity } from '../user/user.entity'
+import { randomUUID } from 'crypto'
 
 @Injectable()
 export class AuthService {
@@ -110,6 +111,20 @@ export class AuthService {
 		user.refreshTokenHash = null
 		return await this.userRepository.save(user)
 	}
+	public async restorePassword(email: string) {
+		const user = await this.userRepository.findOneBy({ email })
+
+		if (!user) throw new BadRequestException(NOT_FOUND_USER_ERROR)
+		if (!user.isActive) throw new ForbiddenException(NOT_ACTIVATED_EMAIL)
+
+		const newPassword = randomUUID()
+		const newPasswordHash = await this.genHash(newPassword, 10)
+
+		user.password = newPasswordHash
+		await this.userRepository.save(user)
+
+		this.sendNewPasswordMessage(email, newPassword)
+	}
 	public async refreshTokens(userId: number, refreshToken: string) {
 		const user = await this.userRepository.findOneBy({ id: userId })
 
@@ -159,9 +174,23 @@ export class AuthService {
 			text: 'Это сообщение было сгенерировано автоматически. Пожалуйста, не отвечайте на это сообщение.',
 			html: `
 				<div>
-					<p>Подтверждение почты на сайте ${process.env.MAILER_FROM_NAME}</p>
+					<h2>Подтверждение почты на сайте ${process.env.MAILER_FROM_NAME}</h2>
 					<p>Чтобы подтвердить почту перейдите по ссылке ниже:</p>
 					<a href='${formattedLink}'>${formattedLink}</a>
+				</div>
+			`
+		})
+	}
+	private sendNewPasswordMessage(to: string, newPassword: string) {
+		this.mailerService.sendMail({
+			to,
+			from: process.env.MAILER_FROM_EMAIL,
+			subject: 'Сброс пароля',
+			text: 'Это сообщение было сгенерировано автоматически. Пожалуйста, не отвечайте на это сообщение.',
+			html: `
+				<div>
+					<h2>Сброс пароля на сайте ${process.env.MAILER_FROM_NAME}</h2>
+					<p>Ваш новый пароль: ${newPassword}</p>
 				</div>
 			`
 		})
