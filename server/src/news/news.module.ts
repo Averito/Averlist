@@ -10,9 +10,6 @@ import { UserEntity } from '../user/user.entity'
 @Module({
 	providers: [NewsService],
 	controllers: [NewsController],
-	imports: [
-		TypeOrmModule.forFeature([NewsEntity, UserEntity]),
-		UserModule
-	]
+	imports: [TypeOrmModule.forFeature([NewsEntity, UserEntity]), UserModule]
 })
 export class NewsModule {}

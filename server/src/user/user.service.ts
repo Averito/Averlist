@@ -18,11 +18,16 @@ export class UserService {
 			relations: ['friendList', 'animeList']
 		})
 
-		const allUsers = {
-			users,
-			count: await this.userRepository.count()
-		}
-		return allUsers
+		return users
+	}
+	public async getFriendListByUserId(userId: number) {
+		const user = await this.userRepository.findOne({
+			relations: ['friendList'],
+			where: {
+				id: userId
+			}
+		})
+		return user.friendList
 	}
 	public async getUserById(id: number) {
 		const user = await this.userRepository.findOne({

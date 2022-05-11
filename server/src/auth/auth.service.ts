@@ -1,4 +1,8 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import {
+	BadRequestException,
+	ForbiddenException,
+	Injectable
+} from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -15,7 +19,9 @@ import {
 	WRONG_PASSWORD,
 	INCORRECT_OLD_PASSWORD_ERROR,
 	NOT_FOUND_USER_ON_EMAIL_ERROR,
-	USER_FOUND_ERROR, EXPIRED_TOKEN_ERROR, NOT_ACTIVATED_EMAIL
+	USER_FOUND_ERROR,
+	EXPIRED_TOKEN_ERROR,
+	NOT_ACTIVATED_EMAIL
 } from './auth.constants'
 import { UserEntity } from '../user/user.entity'
 import { randomUUID } from 'crypto'
@@ -130,7 +136,10 @@ export class AuthService {
 
 		if (!user) throw new BadRequestException(NOT_FOUND_USER_ERROR)
 
-		const refreshTokenCompare = await bcrypt.compare(refreshToken, user.refreshTokenHash)
+		const refreshTokenCompare = await bcrypt.compare(
+			refreshToken,
+			user.refreshTokenHash
+		)
 
 		if (!refreshTokenCompare) throw new ForbiddenException(EXPIRED_TOKEN_ERROR)
 
@@ -144,7 +153,9 @@ export class AuthService {
 			avatar
 		}
 
-		const { accessToken, refreshToken: rt } = await this.generateTokens(tokenData)
+		const { accessToken, refreshToken: rt } = await this.generateTokens(
+			tokenData
+		)
 		await this.updateHashRefreshToken(id, rt)
 		return { accessToken, refreshToken: rt }
 	}
