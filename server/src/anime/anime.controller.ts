@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Patch,
@@ -46,5 +47,10 @@ export class AnimeController {
 		@Body('status') status: number
 	) {
 		return this.animeService.editStatusAnime(params.id, req.user['id'], status)
+	}
+
+	@Delete(':animeId')
+	removeAnime(@Req() req: Request, @Param('animeId') animeId: string) {
+		return this.animeService.removeAnime(req.user['id'], animeId)
 	}
 }

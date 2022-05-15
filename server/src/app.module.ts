@@ -19,7 +19,7 @@ import * as jwt from 'jsonwebtoken'
 		GraphQLModule.forRoot<ApolloDriverConfig>({
 			driver: ApolloDriver,
 			playground: true,
-			autoSchemaFile: true,
+			autoSchemaFile: 'src/schema.gql',
 			context: ({ req }) => {
 				const token = req.headers?.authorization?.split(' ')[1]
 				const user = jwt.decode(token)

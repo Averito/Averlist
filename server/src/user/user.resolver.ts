@@ -7,7 +7,6 @@ import { UserService } from './user.service'
 import { JwtAuthGuard } from '../auth/guards/accessT.guard'
 
 @Resolver(() => User)
-@UseGuards(JwtAuthGuard)
 export class UserResolver {
 	constructor(private readonly userService: UserService) {}
 
@@ -17,16 +16,19 @@ export class UserResolver {
 	}
 
 	@Query(() => UserMe)
+	@UseGuards(JwtAuthGuard)
 	me(@Context() context: Request) {
 		return this.userService.getMe(context.user['id'])
 	}
 
 	@Query(() => User)
+	@UseGuards(JwtAuthGuard)
 	userById(@Args('id') id: number) {
 		return this.userService.getUserById(id)
 	}
 
 	@Mutation(() => User)
+	@UseGuards(JwtAuthGuard)
 	meEdit(
 		@Args('login') login: string,
 		@Args('description') description: string,
@@ -40,6 +42,7 @@ export class UserResolver {
 	}
 
 	@Mutation(() => User)
+	@UseGuards(JwtAuthGuard)
 	removeMyFriend(
 		@Context() context: Request,
 		@Args('friendId') friendId: number

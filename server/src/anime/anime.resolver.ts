@@ -49,4 +49,9 @@ export class AnimeResolver {
 			status
 		)
 	}
+
+	@Mutation(() => Anime)
+	removeAnime(@Context() context: Request, @Args('animeId') animeId: number) {
+		return this.animeService.removeAnime(context.user['id'], animeId)
+	}
 }

@@ -7,7 +7,6 @@ import { NewsService } from './news.service'
 import { JwtAuthGuard } from '../auth/guards/accessT.guard'
 
 @Resolver(() => News)
-@UseGuards(JwtAuthGuard)
 export class NewsResolver {
 	constructor(private readonly newsService: NewsService) {}
 
@@ -17,6 +16,7 @@ export class NewsResolver {
 	}
 
 	@Mutation(() => News)
+	@UseGuards(JwtAuthGuard)
 	newsEditDescription(
 		@Args('newsId') newsId: number,
 		@Args('description') description: string,
@@ -26,6 +26,7 @@ export class NewsResolver {
 	}
 
 	@Mutation(() => News)
+	@UseGuards(JwtAuthGuard)
 	removeNews(@Args('newsId') newsId: number, @Context() context: Request) {
 		return this.newsService.removeNews(context.user['id'], newsId)
 	}

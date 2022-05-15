@@ -1,0 +1,35 @@
+.container {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px 20px;
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.title {
+  font-size: 50px;
+
+  > a {
+    transition: color 0.3s ease-in;
+
+    &:hover {
+      color: var(--secondary-color);
+    }
+  }
+}
+
+.description {
+  max-width: 70%;
+  height: 50px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tags > span {
+  margin: 0 5px;
+}

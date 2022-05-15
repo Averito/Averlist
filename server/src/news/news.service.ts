@@ -16,7 +16,11 @@ export class NewsService {
 	) {}
 
 	async getNews() {
-		return await this.newsRepository.find()
+		return await this.newsRepository.find({
+			order: {
+				createdAt: 'DESC'
+			}
+		})
 	}
 	async createNews(id: number, filename: string, description: string) {
 		const user = await this.userRepository.findOneBy({ id })

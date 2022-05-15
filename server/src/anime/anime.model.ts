@@ -16,6 +16,6 @@ export class Anime {
 	@Field(() => Int)
 	status: number
 
-	@Field(() => Int)
-	anilibriaTitleId: number
+	@Field()
+	anilibriaTitleCode: string
 }

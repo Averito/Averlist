@@ -32,7 +32,7 @@ export class AuthResolver {
 	}
 
 	@Query(() => UserMe)
-	@UseGuards(JwtRefreshAuthGuard)
+	@UseGuards(JwtAuthGuard)
 	logout(@Context() context: Request) {
 		return this.authService.logout(context.user['id'])
 	}

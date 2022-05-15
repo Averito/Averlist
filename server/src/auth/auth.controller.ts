@@ -52,7 +52,7 @@ export class AuthController {
 		return this.authService.logout(req.user['id'])
 	}
 
-	@Post('refresh')
+	@Get('refresh')
 	@UseGuards(JwtRefreshAuthGuard)
 	refreshTokens(@Req() req: Request) {
 		const user = req.user
@@ -66,6 +66,7 @@ export class AuthController {
 	}
 
 	@Post('update-password')
+	@UseGuards(JwtAuthGuard)
 	@UsePipes(new ValidationPipe({ transform: true }))
 	updatePassword(@Body() user: UserDto & { oldPassword: string }) {
 		return this.authService.updatePassword(user)

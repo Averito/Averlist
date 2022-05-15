@@ -31,7 +31,6 @@ export class UserController {
 
 	@ApiQuery({ name: 'GetAllUsers' })
 	@Get()
-	@UseGuards(JwtAuthGuard)
 	getAllUsers() {
 		return this.userService.getAllUsers()
 	}

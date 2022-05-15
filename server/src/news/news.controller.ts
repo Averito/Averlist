@@ -28,7 +28,6 @@ export class NewsController {
 	constructor(private readonly newsService: NewsService) {}
 
 	@Get()
-	@UseGuards(JwtAuthGuard)
 	getNews() {
 		return this.newsService.getNews()
 	}

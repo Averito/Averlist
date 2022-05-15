@@ -39,5 +39,6 @@
   "homepage": "https://github.com/Averito/AnimeList#readme",
   "devDependencies": {
     "concurrently": "^7.1.0"
-  }
+  },
+  "dependencies": {}
 }

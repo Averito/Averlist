@@ -1,0 +1,19 @@
+.container {
+  &:not(:last-of-type) {
+    margin: 0 0 10px 0;
+  }
+}
+
+.title {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+
+  > a {
+    color: var(--primary-text-color);
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--secondary-color);
+    }
+  }
+}

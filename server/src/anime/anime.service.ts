@@ -9,7 +9,8 @@ import { Repository } from 'typeorm'
 import { AnimeDto } from './DTO/anime.dto'
 import {
 	THIS_ANIME_NOT_FOUND_BY_USER_ID_ERROR,
-	NOT_ALLOWED_ERROR
+	NOT_ALLOWED_ERROR,
+	THIS_ANIME_NOT_FOUND_ERROR
 } from './anime.constants'
 import { AnimeEntity } from './anime.entity'
 import { UserEntity } from '../user/user.entity'
@@ -73,5 +74,16 @@ export class AnimeService {
 			throw new BadRequestException(THIS_ANIME_NOT_FOUND_BY_USER_ID_ERROR)
 		anime.status = status
 		return await this.animeRepository.save(anime)
+	}
+	public async removeAnime(myId: number, animeIdStr: string | number) {
+		const animeId = +animeIdStr
+		const currentAnimeList = await this.getAllAnimeByUserId(myId)
+
+		const includesAnime = currentAnimeList.find(anime => anime.id === animeId)
+		if (!includesAnime) throw new ForbiddenException(THIS_ANIME_NOT_FOUND_ERROR)
+
+		await this.animeRepository.remove(includesAnime)
+
+		return includesAnime
 	}
 }

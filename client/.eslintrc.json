@@ -5,14 +5,12 @@
   },
   "root": true,
   "extends": [
-    "react-app",
     "eslint:recommended",
-    "plugin:react-redux/recommended",
-    "prettier"
+    "prettier",
+    "next"
   ],
   "plugins": [
-    "prettier",
-    "react-redux"
+    "prettier"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -42,6 +40,6 @@
     "react/display-name": 0,
     "no-console": "warn",
     "complexity": "error",
-    "react-redux/useSelector-prefer-selectors": 0
+    "no-unused-vars": 0
   }
 }
