@@ -20,7 +20,7 @@ export class InvitationService {
 		private readonly userRepository: Repository<UserEntity>
 	) {}
 
-	public async sendInvitation(meId: number, foreignIdStr: string | number) {
+	public async sendInvitation(meId: number, foreignIdStr: string) {
 		const foreignId = +foreignIdStr
 
 		const guardInvite = await this.invitationRepository.findOneBy({
@@ -37,7 +37,6 @@ export class InvitationService {
 				id: meId
 			}
 		})
-
 		const friendContain = meFriendList.friendList.find(
 			friend => (friend as UserEntity).id === foreignId
 		)
@@ -60,18 +59,14 @@ export class InvitationService {
 		})
 		return savedInvitation
 	}
-
-	public async removeInvitation(meId: number, foreignIdStr: string | number) {
+	public async removeInvitation(meId: number, foreignIdStr: string) {
 		const foreignId = +foreignIdStr
-		const inviteForRemove = await this.invitationRepository.findOne({
-			relations: ['invitedUser'],
-			where: {
-				invitedUser: {
-					id: foreignId
-				},
-				senderUser: {
-					id: meId
-				}
+		const inviteForRemove = await this.invitationRepository.findOneBy({
+			invitedUser: {
+				id: foreignId
+			},
+			senderUser: {
+				id: meId
 			}
 		})
 
@@ -79,11 +74,9 @@ export class InvitationService {
 			throw new BadRequestException(INVITATION_NOT_FOUND_ERROR)
 		}
 
-		await this.invitationRepository.remove(inviteForRemove)
-		return inviteForRemove
+		return await this.invitationRepository.remove(inviteForRemove)
 	}
-
-	public async acceptInvitation(invitationIdStr: string | number) {
+	public async acceptInvitation(invitationIdStr: string) {
 		const invitationId = +invitationIdStr
 		const currentInvitation = await this.invitationRepository.findOne({
 			relations: ['senderUser', 'invitedUser'],
@@ -137,21 +130,15 @@ export class InvitationService {
 		await this.invitationRepository.remove(currentInvitation)
 
 		return {
-			invitedUser: savedInvitedUser,
-			senderUser: savedSenderUser
+			savedSenderUser,
+			savedInvitedUser
 		}
 	}
-
-	public async declineInvitation(invitationIdStr: string | number) {
+	public async declineInvitation(invitationIdStr: string) {
 		const invitationId = +invitationIdStr
-		const invitation = await this.invitationRepository.findOne({
-			relations: ['invitedUser'],
-			where: {
-				id: invitationId
-			}
+		const invitation = await this.invitationRepository.findOneBy({
+			id: invitationId
 		})
-
-		await this.invitationRepository.remove(invitation)
-		return invitation
+		return await this.invitationRepository.remove(invitation)
 	}
 }

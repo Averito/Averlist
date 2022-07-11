@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { ApolloProvider } from '@apollo/client'
 
 import apolloClient from '@apolloClient'
-import { Layout } from '@widgets/Layout'
+import { Layout } from '@widgets/../src/Layouts/MainLayout'
 import 'swiper/css'
 
 function MyApp({ Component, pageProps }: AppProps) {

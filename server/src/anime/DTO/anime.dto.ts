@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 enum statuses {
@@ -17,15 +17,14 @@ export class AnimeDto {
 	@IsString()
 	name: string
 
+	@ApiProperty()
+	@IsNotEmpty()
+	user: number
+
 	@ApiProperty({
 		description: 'Статус определяющий состояние аниме в списке'
 	})
 	@IsNotEmpty()
 	@IsEnum(statuses)
 	status: number
-
-	@ApiProperty()
-	@IsNotEmpty()
-	@IsNumber()
-	anilibriaTitleId: number
 }

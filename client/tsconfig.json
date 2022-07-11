@@ -16,13 +16,14 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@anilibriaApi/*": ["src/shared/api/anilibriaApi/*"],
-      "@widgets/*": ["src/widgets/*"],
-      "@helpers/*": ["src/shared/helpers/*"],
-      "@hooks/*": ["src/shared/hooks/*"],
-      "@assets/*": ["src/shared/assets/*"],
-      "@features/*": ["src/features/*"],
+      "@anilibriaApi/*": ["src/api/anilibriaApi/*"],
+      "@components/*": ["src/components/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@assets/*": ["src/assets/*"],
+      "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
+      "@store/*": ["src/store/*"],
       "@apolloClient": ["apollo-client.ts"]
     }
   },

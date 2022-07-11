@@ -1,15 +1,15 @@
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 
 import { Home } from '@pages/Home'
-import { QueryObject } from '@helpers/generateQueryParamsString'
+import { QueryObject } from '../src/helpers/generateQueryParamsString'
 import { anilibria } from '@anilibriaApi/anilibria'
 import { SeriesUsually } from '@anilibriaApi/types'
-import { seriesToSeriesUsually } from '@helpers/seriesToSeriesUsually'
-import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
+import { seriesToSeriesUsually } from '../src/helpers/seriesToSeriesUsually'
+import { firstSeriesToSeriesUsually } from '../src/helpers/firstSeriesToSeriesUsually'
 
 export default Home
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
 	const objectParams: QueryObject = {
 		filter: ['id', 'names', 'description', 'posters', 'status', 'type', 'code'],
 		limit: 30

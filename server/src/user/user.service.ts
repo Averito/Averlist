@@ -18,7 +18,11 @@ export class UserService {
 			relations: ['friendList', 'animeList']
 		})
 
-		return users
+		const allUsers = {
+			users,
+			count: await this.userRepository.count()
+		}
+		return allUsers
 	}
 	public async getUserById(id: number) {
 		const user = await this.userRepository.findOne({
@@ -51,7 +55,7 @@ export class UserService {
 		id: number
 	) {
 		const currentUser = await this.userRepository.findOneBy({ id })
-		if (description) currentUser.description = description
+		currentUser.description = description
 		if (login) currentUser.login = login
 		return await this.userRepository.save(currentUser)
 	}
@@ -60,10 +64,15 @@ export class UserService {
 		currentUser.avatar = avatar.filename
 		return await this.userRepository.save(currentUser)
 	}
-	public async removeFriend(myId: number, friendIdStr: string | number) {
+	public async removeAvatar(id: number) {
+		const currentUser = await this.userRepository.findOneBy({ id })
+		currentUser.avatar = ''
+		return await this.userRepository.save(currentUser)
+	}
+	public async removeFriend(myId: number, friendIdStr: string) {
 		const friendId = +friendIdStr
 		const me = await this.userRepository.findOne({
-			relations: ['friendList', 'animeList'],
+			relations: ['friendList'],
 			where: {
 				id: myId
 			}
@@ -85,6 +94,6 @@ export class UserService {
 		)
 		await this.userRepository.save(friend)
 
-		return me
+		return { myId, friendId }
 	}
 }

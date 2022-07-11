@@ -1,16 +1,16 @@
 import { GetStaticProps, NextPage } from 'next'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import Image from 'next/image'
 
 import styles from './Home.module.scss'
-import { Search } from '@features/Search'
+import { Search } from '@components/Search'
 import { anilibria, objectParamsByDefault } from '@anilibriaApi/anilibria'
 import { Title, SeriesUsually, Series } from '@anilibriaApi/types'
 import { seriesToSeriesUsually } from '@helpers/seriesToSeriesUsually'
 import { QueryObject } from '@helpers/generateQueryParamsString'
-import { MainAnimeSlider } from './ui/MainAnimeSlider'
-import { AnimeSlider } from '@features/AnimeSlider'
+import { MainAnimeSlider } from './components/MainAnimeSlider'
+import { AnimeSlider } from '@components/AnimeSlider'
+import { reverseArray } from '@helpers/reverseArray'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -29,13 +29,26 @@ export const Home: NextPage<HomeProps> = ({
 		setSearch(newValue)
 	}
 
+	const reversedUpdatesTitleList = reverseArray(updatesTitleList)
+
 	return (
 		<div>
+			{/* Search only for mobile */}
 			<Search value={search} onChange={onChangeSearch} />
+
+			{/* MainAnimeSlider only for desktop */}
 			<MainAnimeSlider titleList={firstFiveTitles} />
-			<div className={styles.content}>
-				<AnimeSlider titleList={updatesTitleList} title='Новинки' href='/' />
-				<AnimeSlider titleList={changesTitleList} title='Последние изменённые' href='/' />
+			<div className={styles.desktopContent}>
+				<AnimeSlider
+					titleList={reversedUpdatesTitleList}
+					title='Новинки'
+					href='/'
+				/>
+				<AnimeSlider
+					titleList={changesTitleList}
+					title='Последние изменённые'
+					href='/'
+				/>
 			</div>
 		</div>
 	)

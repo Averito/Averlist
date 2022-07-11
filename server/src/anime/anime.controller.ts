@@ -1,20 +1,17 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	Param,
 	Patch,
-	Post,
-	Req,
+	Post, Req,
 	UseGuards,
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { Request } from 'express'
 
-import { JwtAuthGuard } from '../auth/guards/accessT.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt.guard'
 import { AnimeService } from './anime.service'
 import { AnimeDto } from './DTO/anime.dto'
 
@@ -25,8 +22,8 @@ export class AnimeController {
 	constructor(private readonly animeService: AnimeService) {}
 
 	@Get()
-	getAllAnime(@Req() req: Request) {
-		return this.animeService.getAllAnime(req.user['id'])
+	getAllAnime() {
+		return this.animeService.getAllAnime()
 	}
 
 	@Get('me')
@@ -36,21 +33,12 @@ export class AnimeController {
 
 	@Post()
 	@UsePipes(new ValidationPipe({ transform: true }))
-	createAnime(@Body() anime: AnimeDto, @Req() req: Request) {
-		return this.animeService.createAnime(anime, req.user['id'])
+	createAnime(@Body() anime: AnimeDto) {
+		return this.animeService.createAnime(anime)
 	}
 
 	@Patch(':id')
-	editStatusAnime(
-		@Param() params,
-		@Req() req: Request,
-		@Body('status') status: number
-	) {
-		return this.animeService.editStatusAnime(params.id, req.user['id'], status)
-	}
-
-	@Delete(':animeId')
-	removeAnime(@Req() req: Request, @Param('animeId') animeId: string) {
-		return this.animeService.removeAnime(req.user['id'], animeId)
+	editStatusAnime(@Param() params, @Body('status') status: number) {
+		return this.animeService.editStatusAnime(params.id, status)
 	}
 }

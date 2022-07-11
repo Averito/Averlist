@@ -20,7 +20,7 @@ import { diskStorage } from 'multer'
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { UserService } from './user.service'
-import { JwtAuthGuard } from '../auth/guards/accessT.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt.guard'
 import { imageFileFilter } from '../helpers/imageFileFilter'
 import { editFileName } from '../helpers/editFileName'
 
@@ -31,6 +31,7 @@ export class UserController {
 
 	@ApiQuery({ name: 'GetAllUsers' })
 	@Get()
+	@UseGuards(JwtAuthGuard)
 	getAllUsers() {
 		return this.userService.getAllUsers()
 	}
@@ -39,13 +40,6 @@ export class UserController {
 	@UseGuards(JwtAuthGuard)
 	getMe(@Req() request) {
 		return this.userService.getMe(request.user.id)
-	}
-
-	@Get(':id')
-	@UseGuards(JwtAuthGuard)
-	@UsePipes(new ValidationPipe({ transform: true }))
-	getUserbyId(@Param() param) {
-		return this.userService.getUserById(param.id)
 	}
 
 	@ApiQuery({ name: 'getAvatar' })
@@ -81,6 +75,19 @@ export class UserController {
 	)
 	editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() request) {
 		return this.userService.uploadAvatar(avatar, request.user.id)
+	}
+
+	@Delete('me/avatar')
+	@UseGuards(JwtAuthGuard)
+	removeAvatar(@Req() req) {
+		return this.userService.removeAvatar(req.user.id)
+	}
+
+	@Get(':id')
+	@UseGuards(JwtAuthGuard)
+	@UsePipes(new ValidationPipe({ transform: true }))
+	getUserbyId(@Param() param) {
+		return this.userService.getUserById(param.id)
 	}
 
 	@Delete('me/friends/:friendId')

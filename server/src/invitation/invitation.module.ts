@@ -6,7 +6,6 @@ import { InvitationController } from './invitation.controller'
 import { UserModule } from '../user/user.module'
 import { InvitationEntity } from './invitation.entity'
 import { UserEntity } from '../user/user.entity'
-import { InvitationResolver } from './invitation.resolver'
 
 @Module({
 	imports: [
@@ -14,7 +13,7 @@ import { InvitationResolver } from './invitation.resolver'
 		UserModule
 	],
 	exports: [InvitationModule],
-	providers: [InvitationService, InvitationResolver],
+	providers: [InvitationService],
 	controllers: [InvitationController]
 })
 export class InvitationModule {}

@@ -8,7 +8,7 @@ import {
 	UseGuards
 } from '@nestjs/common'
 
-import { JwtAuthGuard } from '../auth/guards/accessT.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt.guard'
 import { InvitationService } from './invitation.service'
 import { UserService } from '../user/user.service'
 import { ApiTags } from '@nestjs/swagger'
