@@ -1,64 +1,33 @@
 {
-  "name": "averlist-frontend",
-  "version": "0.1.0",
-  "author": "Averito",
-  "repository": "https://github.com/Averito/AnimeList",
-  "private": true,
-  "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@reduxjs/toolkit": "^1.8.0",
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.26",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "antd": "^4.19.3",
-    "antd-img-crop": "^4.2.0",
-    "axios": "^0.26.1",
-    "classnames": "^2.3.1",
-    "moment": "^2.29.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-player": "^2.10.0",
-    "react-query": "^3.34.19",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^6.2.2",
-    "react-scripts": "5.0.0",
-    "react-toastify": "^8.2.0",
-    "redux-thunk": "^2.4.1",
-    "serve": "^13.0.2",
-    "typescript": "^4.6.3",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "docker:start": "serve -s build",
-    "lint": "eslint --fix src/**/*.{tsx,ts}"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "eslint": "^8.12.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-redux": "^4.0.0",
-    "prettier": "^2.6.1",
-    "sass": "^1.49.9"
-  }
+	"name": "new-averlist-client",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint --fix {pages,src}/**/*.{ts,tsx}"
+	},
+	"dependencies": {
+		"@apollo/client": "^3.6.2",
+		"@reduxjs/toolkit": "^1.8.3",
+		"axios": "^0.27.2",
+		"graphql": "^16.5.0",
+		"next": "12.1.6",
+		"next-pwa": "^5.5.2",
+		"react": "18.1.0",
+		"react-dom": "18.1.0",
+		"sharp": "^0.30.4",
+		"swiper": "^8.1.4"
+	},
+	"devDependencies": {
+		"@types/node": "17.0.33",
+		"@types/react": "18.0.9",
+		"eslint": "^7.32.0",
+		"eslint-config-next": "12.1.6",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"prettier": "^2.6.2",
+		"sass": "^1.51.0",
+		"typescript": "4.6.4"
+	}
 }

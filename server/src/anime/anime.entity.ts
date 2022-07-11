@@ -22,7 +22,4 @@ export class AnimeEntity {
 
 	@Column({ type: 'int' })
 	status: number
-
-	@Column({ type: 'int', nullable: true })
-	anilibriaTitleId: number
 }

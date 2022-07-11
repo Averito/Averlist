@@ -1,40 +1,25 @@
-import {
-	BadRequestException,
-	ForbiddenException,
-	Injectable
-} from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { AnimeDto } from './DTO/anime.dto'
-import {
-	THIS_ANIME_NOT_FOUND_BY_USER_ID_ERROR,
-	NOT_ALLOWED_ERROR
-} from './anime.constants'
+import { THIS_ANIME_NOT_FOUND_BY_USER_ID_ERROR } from './anime.constants'
 import { AnimeEntity } from './anime.entity'
-import { UserEntity } from '../user/user.entity'
 
 @Injectable()
 export class AnimeService {
 	constructor(
 		@InjectRepository(AnimeEntity)
-		private readonly animeRepository: Repository<AnimeEntity>,
-		@InjectRepository(UserEntity)
-		private readonly userRepository: Repository<UserEntity>
+		private readonly animeRepository: Repository<AnimeEntity>
 	) {}
 
-	public async getAllAnime(myId: number) {
-		const me = await this.userRepository.findOneBy({ id: myId })
-
-		if (me.role !== 'admin') throw new ForbiddenException(NOT_ALLOWED_ERROR)
-
-		return await this.animeRepository.find({
+	public async getAllAnime() {
+		return this.animeRepository.find({
 			relations: ['user']
 		})
 	}
 	public async getAllAnimeByUserId(userId: number) {
 		const animeByUserId = await this.animeRepository.find({
-			relations: ['user'],
 			where: {
 				user: {
 					id: userId
@@ -43,32 +28,18 @@ export class AnimeService {
 		})
 		return animeByUserId
 	}
-	public async createAnime(anime: AnimeDto, myId: number) {
+	public async createAnime(anime: AnimeDto) {
 		const createdAnime = {
 			name: anime.name,
-			user: myId,
-			status: anime.status,
-			anilibriaTitleId: anime.anilibriaTitleId
+			user: anime.user,
+			status: anime.status
 		}
 
-		const savedAnime = await this.animeRepository.save(createdAnime)
-		return await this.animeRepository.findOne({
-			relations: ['user'],
-			where: {
-				id: savedAnime.id
-			}
-		})
+		return await this.animeRepository.save(createdAnime)
 	}
-	public async editStatusAnime(
-		animeIdStr: string | number,
-		myId: number,
-		status: number
-	) {
+	public async editStatusAnime(animeIdStr: string, status: number) {
 		const animeId = +animeIdStr
-		const anime = await this.animeRepository.findOneBy({
-			id: animeId,
-			user: { id: myId }
-		})
+		const anime = await this.animeRepository.findOneBy({ id: animeId })
 		if (!anime)
 			throw new BadRequestException(THIS_ANIME_NOT_FOUND_BY_USER_ID_ERROR)
 		anime.status = status

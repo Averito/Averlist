@@ -1,0 +1,7 @@
+.desktopContent {
+  padding: 15px;
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+}

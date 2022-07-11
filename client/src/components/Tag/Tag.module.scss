@@ -1,0 +1,12 @@
+.tag {
+  background: #49485C;
+}
+
+.redTag {
+  background: var(--secondary-color);
+}
+
+.tag, .redTag {
+  padding: 5px 10px;
+  border-radius: 5px;
+}

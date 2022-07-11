@@ -20,7 +20,7 @@ export class InvitationService {
 		private readonly userRepository: Repository<UserEntity>
 	) {}
 
-	public async sendInvitation(meId: number, foreignIdStr: string | number) {
+	public async sendInvitation(meId: number, foreignIdStr: string) {
 		const foreignId = +foreignIdStr
 
 		const guardInvite = await this.invitationRepository.findOneBy({
@@ -59,7 +59,7 @@ export class InvitationService {
 		})
 		return savedInvitation
 	}
-	public async removeInvitation(meId: number, foreignIdStr: string | number) {
+	public async removeInvitation(meId: number, foreignIdStr: string) {
 		const foreignId = +foreignIdStr
 		const inviteForRemove = await this.invitationRepository.findOneBy({
 			invitedUser: {
@@ -76,7 +76,7 @@ export class InvitationService {
 
 		return await this.invitationRepository.remove(inviteForRemove)
 	}
-	public async acceptInvitation(invitationIdStr: string | number) {
+	public async acceptInvitation(invitationIdStr: string) {
 		const invitationId = +invitationIdStr
 		const currentInvitation = await this.invitationRepository.findOne({
 			relations: ['senderUser', 'invitedUser'],
@@ -134,7 +134,7 @@ export class InvitationService {
 			savedInvitedUser
 		}
 	}
-	public async declineInvitation(invitationIdStr: string | number) {
+	public async declineInvitation(invitationIdStr: string) {
 		const invitationId = +invitationIdStr
 		const invitation = await this.invitationRepository.findOneBy({
 			id: invitationId

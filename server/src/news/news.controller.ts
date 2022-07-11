@@ -17,7 +17,8 @@ import { Express } from 'express'
 import { diskStorage } from 'multer'
 
 import { NewsService } from './news.service'
-import { JwtAuthGuard } from '../auth/guards/accessT.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { NewsDto } from './DTO/news.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { editFileName } from '../helpers/editFileName'
 import { imageFileFilter } from '../helpers/imageFileFilter'
@@ -63,11 +64,7 @@ export class NewsController {
 
 	@Patch(':newsId')
 	@UseGuards(JwtAuthGuard)
-	editNews(
-		@Req() req,
-		@Param('newsId') newsId: string,
-		@Body('description') description: string
-	) {
+	editNews(@Req() req, @Param('newsId') newsId: string, @Body('description') description: string) {
 		return this.newsService.editNews(req.user.id, newsId, description)
 	}
 
