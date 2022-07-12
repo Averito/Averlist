@@ -15,7 +15,8 @@ export const Header: FC = () => {
 		router.push('/')
 	}
 
-	const mainPage = router.asPath === '/' ? styles.containerShadow : styles.containerNonShadow
+	const mainPage =
+		router.asPath === '/' ? styles.containerShadow : styles.containerNonShadow
 
 	return (
 		<header className={classnames(styles.container, mainPage)}>

@@ -20,15 +20,18 @@ export const useInfinityScroll = (
 	isFetch: boolean,
 	setIsFetch: Dispatch<SetStateAction<boolean>>
 ) => {
-	const onScroll = useCallback((event: any) => {
-		const { innerHeight } = window
-		const { scrollHeight, scrollTop } = event.target.documentElement
+	const onScroll = useCallback(
+		(event: any) => {
+			const { innerHeight } = window
+			const { scrollHeight, scrollTop } = event.target.documentElement
 
-		if (scrollHeight - (innerHeight + scrollTop) < 200) {
-			return setIsFetch(true)
-		}
-		setIsFetch(false)
-	}, [])
+			if (scrollHeight - (innerHeight + scrollTop) < 200) {
+				return setIsFetch(true)
+			}
+			setIsFetch(false)
+		},
+		[setIsFetch]
+	)
 
 	useEffect(() => {
 		window.addEventListener('scroll', onScroll)

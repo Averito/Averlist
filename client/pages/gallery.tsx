@@ -1,9 +1,11 @@
+import { GetStaticProps } from 'next'
+
 import { Gallery } from '@pages/Gallery'
 import { getAnimeImage } from '@waifuPicsApi/waifuPics'
 
 export default Gallery
 
-export const getServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	const files = await getAnimeImage('many', 'sfw', 'waifu')
 
 	return {

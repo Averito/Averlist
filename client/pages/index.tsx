@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 
 import { Home } from '@pages/Home'
 import { QueryObject } from '@helpers/generateQueryParamsString'
@@ -9,7 +9,7 @@ import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	const objectParams: QueryObject = {
 		filter: ['id', 'names', 'description', 'posters', 'status', 'type', 'code'],
 		limit: 30

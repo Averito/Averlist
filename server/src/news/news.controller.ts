@@ -18,7 +18,6 @@ import { diskStorage } from 'multer'
 
 import { NewsService } from './news.service'
 import { JwtAuthGuard } from '../auth/guards/jwt.guard'
-import { NewsDto } from './DTO/news.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { editFileName } from '../helpers/editFileName'
 import { imageFileFilter } from '../helpers/imageFileFilter'

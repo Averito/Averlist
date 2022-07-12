@@ -26,7 +26,8 @@ export const Tabs: FC<TabsProps> = ({ selectTab, tabs, currentTab }) => {
 	return (
 		<div className={styles.tabsContainer}>
 			{tabs.map(tab => {
-				const selected = tab.alias === currentTab.alias ? styles.selectedTab : ''
+				const selected =
+					tab.alias === currentTab.alias ? styles.selectedTab : ''
 
 				return (
 					<div
