@@ -47,7 +47,7 @@ export const usePropsOnClient = (
 			setNewFirstFiveTitles(firstFiveTitles)
 		}
 		asyncWrapper()
-	})
+	}, [])
 
 	return {
 		reversedUpdatesTitleList,
