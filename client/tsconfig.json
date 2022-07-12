@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@anilibriaApi/*": ["src/api/anilibriaApi/*"],
+      "@waifuPicsApi/*": ["src/api/waifuPicsApi/*"],
       "@components/*": ["src/components/*"],
       "@helpers/*": ["src/helpers/*"],
       "@hooks/*": ["src/hooks/*"],

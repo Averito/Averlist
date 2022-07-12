@@ -1,0 +1,40 @@
+.tabsContainer {
+  display: flex;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: white;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 24px;
+
+  &:not(:last-of-type) {
+    margin-right: 15px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+  }
+}
+
+.selectedTab {
+  position: relative;
+
+  &.tab::after {
+    background-color: var(--secondary-color);
+  }
+}

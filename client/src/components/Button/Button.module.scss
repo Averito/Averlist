@@ -1,0 +1,22 @@
+.button {
+  cursor: pointer;
+  background: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  transition: filter 0.3s ease;
+  color: white;
+  margin-top: 10px;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+.downloadButton {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.notDownloadButton {
+  padding: 5px 22px;
+  border-radius: 10px;
+}

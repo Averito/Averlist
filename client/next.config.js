@@ -7,6 +7,6 @@ module.exports = withPWA({
 		dest: 'public'
 	},
 	images: {
-		domains: ['dl-20211030-963.anilib.top']
+		domains: ['dl-20211030-963.anilib.top', 'i.waifu.pics']
 	}
 })

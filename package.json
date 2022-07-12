@@ -26,11 +26,15 @@
   },
   "keywords": [
     "Anime",
-    "React.js",
+    "Next.js",
     "Nest.js",
     "Anilibria",
     "Docker",
-    "TypeScript"
+    "TypeScript",
+    "Anilibria",
+    "PostgreSQL",
+    "TypeORM",
+    "@reduxjs/toolkit"
   ],
   "author": "Averito",
   "license": "ISC",

@@ -9,12 +9,19 @@
   width: 100%;
   padding: 5px 10px;
   background: rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 50px 100px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(0.7);
 
   @media all and (max-width: 768px) {
     display: none;
   }
+}
+
+.containerShadow {
+  box-shadow: 0 0 50px 100px rgba(0, 0, 0, 0.4);
+}
+
+.containerNonShadow {
+  box-shadow: unset;
 }
 
 .containerBlock2 {
