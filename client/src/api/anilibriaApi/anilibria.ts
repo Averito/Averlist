@@ -6,7 +6,7 @@ import {
 } from '../../helpers/generateQueryParamsString'
 import { Title } from './types'
 
-const ANILIBRIA_API_URI = process.env.ANILIBRIA_API_URI
+const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 
 export const objectParamsByDefault: QueryObject = {
 	filter: ['id', 'names', 'posters', 'description', 'status', 'type'],

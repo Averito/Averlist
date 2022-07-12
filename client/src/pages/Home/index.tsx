@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import styles from './Home.module.scss'
@@ -11,6 +11,8 @@ import { QueryObject } from '@helpers/generateQueryParamsString'
 import { MainAnimeSlider } from './components/MainAnimeSlider'
 import { AnimeSlider } from '@components/AnimeSlider'
 import { reverseArray } from '@helpers/reverseArray'
+import { useAppDispatch } from '@hooks/useAppDispatch'
+import { getTitleListThunk } from '@store/reducers/mainReducer/mainThunks'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -23,6 +25,8 @@ export const Home: NextPage<HomeProps> = ({
 	changesTitleList,
 	firstFiveTitles
 }) => {
+	const dispath = useAppDispatch()
+
 	const [search, setSearch] = useState<string>('')
 
 	const onChangeSearch = (newValue: string) => {
@@ -30,6 +34,15 @@ export const Home: NextPage<HomeProps> = ({
 	}
 
 	const reversedUpdatesTitleList = reverseArray(updatesTitleList)
+
+	useEffect(() => {
+		const params = {
+			filter: objectParamsByDefault.filter,
+			limit: -1
+		}
+
+		dispath(getTitleListThunk(params))
+	}, [dispath])
 
 	return (
 		<div>

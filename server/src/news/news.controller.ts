@@ -64,7 +64,11 @@ export class NewsController {
 
 	@Patch(':newsId')
 	@UseGuards(JwtAuthGuard)
-	editNews(@Req() req, @Param('newsId') newsId: string, @Body('description') description: string) {
+	editNews(
+		@Req() req,
+		@Param('newsId') newsId: string,
+		@Body('description') description: string
+	) {
 		return this.newsService.editNews(req.user.id, newsId, description)
 	}
 

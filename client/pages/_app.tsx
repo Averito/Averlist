@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { Provider } from 'react-redux'
 
 import { Layout } from '@layouts/MainLayout'
-import { store } from '../store'
+import { store } from '@store/index'
 import 'swiper/css'
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -23,7 +23,7 @@ export const AnimeCard: FC<AnimeCardProps> = ({ title }) => {
 	}
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<Image
 				className={styles.poster}
 				width={200}
