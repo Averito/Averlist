@@ -3,15 +3,15 @@ import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { ApolloProvider } from '@apollo/client'
+import { Provider } from 'react-redux'
 
-import apolloClient from '@apolloClient'
-import { Layout } from '@widgets/../src/Layouts/MainLayout'
+import { Layout } from '@layouts/MainLayout'
+import { store } from '../store'
 import 'swiper/css'
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<ApolloProvider client={apolloClient}>
+		<Provider store={store}>
 			<Head>
 				<meta charSet='utf-8' />
 				<link rel='icon' href='./favicon.ico' />
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Layout>
 				<Component {...pageProps} />
 			</Layout>
-		</ApolloProvider>
+		</Provider>
 	)
 }
 
