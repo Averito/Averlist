@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react'
 
 export const useWindowSize = () => {
-	const [width, setWidth] = useState<number>(window.innerWidth)
-	const [height, setHeight] = useState<number>(window.innerHeight)
+	let initialWidth = 0
+	let initialHeight = 0
+	if (typeof window !== 'undefined') {
+		initialWidth = window.innerWidth
+		initialHeight = window.innerHeight
+	}
+
+	const [width, setWidth] = useState<number>(initialWidth)
+	const [height, setHeight] = useState<number>(initialHeight)
 
 	useEffect(() => {
-		const setProps = () => {
+		const editWH = () => {
 			setWidth(window.innerWidth)
 			setHeight(window.innerHeight)
 		}
-		window.addEventListener('resize', setProps)
-		return () => window.removeEventListener('resize', setProps)
+		window.addEventListener('resize', editWH)
+		return () => window.removeEventListener('resize', editWH)
 	}, [])
 
-	return { width, height, isMobile: width <= 768 }
+	const isMobile = width <= 768
+
+	return { width, height, isMobile }
 }

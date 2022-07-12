@@ -1,0 +1,43 @@
+.container {
+  max-width: 200px;
+}
+
+.poster {
+  border-radius: 8px;
+  width: 200px;
+  height: 250px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    filter: brightness(0.7);
+  }
+}
+
+.name {
+  transition: all 0.3s ease;
+
+  > a {
+    color: var(--primary-text-color);
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    color: var(--secondary-color);
+
+    > a {
+      color: var(--secondary-color);
+    }
+  }
+}
+
+.description {
+  color: var(--primary-text-color);
+  filter: brightness(0.7);
+}
+
+.name, .description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

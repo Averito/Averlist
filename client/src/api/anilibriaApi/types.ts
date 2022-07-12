@@ -12,7 +12,9 @@ export interface Torrent {
 
 export interface SeriesUsually {
 	serie: number
+	preview: string
 	hls: {
+		fhd?: string
 		hd: string
 		sd: string
 	}
@@ -20,6 +22,7 @@ export interface SeriesUsually {
 
 export interface Series {
 	[s: string]: {
+		preview: string
 		serie: number
 		hls: {
 			hd: string
@@ -70,6 +73,9 @@ export interface Title {
 	}
 	type: {
 		full_string: string
+		string: string
+		series: number
+		length: number
 	}
 	last_changes: string
 	team: {
@@ -79,14 +85,14 @@ export interface Title {
 		editing: string[]
 		decor: string[]
 	}
-	genres: Genres[]
+	genres: Genres
 	year: number
 	day: number
 	description: string
 	blocked: Block
-	player?: {
+	player: {
 		host: string
-		playlist: Series
+		playlist: Series | SeriesUsually[]
 	}
 	torrents?: Torrent[]
 }

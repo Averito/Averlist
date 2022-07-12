@@ -1,99 +1,45 @@
 import { FC } from 'react'
-import { Dropdown, Typography, Menu } from 'antd'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
+import Image from 'next/image'
 
-import styles from './styles.module.scss'
-import defaultAvatar from 'assets/icons/defaultAvatar.png'
-import { Hamburger } from './components/Hamburger'
-import { routes } from 'components/Router/routes'
-import { useWindowSize } from 'hooks/useWindowSize'
-import { useAppSelector } from 'hooks/useAppSelector'
-import { logout, setRandomTitle } from 'store/reducers/landingReducer'
-import { encodeAnimeName } from 'helpers/encodeAnimeName'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { MY_AVATAR_URI } from 'variebles'
+import styles from './Header.module.scss'
+import defaultAvatar from '@assets/images/defaultAvatar.png'
+import { useWindowSize } from '@hooks/useWindowSize'
 
 export const Header: FC = () => {
-	const { isMobile } = useWindowSize()
-
-	const dispatch = useAppDispatch()
-	const { randomTitle, isAuth } = useAppSelector(state => state.landing)
-	const { avatar, login } = useAppSelector(state => state.user)
-
-	const onClickLogout = () => {
-		dispatch(logout())
-	}
-
-	const onClickRandomAnime = () => {
-		dispatch(setRandomTitle())
-	}
-
-	const Account = (
-		<Menu>
-			{routes
-				.filter(route => route.type === 'options')
-				.map(route => (
-					<Menu.Item key={route.key}>
-						<Link to={route.route}>{route.name}</Link>
-					</Menu.Item>
-				))}
-			<Menu.Item key='logout' onClick={onClickLogout}>
-				Выйти
-			</Menu.Item>
-		</Menu>
-	)
-
-	const userAvatar = avatar ? `${MY_AVATAR_URI}${avatar}` : defaultAvatar
-	const randomAnimeName = encodeAnimeName(randomTitle?.names?.ru)
-
 	return (
-		<header className={styles.header}>
-			<div className={styles.headerItem1}>
-				<Link to='/'>
-					<Typography.Title
-						className='whiteColor'
-						level={4}
-						style={{ color: 'white', margin: 0 }}
-					>
-						Averlist
-					</Typography.Title>
-				</Link>
+		<header className={styles.container}>
+			<div className={styles.containerBlock1}>
+				<h1 className={styles.title} data-text='Averlist'>
+					<Link href='/src/pages'>Averlist</Link>
+				</h1>
+				<nav>
+					<ul className={styles.navList}>
+						<li>Главная</li>
+						<li>Новости</li>
+						<li>Рандом</li>
+						<li>
+							<a
+								href='https://discord.gg/h7jCXJ8d6w'
+								target='_blank'
+								rel='noreferrer'
+							>
+								Дискорд
+							</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
-			{isMobile ? (
-				<Hamburger />
-			) : (
-				<>
-					<div className={styles.headerItem2}>
-						<Menu mode='horizontal' theme='dark'>
-							{routes
-								.filter(route => route.type === 'another')
-								.map(route => (
-									<Menu.Item key={route.key}>
-										<Link to={route.route}>{route.name}</Link>
-									</Menu.Item>
-								))}
-							<Menu.Item key='random-title' onClick={onClickRandomAnime}>
-								<Link to={`/anime-library/${randomAnimeName}`}>
-									Рандомный тайтл
-								</Link>
-							</Menu.Item>
-						</Menu>
-					</div>
-					{isAuth ? (
-						<Dropdown overlay={Account}>
-							<Link to='/options'>
-								<img
-									className={styles.userAvatar}
-									src={userAvatar}
-									alt={login}
-								/>
-							</Link>
-						</Dropdown>
-					) : (
-						<p className={styles.accountButton}>Не авторизован</p>
-					)}
-				</>
-			)}
+			<div className={styles.containerBlock2}>
+				<Image
+					width={35}
+					height={35}
+					style={{ borderRadius: '50%' }}
+					src={defaultAvatar}
+					alt='Ава'
+				/>
+				<p className={styles.login}>Гость</p>
+			</div>
 		</header>
 	)
 }

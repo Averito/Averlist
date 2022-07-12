@@ -1,0 +1,99 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 50px 100px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(0.7);
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.containerBlock2 {
+  cursor: pointer;
+}
+
+.containerBlock1, .containerBlock2 {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  position: relative;
+  font-size: 22px;
+  margin: 0 15px 0 0;
+
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    cursor: pointer;
+    width: 0;
+    height: 100%;
+    color: var(--secondary-color);
+    transition: all 0.35s ease-in;
+    -webkit-text-stroke: 1px var(--secondary-color);
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+
+  > li {
+    position: relative;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: all 0.35s ease-in;
+
+    > a {
+      transition: all 0.35s ease-in;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      right: 0;
+      width: 0;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--secondary-color);
+      transition: all 0.35s ease-in;
+    }
+
+    &:nth-child(even)::before {
+      left: 0;
+    }
+
+    &:hover::before {
+      width: 100%;
+    }
+
+    &:hover {
+      color: var(--secondary-color);
+
+      > a {
+        color: var(--secondary-color);
+      }
+    }
+  }
+}
+
+.login {
+  margin: 0 0 0 8px;
+}

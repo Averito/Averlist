@@ -3,8 +3,9 @@ import {
 	Controller,
 	Get,
 	Param,
+	Patch,
 	Post,
-	Put,
+	Req,
 	UseGuards,
 	UsePipes,
 	ValidationPipe
@@ -16,26 +17,29 @@ import { AnimeService } from './anime.service'
 import { AnimeDto } from './DTO/anime.dto'
 
 @ApiTags('Anime')
+@UseGuards(JwtAuthGuard)
 @Controller('anime')
 export class AnimeController {
 	constructor(private readonly animeService: AnimeService) {}
 
 	@Get()
-	@UseGuards(JwtAuthGuard)
 	getAllAnime() {
 		return this.animeService.getAllAnime()
 	}
 
+	@Get('me')
+	getAllAnimeByUserId(@Req() req) {
+		return this.animeService.getAllAnimeByUserId(req.user.id)
+	}
+
 	@Post()
-	@UseGuards(JwtAuthGuard)
 	@UsePipes(new ValidationPipe({ transform: true }))
 	createAnime(@Body() anime: AnimeDto) {
 		return this.animeService.createAnime(anime)
 	}
 
-	@Put(':id')
-	@UseGuards(JwtAuthGuard)
-	editStatusAnime(@Param() params, @Body() anime: AnimeDto) {
-		return this.animeService.editStatusAnime(params.id, anime)
+	@Patch(':id')
+	editStatusAnime(@Param() params, @Body('status') status: number) {
+		return this.animeService.editStatusAnime(params.id, status)
 	}
 }

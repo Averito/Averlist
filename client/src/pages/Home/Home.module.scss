@@ -1,0 +1,8 @@
+.desktopContent {
+  padding: 15px;
+  //background: linear-gradient(black, transparent);
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+}
