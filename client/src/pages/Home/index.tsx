@@ -13,6 +13,8 @@ import { AnimeSlider } from '@components/AnimeSlider'
 import { reverseArray } from '@helpers/reverseArray'
 import { useAppDispatch } from '@hooks/useAppDispatch'
 import { getTitleListThunk } from '@store/reducers/mainReducer/mainThunks'
+import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
+import { usePropsOnClient } from '@pages/Home/hooks/usePropsOnClient'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -33,8 +35,6 @@ export const Home: NextPage<HomeProps> = ({
 		setSearch(newValue)
 	}
 
-	const reversedUpdatesTitleList = reverseArray(updatesTitleList)
-
 	useEffect(() => {
 		const params = {
 			filter: objectParamsByDefault.filter,
@@ -44,13 +44,16 @@ export const Home: NextPage<HomeProps> = ({
 		dispath(getTitleListThunk(params))
 	}, [dispath])
 
+	const { newFirstFiveTitles, newChangesTitleList, reversedUpdatesTitleList } =
+		usePropsOnClient(updatesTitleList, changesTitleList, firstFiveTitles)
+
 	return (
 		<div>
 			{/* Search only for mobile */}
 			<Search value={search} onChange={onChangeSearch} />
 
 			{/* MainAnimeSlider only for desktop */}
-			<MainAnimeSlider titleList={firstFiveTitles} />
+			<MainAnimeSlider titleList={newFirstFiveTitles} />
 			<div className={styles.desktopContent}>
 				<AnimeSlider
 					titleList={reversedUpdatesTitleList}
@@ -58,7 +61,7 @@ export const Home: NextPage<HomeProps> = ({
 					href='/'
 				/>
 				<AnimeSlider
-					titleList={changesTitleList}
+					titleList={newChangesTitleList}
 					title='Последние изменённые'
 					href='/'
 				/>
