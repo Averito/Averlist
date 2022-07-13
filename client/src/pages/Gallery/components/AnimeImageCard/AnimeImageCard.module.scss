@@ -6,12 +6,14 @@
   position: relative;
   border-radius: 10px;
   background: #1C1A33;
-  min-width: 250px;
-  min-height: 365px;
 }
 
 .animeImage {
   border-radius: 8px;
+}
+
+.animeImageHasClick {
+  cursor: pointer;
 }
 
 .downloadButton {

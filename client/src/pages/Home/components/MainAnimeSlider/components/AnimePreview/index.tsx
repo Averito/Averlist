@@ -28,7 +28,7 @@ export const AnimePreview: FC<AnimePreviewProps> = ({ series, title }) => {
 					<Tag type='length' title={title} />
 				</div>
 				<h2 className={styles.title}>
-					<Link href='/src/pages'>{title.names.ru}</Link>
+					<Link href={`/anime/${title.code}`}>{title.names.ru}</Link>
 				</h2>
 				<p className={styles.description}>{title.description}</p>
 			</div>

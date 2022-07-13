@@ -4,6 +4,16 @@
   --primary-color: #332c5e;
   --primary-text-color: #fafafa;
   --secondary-color: #d51b41;
+  --primary-font-size: 16px;
+  --primary-font-weight: 400;
+  --green: #6bea3b;
+  --black: #374A6E;
+  --gray: #8d8d8d;
+}
+
+* {
+  font-size: var(--primary-font-size);
+  font-weight: var(--primary-font-weight);
 }
 
 /* Указываем box sizing */

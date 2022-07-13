@@ -9,7 +9,7 @@ import { useWindowSize } from '@hooks/useWindowSize'
 interface AnimeSliderProps {
 	titleList: Title[]
 	title: string
-	href: string
+	href?: string
 }
 
 export const AnimeSlider: FC<AnimeSliderProps> = ({
@@ -20,7 +20,7 @@ export const AnimeSlider: FC<AnimeSliderProps> = ({
 	return (
 		<div className={styles.container}>
 			<h3 className={styles.title}>
-				<Link href={href}>{title}</Link>
+				{href ? <Link href={href}>{title}</Link> : title}
 			</h3>
 			<div className={styles.slider}>
 				{titleList.map(title => (

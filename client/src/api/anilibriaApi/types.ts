@@ -96,3 +96,8 @@ export interface Title {
 	}
 	torrents?: Torrent[]
 }
+
+export interface Schelude {
+	day: number
+	list: Title[]
+}

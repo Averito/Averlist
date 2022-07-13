@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 import styles from './NotFound.module.scss'
 import { useEffect } from 'react'
@@ -13,10 +14,15 @@ const NotFound: NextPage = () => {
 	}, [router])
 
 	return (
-		<section className={styles.container}>
-			<h1>Страница {decodeURI(asPath.slice(1))} не найдена.</h1>
-			<p>Перенаправление на главную через 3 секунды...</p>
-		</section>
+		<>
+			<Head>
+				<title>Averlist | 404</title>
+			</Head>
+			<section className={styles.container}>
+				<h1>Страница {decodeURI(asPath.slice(1))} не найдена.</h1>
+				<p>Перенаправление на главную через 3 секунды...</p>
+			</section>
+		</>
 	)
 }
 

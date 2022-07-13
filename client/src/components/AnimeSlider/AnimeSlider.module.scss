@@ -5,10 +5,12 @@
 }
 
 .title {
-  font-size: 24px;
   margin: 0 0 10px 0;
+  font-size: 24px;
+  color: var(--primary-text-color);
 
   > a {
+    font-size: 24px;
     color: var(--primary-text-color);
     transition: all 0.3s ease;
 

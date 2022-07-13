@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import styles from './Home.module.scss'
 import { anilibria, objectParamsByDefault } from '@anilibriaApi/anilibria'
-import { Title, SeriesUsually, Series } from '@anilibriaApi/types'
+import { Title, SeriesUsually, Series, Schelude } from '@anilibriaApi/types'
 import { seriesToSeriesUsually } from '@helpers/seriesToSeriesUsually'
 import { QueryObject } from '@helpers/generateQueryParamsString'
 import { MainAnimeSlider } from './components/MainAnimeSlider'
@@ -19,12 +19,14 @@ interface HomeProps {
 	updatesTitleList: Title[]
 	changesTitleList: Title[]
 	firstFiveTitles: Title[]
+	scheludeOfWeek: Schelude[]
 }
 
 export const Home: NextPage<HomeProps> = ({
 	updatesTitleList,
 	changesTitleList,
-	firstFiveTitles
+	firstFiveTitles,
+	scheludeOfWeek
 }) => {
 	const dispath = useAppDispatch()
 
@@ -37,8 +39,27 @@ export const Home: NextPage<HomeProps> = ({
 		dispath(getTitleListThunk(params))
 	}, [dispath])
 
-	const { newFirstFiveTitles, newChangesTitleList, reversedUpdatesTitleList } =
-		usePropsOnClient(updatesTitleList, changesTitleList, firstFiveTitles)
+	const {
+		newFirstFiveTitles,
+		newChangesTitleList,
+		reversedUpdatesTitleList,
+		newScheludeOfWeek
+	} = usePropsOnClient(
+		updatesTitleList,
+		changesTitleList,
+		firstFiveTitles,
+		scheludeOfWeek
+	)
+
+	const daysOfWeek = [
+		'Понедельник',
+		'Вторник',
+		'Среда',
+		'Четверг',
+		'Пятница',
+		'Суббота',
+		'Воскресенье'
+	]
 
 	return (
 		<div>
@@ -55,6 +76,16 @@ export const Home: NextPage<HomeProps> = ({
 					title='Последние изменённые'
 					href='/'
 				/>
+				<div>
+					<h3 className={styles.scheludeTitle}>Расписание тайтлов</h3>
+					{newScheludeOfWeek.map(schelude => (
+						<AnimeSlider
+							key={schelude.day}
+							titleList={schelude.list}
+							title={daysOfWeek[schelude.day]}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	)

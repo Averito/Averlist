@@ -15,12 +15,20 @@ export const getStaticProps: GetStaticProps = async () => {
 		limit: 30
 	}
 	const objectParamsForSlider: QueryObject = {
-		filter: ['id', 'names', 'description', 'player', 'status', 'type'],
+		filter: ['id', 'names', 'description', 'player', 'status', 'type', 'code'],
 		limit: 5
 	}
+	const objectParamsForSchelude: QueryObject = {
+		filter: ['id', 'names', 'description', 'posters', 'status', 'type', 'code']
+	}
+	const days = [0, 1, 2, 3, 4, 5, 6]
 
 	const updatesTitleList = await anilibria.getUpdates(objectParams)
 	const changesTitleList = await anilibria.getChanges(objectParams)
+	const scheludeOfWeek = await anilibria.getSchelude(
+		objectParamsForSchelude,
+		days
+	)
 	let firstFiveTitles = await anilibria.getChanges(objectParamsForSlider)
 	firstFiveTitles = firstSeriesToSeriesUsually(firstFiveTitles, 5)
 
@@ -28,7 +36,8 @@ export const getStaticProps: GetStaticProps = async () => {
 		props: {
 			updatesTitleList,
 			changesTitleList,
-			firstFiveTitles
+			firstFiveTitles,
+			scheludeOfWeek
 		}
 	}
 }

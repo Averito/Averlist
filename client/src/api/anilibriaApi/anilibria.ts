@@ -4,7 +4,7 @@ import {
 	generateQueryParamsString,
 	QueryObject
 } from '../../helpers/generateQueryParamsString'
-import { Title } from './types'
+import { Schelude, Title } from './types'
 
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 
@@ -64,6 +64,16 @@ export const anilibria = {
 			'/searchTitles' +
 			generateQueryParamsString(queryParams)
 		const response = await axios.get<Title[]>(url)
+		return response.data
+	},
+	async getSchelude(queryParams: QueryObject = {}, days: number[]) {
+		queryParams.days = days
+
+		const url =
+			ANILIBRIA_API_URI +
+			'/getSchedule' +
+			generateQueryParamsString(queryParams)
+		const response = await axios.get<Schelude[]>(url)
 		return response.data
 	}
 }

@@ -1,0 +1,54 @@
+.confirmModalContainer {
+  @media all and (max-width: 760px) {
+    width: 300px;
+  }
+}
+
+.confirmModal {
+  border-radius: 8px;
+  background-color: var(--primary-color);
+}
+
+.title {
+  text-align: center;
+  padding: 17px 0;
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--gray);
+}
+
+.content {
+  padding: 24px;
+}
+
+.bodyText {
+  margin-bottom: 24px;
+}
+
+.confirmModalFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancelButton {
+  background-color: white;
+  color: var(--black);
+}
+
+.okButton {
+  background: var(--green);
+  color: white;
+}
+
+.okButton, .cancelButton {
+  cursor: pointer;
+  border: none;
+  padding: 8px 0;
+  width: 120px;
+  border-radius: 10px;
+  transition: filter 0.3s ease;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}

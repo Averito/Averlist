@@ -37,6 +37,7 @@ export const useInfinityScroll = (
 	const onScrollFetch = useCallback(async () => {
 		let randomCategoryIdx = 0
 		let category = SFWCategories[0]
+
 		if (currentTab.alias === 'sfw') {
 			randomCategoryIdx = Math.ceil(Math.random() * SFWCategories.length - 1)
 			category = SFWCategories[randomCategoryIdx]
