@@ -16,10 +16,11 @@ import {
 
 export const useInfinityScroll = (
 	setAnimeImages: Dispatch<SetStateAction<string[]>>,
-	currentTab: Tab,
-	isFetch: boolean,
-	setIsFetch: Dispatch<SetStateAction<boolean>>
+	currentTab: Tab
 ) => {
+	const [isFetch, setIsFetch] = useState<boolean>(false)
+	const [counter, setCounter] = useState<number>(1)
+
 	const onScroll = useCallback(
 		(event: any) => {
 			const { innerHeight } = window
@@ -33,32 +34,33 @@ export const useInfinityScroll = (
 		[setIsFetch]
 	)
 
+	const onScrollFetch = useCallback(async () => {
+		let randomCategoryIdx = 0
+		let category = SFWCategories[0]
+		if (currentTab.alias === 'sfw') {
+			randomCategoryIdx = Math.ceil(Math.random() * SFWCategories.length - 1)
+			category = SFWCategories[randomCategoryIdx]
+		} else {
+			randomCategoryIdx = Math.ceil(Math.random() * NSFWCategories.length - 1)
+			category = NSFWCategories[randomCategoryIdx]
+		}
+
+		const newFiles = await getAnimeImage(
+			'many',
+			currentTab.alias as WaifuPics.Type,
+			category
+		)
+		setAnimeImages(previous => [...previous, ...(newFiles as string[])])
+	}, [currentTab.alias, setAnimeImages])
+
 	useEffect(() => {
 		window.addEventListener('scroll', onScroll)
 		return () => window.removeEventListener('scroll', onScroll)
 	}, [onScroll])
 
 	useEffect(() => {
-		if (!isFetch) return
+		if (isFetch) onScrollFetch()
+	}, [isFetch, onScrollFetch])
 
-		const asyncWrapper = async () => {
-			let randomCategoryIdx = 0
-			let category = SFWCategories[0]
-			if (currentTab.alias === 'sfw') {
-				randomCategoryIdx = Math.ceil(Math.random() * SFWCategories.length - 1)
-				category = SFWCategories[randomCategoryIdx]
-			} else {
-				randomCategoryIdx = Math.ceil(Math.random() * NSFWCategories.length - 1)
-				category = NSFWCategories[randomCategoryIdx]
-			}
-
-			const newFiles = await getAnimeImage(
-				'many',
-				currentTab.alias as WaifuPics.Type,
-				category
-			)
-			setAnimeImages(previous => [...previous, ...(newFiles as string[])])
-		}
-		asyncWrapper()
-	}, [isFetch, currentTab.alias, setAnimeImages])
+	return { setIsFetch }
 }

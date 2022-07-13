@@ -18,8 +18,7 @@ export const AnimeImageCard: FC<AnimeImageCardProps> = ({ animeImage }) => {
 				className={styles.animeImage}
 				src={animeImage}
 				alt='Картинка'
-				width={250}
-				height={365}
+				layout='fill'
 			/>
 			<Button
 				className={styles.downloadButton}

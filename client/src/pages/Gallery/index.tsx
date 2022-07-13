@@ -33,9 +33,8 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 	]
 
 	const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-	const [isFetch, setIsFetch] = useState<boolean>(false)
 
-	useInfinityScroll(setAnimeImages, currentTab, isFetch, setIsFetch)
+	const { setIsFetch } = useInfinityScroll(setAnimeImages, currentTab)
 
 	const onSelectTab = (newSelectedTab: Tab) => {
 		setCurrentTab(newSelectedTab)

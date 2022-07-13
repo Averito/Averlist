@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import styles from './Home.module.scss'
-import { Search } from '@components/Search'
 import { anilibria, objectParamsByDefault } from '@anilibriaApi/anilibria'
 import { Title, SeriesUsually, Series } from '@anilibriaApi/types'
 import { seriesToSeriesUsually } from '@helpers/seriesToSeriesUsually'
@@ -29,12 +28,6 @@ export const Home: NextPage<HomeProps> = ({
 }) => {
 	const dispath = useAppDispatch()
 
-	const [search, setSearch] = useState<string>('')
-
-	const onChangeSearch = (newValue: string) => {
-		setSearch(newValue)
-	}
-
 	useEffect(() => {
 		const params = {
 			filter: objectParamsByDefault.filter,
@@ -49,9 +42,6 @@ export const Home: NextPage<HomeProps> = ({
 
 	return (
 		<div>
-			{/* Search only for mobile */}
-			<Search value={search} onChange={onChangeSearch} />
-
 			{/* MainAnimeSlider only for desktop */}
 			<MainAnimeSlider titleList={newFirstFiveTitles} />
 			<div className={styles.desktopContent}>
