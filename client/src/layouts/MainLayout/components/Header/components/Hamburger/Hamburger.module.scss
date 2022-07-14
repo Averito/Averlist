@@ -1,0 +1,130 @@
+.hamburgerPlaceholder {
+  display: none;
+
+  @media all and (max-width: 600px) {
+    display: block;
+  }
+}
+
+.hamburger {
+  display: none;
+  top: 0;
+  transition: left 0.3s ease;
+  z-index: 99999;
+
+  @media all and (max-width: 600px) {
+    display: flex;
+  }
+}
+
+.hamburgerAbsolute {
+  position: absolute;
+}
+
+.hamburgerFixed {
+  position: fixed;
+}
+
+.hamburgerInActive {
+  left: -220px;
+}
+
+.hamburgerActive {
+  left: 0;
+  position: fixed;
+}
+
+.content {
+  width: 220px;
+  background: linear-gradient(140deg, var(--secondary-color) 0%, var(--primary-color) 40%);
+  margin-right: 10px;
+  filter: brightness(0.9);
+  min-height: 100vh;
+  padding: 10px;
+}
+
+.toggleButtonContainer {
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 30px;
+  margin: 7px 0 0 0;
+}
+
+.toggleButton {
+  position: relative;
+  width: 100%;
+  height: 5px;
+
+  > span {
+    position: absolute;
+    background-color: white;
+    height: 2px;
+    width: 100%;
+    left: 0;
+    transition: all 0.5s ease;
+  }
+}
+
+.toggleButtonActive {
+  > span:nth-of-type(1) {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  > span:nth-of-type(2) {
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+
+  > span:nth-of-type(3) {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+}
+
+.toggleButtonInActive {
+  > span:nth-of-type(1) {
+    top: 8px;
+  }
+
+  > span:nth-of-type(2) {
+    opacity: 1;
+    top: 0;
+  }
+
+  > span:nth-of-type(3) {
+    top: -8px;
+  }
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.menuListContainer {
+  width: 100%;
+}
+
+.menuList {
+  list-style: none;
+
+  > li {
+    width: fit-content;
+    cursor: pointer;
+    transition: margin-left 0.3s ease;
+
+    > a {
+      font-size: 18px;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 7px;
+    }
+
+    &:hover {
+      margin-left: 5px;
+    }
+  }
+}
