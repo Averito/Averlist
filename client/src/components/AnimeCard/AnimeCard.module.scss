@@ -1,11 +1,10 @@
 .container {
   max-width: 200px;
+  width: fit-content;
 }
 
 .poster {
   border-radius: 8px;
-  width: 200px;
-  height: 250px;
   cursor: pointer;
   transition: all 0.3s ease;
 

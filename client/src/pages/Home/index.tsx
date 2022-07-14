@@ -14,6 +14,7 @@ import { useAppDispatch } from '@hooks/useAppDispatch'
 import { getTitleListThunk } from '@store/reducers/mainReducer/mainThunks'
 import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
 import { usePropsOnClient } from '@pages/Home/hooks/usePropsOnClient'
+import { AnimeCard } from '@components/AnimeCard'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -86,6 +87,11 @@ export const Home: NextPage<HomeProps> = ({
 						/>
 					))}
 				</div>
+			</div>
+			<div className={styles.mobileContent}>
+				{newChangesTitleList.map(title => (
+					<AnimeCard title={title} key={title.id} />
+				))}
 			</div>
 		</div>
 	)

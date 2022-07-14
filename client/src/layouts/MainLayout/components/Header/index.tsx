@@ -7,6 +7,8 @@ import classnames from 'classnames'
 import styles from './Header.module.scss'
 import defaultAvatar from '@assets/images/defaultAvatar.png'
 import { useWindowSize } from '@hooks/useWindowSize'
+import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
+import { menu } from '@layouts/MainLayout/components/Header/menu'
 
 export const Header: FC = () => {
 	const router = useRouter()
@@ -20,6 +22,7 @@ export const Header: FC = () => {
 
 	return (
 		<header className={classnames(styles.container, mainPage)}>
+			<Hamburger />
 			<div className={styles.containerBlock1}>
 				<h1
 					className={styles.title}
@@ -30,14 +33,11 @@ export const Header: FC = () => {
 				</h1>
 				<nav>
 					<ul className={styles.navList}>
-						<li>
-							<Link href='/'>Главная</Link>
-						</li>
-						<li>Новости</li>
-						<li>Рандом</li>
-						<li>
-							<Link href='/gallery'>Галерея</Link>
-						</li>
+						{menu.map(menuItem => (
+							<li key={menuItem.id}>
+								<Link href={menuItem.to}>{menuItem.name}</Link>
+							</li>
+						))}
 						<li>
 							<a
 								href='https://discord.gg/h7jCXJ8d6w'
