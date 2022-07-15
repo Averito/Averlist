@@ -32,10 +32,12 @@ export const AnimeCard: FC<AnimeCardProps> = ({ title }) => {
 				alt='Картинка('
 				onClick={onClickPoster}
 			/>
-			<p className={styles.name}>
-				<Link href={toAnime}>{title.names.ru}</Link>
-			</p>
-			<p className={styles.description}>{title.description}</p>
+			<div className={styles.info}>
+				<p className={styles.name}>
+					<Link href={toAnime}>{title.names.ru}</Link>
+				</p>
+				<p className={styles.description}>{title.description}</p>
+			</div>
 		</div>
 	)
 }
