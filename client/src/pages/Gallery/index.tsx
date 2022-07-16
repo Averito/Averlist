@@ -19,7 +19,7 @@ import {
 	SFWCategories,
 	NSFWCategories
 } from '@waifuPicsApi/waifuPics'
-import { useInfinityScroll } from '@pages/Gallery/hooks/useInfinityScroll'
+import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { ConfirmModal } from '@components/ConfirmModal'
 import { useAppDispatch } from '@hooks/useAppDispatch'
 import { useAppSelector } from '@hooks/useAppSelector'
@@ -47,9 +47,30 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 	]
 
 	const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
+
+	const getAnimeImages = useCallback(async () => {
+		let randomCategoryIdx = 0
+		let category = SFWCategories[0]
+
+		if (currentTab.alias === 'sfw') {
+			randomCategoryIdx = Math.ceil(Math.random() * SFWCategories.length - 1)
+			category = SFWCategories[randomCategoryIdx]
+		} else {
+			randomCategoryIdx = Math.ceil(Math.random() * NSFWCategories.length - 1)
+			category = NSFWCategories[randomCategoryIdx]
+		}
+
+		const newFiles = await getAnimeImage(
+			'many',
+			currentTab.alias as WaifuPics.Type,
+			category
+		)
+		setAnimeImages(previous => [...previous, ...(newFiles as string[])])
+	}, [currentTab.alias, setAnimeImages])
+
 	const [confirmModalOpened, setConfirmModalOpened] = useState<boolean>(false)
 
-	const { setIsFetch } = useInfinityScroll(setAnimeImages, currentTab)
+	const { setIsFetch } = useInfinityScroll(getAnimeImages)
 
 	const onSelectTab = (newSelectedTab: Tab) => {
 		if (newSelectedTab.alias === 'nsfw' && !isAdult) {

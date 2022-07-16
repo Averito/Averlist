@@ -9,7 +9,7 @@ import { Schelude, Title } from './types'
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 
 export const objectParamsByDefault: QueryObject = {
-	filter: ['id', 'names', 'posters', 'description', 'status', 'type'],
+	filter: ['id', 'names', 'posters', 'description', 'status', 'type', 'code'],
 	limit: 30
 }
 

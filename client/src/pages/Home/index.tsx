@@ -15,6 +15,8 @@ import { getTitleListThunk } from '@store/reducers/mainReducer/mainThunks'
 import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
 import { usePropsOnClient } from '@pages/Home/hooks/usePropsOnClient'
 import { AnimeCard } from '@components/AnimeCard'
+import { HomeMobile } from '@pages/Home/components/HomeMobile'
+import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -52,47 +54,16 @@ export const Home: NextPage<HomeProps> = ({
 		scheludeOfWeek
 	)
 
-	const daysOfWeek = [
-		'Понедельник',
-		'Вторник',
-		'Среда',
-		'Четверг',
-		'Пятница',
-		'Суббота',
-		'Воскресенье'
-	]
-
 	return (
 		<div>
 			{/* MainAnimeSlider only for desktop */}
 			<MainAnimeSlider titleList={newFirstFiveTitles} />
-			<div className={styles.desktopContent}>
-				<AnimeSlider
-					titleList={reversedUpdatesTitleList}
-					title='Новинки'
-					href='/'
-				/>
-				<AnimeSlider
-					titleList={newChangesTitleList}
-					title='Последние изменённые'
-					href='/'
-				/>
-				<div>
-					<h3 className={styles.scheludeTitle}>Расписание тайтлов</h3>
-					{newScheludeOfWeek.map(schelude => (
-						<AnimeSlider
-							key={schelude.day}
-							titleList={schelude.list}
-							title={daysOfWeek[schelude.day]}
-						/>
-					))}
-				</div>
-			</div>
-			<div className={styles.mobileContent}>
-				{newChangesTitleList.map(title => (
-					<AnimeCard title={title} key={title.id} />
-				))}
-			</div>
+			<HomeDesktop
+				changesTitleList={newChangesTitleList}
+				reversedUpdatesTitleList={reversedUpdatesTitleList}
+				scheludeOfWeek={newScheludeOfWeek}
+			/>
+			<HomeMobile titleList={newChangesTitleList} />
 		</div>
 	)
 }

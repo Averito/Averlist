@@ -11,17 +11,17 @@ export const menu: MenuItem[] = [
 		to: '/'
 	},
 	{
-		id: 0,
+		id: 1,
 		name: 'Новости',
 		to: '/news'
 	},
 	{
-		id: 0,
+		id: 2,
 		name: 'Рандом',
 		to: '/random'
 	},
 	{
-		id: 0,
+		id: 3,
 		name: 'Галерея',
 		to: '/gallery'
 	}
