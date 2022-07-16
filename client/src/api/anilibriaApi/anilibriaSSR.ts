@@ -4,16 +4,16 @@ import {
 	generateQueryParamsString,
 	QueryObject
 } from '../../helpers/generateQueryParamsString'
-import { Schelude, Title } from './types'
+import { Schedule, Title } from './types'
 
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 
 export const objectParamsByDefault: QueryObject = {
-	filter: ['id', 'names', 'posters', 'description', 'status', 'type', 'code'],
+	filter: ['id', 'names', 'description', 'posters', 'status', 'type', 'code'],
 	limit: 30
 }
 
-export const anilibria = {
+export const anilibriaSSR = {
 	async getTitle(queryParams: QueryObject = {}) {
 		const url =
 			ANILIBRIA_API_URI + '/getTitle' + generateQueryParamsString(queryParams)
@@ -66,14 +66,14 @@ export const anilibria = {
 		const response = await axios.get<Title[]>(url)
 		return response.data
 	},
-	async getSchelude(queryParams: QueryObject = {}, days: number[]) {
+	async getSchedule(queryParams: QueryObject = {}, days: number[]) {
 		queryParams.days = days
 
 		const url =
 			ANILIBRIA_API_URI +
 			'/getSchedule' +
 			generateQueryParamsString(queryParams)
-		const response = await axios.get<Schelude[]>(url)
+		const response = await axios.get<Schedule[]>(url)
 		return response.data
 	}
 }

@@ -1,23 +1,16 @@
 import { NextPage } from 'next'
-import Image from 'next/image'
 import Head from 'next/head'
 import ImageViewer from 'react-simple-image-viewer'
 
 import styles from './Gallery.module.scss'
 import { AnimeImageCard } from '@pages/Gallery/components/AnimeImageCard'
 import { Tab, Tabs } from '@components/Tabs'
-import {
-	ChangeEventHandler,
-	MouseEventHandler,
-	useCallback,
-	useEffect,
-	useState
-} from 'react'
+import { MouseEventHandler, useCallback, useState } from 'react'
 import {
 	getAnimeImage,
-	WaifuPics,
+	NSFWCategories,
 	SFWCategories,
-	NSFWCategories
+	WaifuPics
 } from '@waifuPicsApi/waifuPics'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { ConfirmModal } from '@components/ConfirmModal'

@@ -3,9 +3,9 @@ import { FC, useCallback, useState } from 'react'
 import styles from './HomeMobile.module.scss'
 import { AnimeCard } from '@components/AnimeCard'
 import { Title } from '@anilibriaApi/types'
-import { anilibria, objectParamsByDefault } from '@anilibriaApi/anilibria'
-import { prev } from 'dom7'
+import { anilibriaSSR, objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
+import { uniqueIds } from '@helpers/uniqueIds'
 
 interface HomeMobileProps {
 	titleList: Title[]
@@ -25,9 +25,11 @@ export const HomeMobile: FC<HomeMobileProps> = ({ titleList }) => {
 			after: pageSize * currentPage
 		}
 
-		const newTitles = await anilibria.getChanges(queryObject)
+		const newTitles = await anilibriaSSR.getChanges(queryObject)
 
-		setTitleListCopy(prevTitleList => [...prevTitleList, ...newTitles])
+		setTitleListCopy(
+			prevTitleList => uniqueIds([...prevTitleList, ...newTitles]) as Title[]
+		)
 		setCurrentPage(prevCurrentPage => prevCurrentPage + 1)
 	}, [currentPage])
 

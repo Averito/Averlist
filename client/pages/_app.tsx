@@ -1,6 +1,4 @@
 import '../styles/globals.css'
-import { NextPage } from 'next'
-import { ReactElement, ReactNode } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'react-redux'

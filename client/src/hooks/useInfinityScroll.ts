@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useInfinityScroll = (onFetch: () => unknown) => {
 	const [isFetch, setIsFetch] = useState<boolean>(false)
@@ -10,7 +10,7 @@ export const useInfinityScroll = (onFetch: () => unknown) => {
 			const { innerHeight } = window
 			const { scrollHeight, scrollTop } = event.target.documentElement
 
-			if (scrollHeight - (innerHeight + scrollTop) < 200) {
+			if (scrollHeight - (innerHeight + scrollTop) < 10) {
 				return setIsFetch(true)
 			}
 		},
@@ -25,7 +25,7 @@ export const useInfinityScroll = (onFetch: () => unknown) => {
 	useEffect(() => {
 		if (isFetch) {
 			onFetch()
-			console.log('Заебал блять')
+			setIsFetch(false)
 		}
 	}, [isFetch, onFetch])
 

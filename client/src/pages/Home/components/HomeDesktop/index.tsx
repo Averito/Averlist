@@ -2,15 +2,19 @@ import { FC } from 'react'
 
 import styles from './HomeDesktop.module.scss'
 import { AnimeSlider } from '@components/AnimeSlider'
-import { Schelude, Title } from '@anilibriaApi/types'
+import { Schedule, Title } from '@anilibriaApi/types'
 
 interface HomeDesktopProps {
-	scheludeOfWeek: Schelude[]
+	scheludeOfWeek: Schedule[]
 	reversedUpdatesTitleList: Title[]
 	changesTitleList: Title[]
 }
 
-export const HomeDesktop: FC<HomeDesktopProps> = ({ scheludeOfWeek, changesTitleList, reversedUpdatesTitleList }) => {
+export const HomeDesktop: FC<HomeDesktopProps> = ({
+	scheludeOfWeek,
+	changesTitleList,
+	reversedUpdatesTitleList
+}) => {
 	const daysOfWeek = [
 		'Понедельник',
 		'Вторник',

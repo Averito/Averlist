@@ -4,7 +4,6 @@ import { FC } from 'react'
 import styles from './AnimeSlider.module.scss'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
-import { useWindowSize } from '@hooks/useWindowSize'
 
 interface AnimeSliderProps {
 	titleList: Title[]

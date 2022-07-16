@@ -1,81 +1,52 @@
-import { Schelude, Title } from '@anilibriaApi/types'
-import { useEffect, useState } from 'react'
+import { Schedule, Title } from '@anilibriaApi/types'
 import { reverseArray } from '@helpers/reverseArray'
-import { QueryObject } from '@helpers/generateQueryParamsString'
-import { anilibria } from '@anilibriaApi/anilibria'
+import { objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
 import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
+import {
+	useGetChangesQuery,
+	useGetScheduleQuery,
+	useGetUpdatesQuery
+} from '@anilibriaApi/anilibriaRTK'
 
 export const usePropsOnClient = (
 	updatesTitleList: Title[],
 	changesTitleList: Title[],
 	firstFiveTitles: Title[],
-	scheludeOfWeek: Schelude[]
+	scheludeOfWeek: Schedule[]
 ) => {
-	const [reversedUpdatesTitleList, setReversedUpdatesTitleList] = useState<
-		Title[]
-	>(reverseArray(updatesTitleList))
-	const [newChangesTitleList, setNewChangesTitleList] =
-		useState<Title[]>(changesTitleList)
-	const [newFirstFiveTitles, setNewFirstFiveTitles] =
-		useState<Title[]>(firstFiveTitles)
-	const [newScheludeOfWeek, setNewScheludeOfWeek] =
-		useState<Schelude[]>(scheludeOfWeek)
+	const { data: newUpdatesTitleList } = useGetUpdatesQuery(
+		objectParamsByDefault
+	)
+	const reversedUpdatesTitleList = reverseArray(
+		newUpdatesTitleList ?? updatesTitleList
+	)
 
-	useEffect(() => {
-		const asyncWrapper = async () => {
-			const objectParams: QueryObject = {
-				filter: [
-					'id',
-					'names',
-					'description',
-					'posters',
-					'status',
-					'type',
-					'code'
-				],
-				limit: 30
-			}
-			const objectParamsForSlider: QueryObject = {
-				filter: [
-					'id',
-					'names',
-					'description',
-					'player',
-					'status',
-					'type',
-					'code'
-				],
-				limit: 5
-			}
-			const objectParamsForSchelude: QueryObject = {
-				filter: [
-					'id',
-					'names',
-					'description',
-					'posters',
-					'status',
-					'type',
-					'code'
-				]
-			}
-			const days = [0, 1, 2, 3, 4, 5, 6]
+	const { data: changesTitleListUnstable } = useGetChangesQuery(
+		objectParamsByDefault
+	)
+	const newChangesTitleList = changesTitleListUnstable
+		? changesTitleListUnstable
+		: changesTitleList
 
-			const updatesTitleList = await anilibria.getUpdates(objectParams)
-			const changesTitleList = await anilibria.getChanges(objectParams)
-			const scheludeOfWeek = await anilibria.getSchelude(
-				objectParamsForSchelude,
-				days
-			)
-			let firstFiveTitles = await anilibria.getChanges(objectParamsForSlider)
-			firstFiveTitles = firstSeriesToSeriesUsually(firstFiveTitles, 5)
+	const config = {
+		params: {
+			filter: objectParamsByDefault.filter
+		},
+		days: [0, 1, 2, 3, 4, 5, 6]
+	}
+	const { data: scheludeOfWeekUnstable } = useGetScheduleQuery(config)
+	const newScheludeOfWeek = scheludeOfWeekUnstable
+		? scheludeOfWeekUnstable
+		: scheludeOfWeek
 
-			setReversedUpdatesTitleList(reverseArray(updatesTitleList))
-			setNewChangesTitleList(changesTitleList)
-			setNewFirstFiveTitles(firstFiveTitles)
-			setNewScheludeOfWeek(scheludeOfWeek)
-		}
-		asyncWrapper()
-	}, [])
+	const queryObject = {
+		filter: [...(objectParamsByDefault.filter as string[]), 'player'],
+		limit: 5
+	}
+	const { data: firstFiveTitlesUnstable } = useGetChangesQuery(queryObject)
+	const newFirstFiveTitles = firstSeriesToSeriesUsually(
+		firstFiveTitlesUnstable ?? firstFiveTitles
+	)
 
 	return {
 		reversedUpdatesTitleList,

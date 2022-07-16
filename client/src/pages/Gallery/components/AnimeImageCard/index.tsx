@@ -1,7 +1,5 @@
 import { FC, MouseEventHandler } from 'react'
-import { useRouter } from 'next/router'
 import Image from 'next/image'
-import Link from 'next/link'
 import classnames from 'classnames'
 
 import styles from './AnimeImageCard.module.scss'

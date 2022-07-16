@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactChildren, ReactNode } from 'react'
+import { FC, MouseEventHandler, ReactNode } from 'react'
 import classnames from 'classnames'
 
 import styles from './Button.module.scss'

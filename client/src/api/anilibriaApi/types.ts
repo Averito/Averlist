@@ -1,3 +1,5 @@
+import { QueryObject } from '@helpers/generateQueryParamsString'
+
 export interface Torrent {
 	id: number
 	hash: string
@@ -97,7 +99,12 @@ export interface Title {
 	torrents?: Torrent[]
 }
 
-export interface Schelude {
+export interface Schedule {
 	day: number
 	list: Title[]
+}
+
+export interface ScheludeRequest {
+	params: QueryObject
+	days: number[]
 }

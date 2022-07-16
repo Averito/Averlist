@@ -6,7 +6,6 @@ import classnames from 'classnames'
 
 import styles from './Header.module.scss'
 import defaultAvatar from '@assets/images/defaultAvatar.png'
-import { useWindowSize } from '@hooks/useWindowSize'
 import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
 import { menu } from '@layouts/MainLayout/components/Header/menu'
 
@@ -18,7 +17,9 @@ export const Header: FC = () => {
 	}
 
 	const mainPage =
-		router.asPath === '/' ? styles.containerShadow : styles.containerNonShadow
+		router.asPath === '/'
+			? styles.containerMainPage
+			: styles.containerNotMainPage
 
 	return (
 		<header className={classnames(styles.container, mainPage)}>
