@@ -1,11 +1,11 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import ImageViewer from 'react-simple-image-viewer'
+import { useRouter } from 'next/router'
 
 import styles from './Gallery.module.scss'
 import { AnimeImageCard } from '@pages/Gallery/components/AnimeImageCard'
 import { Tab, Tabs } from '@components/Tabs'
-import { MouseEventHandler, useCallback, useState } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
 import {
 	getAnimeImage,
 	NSFWCategories,
@@ -17,29 +17,34 @@ import { ConfirmModal } from '@components/ConfirmModal'
 import { useAppDispatch } from '@hooks/useAppDispatch'
 import { useAppSelector } from '@hooks/useAppSelector'
 import { setIsAdult } from '@store/reducers/mainReducer'
+import { tabs } from '@pages/Gallery/tabs'
+import {
+	appendAnimeImages,
+	setAnimeImages,
+	setScrollHeight
+} from '@store/reducers/galleryReducer'
+import { at } from '@helpers/at'
 
 interface GalleryProps {
 	files: string[]
 }
 
 export const Gallery: NextPage<GalleryProps> = ({ files }) => {
+	const router = useRouter()
 	const dispatch = useAppDispatch()
+
 	const isAdult = useAppSelector(state => state.main.isAdult)
-
-	const [animeImages, setAnimeImages] = useState<string[]>(files)
-
-	const tabs = [
-		{
-			name: 'SFW',
-			alias: 'sfw'
-		},
-		{
-			name: 'NSFW',
-			alias: 'nsfw'
-		}
-	]
+	const { animeImages, savedScrollHeight } = useAppSelector(
+		state => state.gallery
+	)
 
 	const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
+
+	useEffect(() => {
+		window.scrollTo({ top: savedScrollHeight })
+
+		dispatch(setAnimeImages(files))
+	}, [dispatch, files, savedScrollHeight])
 
 	const getAnimeImages = useCallback(async () => {
 		let randomCategoryIdx = 0
@@ -53,13 +58,13 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 			category = NSFWCategories[randomCategoryIdx]
 		}
 
-		const newFiles = await getAnimeImage(
+		const newAnimeImages = await getAnimeImage(
 			'many',
 			currentTab.alias as WaifuPics.Type,
 			category
 		)
-		setAnimeImages(previous => [...previous, ...(newFiles as string[])])
-	}, [currentTab.alias, setAnimeImages])
+		dispatch(appendAnimeImages(newAnimeImages as string[]))
+	}, [currentTab.alias, dispatch])
 
 	const [confirmModalOpened, setConfirmModalOpened] = useState<boolean>(false)
 
@@ -70,8 +75,11 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 			return setConfirmModalOpened(true)
 		}
 
+		if (newSelectedTab.alias !== currentTab.alias) {
+			dispatch(setAnimeImages([]))
+		}
+
 		setCurrentTab(newSelectedTab)
-		setAnimeImages([])
 		setIsFetch(true)
 	}
 
@@ -79,17 +87,14 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 		setConfirmModalOpened(false)
 	}
 	const onOkConfirmModal: MouseEventHandler<HTMLButtonElement> = () => {
+		dispatch(setAnimeImages([]))
 		setCurrentTab(tabs[1])
-		setAnimeImages([])
 		setIsFetch(true)
 		setConfirmModalOpened(false)
 
 		if (isAdult) return
 		dispatch(setIsAdult(true))
 	}
-
-	const [imageViewerOpened, setImageViewerOpened] = useState<boolean>(false)
-	const [currentImage, setCurrentImage] = useState<number>(0)
 
 	const openImageViewer = (
 		animeImage: string
@@ -98,13 +103,14 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 			const animeImageIdx = animeImages.findIndex(
 				animeImageInArr => animeImageInArr === animeImage
 			)
-			setCurrentImage(animeImageIdx)
-			setImageViewerOpened(true)
+			const animeImageName = at(animeImages[animeImageIdx].split('/'), -1)
+
+			dispatch(setScrollHeight(window.scrollY))
+			router.push(`/gallery/${animeImageName}`)
 		}
 	}
-	const closeImageViewer = () => {
-		setImageViewerOpened(false)
-	}
+
+	const animeImagesTernary = animeImages.length ? animeImages : files
 
 	return (
 		<>
@@ -116,7 +122,7 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 					<Tabs tabs={tabs} currentTab={currentTab} selectTab={onSelectTab} />
 				</div>
 				<div className={styles.animeImagesContainer}>
-					{animeImages.map((image, idx) => (
+					{animeImagesTernary.map((image, idx) => (
 						<AnimeImageCard
 							onClick={openImageViewer}
 							animeImage={image}
@@ -133,15 +139,6 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 					onOK={onOkConfirmModal}
 					opened={confirmModalOpened}
 				/>
-				{imageViewerOpened && (
-					<ImageViewer
-						src={animeImages}
-						currentIndex={currentImage}
-						disableScroll={false}
-						closeOnClickOutside={true}
-						onClose={closeImageViewer}
-					/>
-				)}
 			</div>
 		</>
 	)

@@ -1,12 +1,14 @@
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { configureStore } from '@reduxjs/toolkit'
 
-import { mainReducer } from './reducers/mainReducer'
 import { anilibriaRTK } from '@anilibriaApi/anilibriaRTK'
+import { mainReducer } from '@store/reducers/mainReducer'
+import { galleryReducer } from '@store/reducers/galleryReducer'
 
 export const store = configureStore({
 	reducer: {
 		main: mainReducer,
+		gallery: galleryReducer,
 		[anilibriaRTK.reducerPath]: anilibriaRTK.reducer
 	},
 	middleware: getDefaultMiddleware =>

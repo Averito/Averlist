@@ -6,11 +6,11 @@ import { getAnimeImage } from '@waifuPicsApi/waifuPics'
 export default Gallery
 
 export const getStaticProps: GetStaticProps = async () => {
-	const files = await getAnimeImage('many', 'sfw', 'waifu')
+	const animeImages = await getAnimeImage('many', 'sfw', 'waifu')
 
 	return {
 		props: {
-			files: files
+			files: animeImages
 		}
 	}
 }
