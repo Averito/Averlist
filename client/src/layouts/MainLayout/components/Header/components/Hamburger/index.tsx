@@ -38,6 +38,7 @@ export const Hamburger: FC = () => {
 	}
 
 	const onClickOnTitle = () => {
+		hamburgerClose()
 		router.push('/')
 	}
 
