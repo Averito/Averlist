@@ -1,0 +1,40 @@
+.wrapper {
+  padding: 15px;
+}
+
+.title {
+  font-size: 28px;
+}
+
+.tags {
+  margin-bottom: 15px;
+}
+
+.recommendations {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 15px;
+
+  @media all and (max-width: 1750px) {
+    grid-template-columns: repeat(7, 1fr);
+  }
+  @media all and (max-width: 1523px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  @media all and (max-width: 1320px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  @media all and (max-width: 1100px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media all and (max-width: 880px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media all and (max-width: 450px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.searchBlock {
+  margin-bottom: 15px;
+}
