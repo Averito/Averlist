@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import classnames from 'classnames'
@@ -35,23 +35,38 @@ export const GalleryImageViewer: NextPage = () => {
 		router.push('/gallery')
 	}
 
-	const onClickLeftArrow: MouseEventHandler<HTMLDivElement> = () => {
-		if (!animeImages[currentAnimeImageIdx]) return
+	const onClickLeftArrow: MouseEventHandler<HTMLDivElement> =
+		useCallback(() => {
+			if (!animeImages[currentAnimeImageIdx]) return
 
-		const nextIdx = currentAnimeImageIdx
-			? currentAnimeImageIdx - 1
-			: animeImages.length - 1
-		setCurrentAnimeImageIdx(nextIdx)
-	}
-	const onClickRightArrow: MouseEventHandler<HTMLDivElement> = () => {
-		if (!animeImages[currentAnimeImageIdx]) return
+			const nextIdx = currentAnimeImageIdx
+				? currentAnimeImageIdx - 1
+				: animeImages.length - 1
+			setCurrentAnimeImageIdx(nextIdx)
+		}, [animeImages, currentAnimeImageIdx])
+	const onClickRightArrow: MouseEventHandler<HTMLDivElement> =
+		useCallback(() => {
+			if (!animeImages[currentAnimeImageIdx]) return
 
-		const nextIdx =
-			currentAnimeImageIdx === animeImages.length - 1
-				? 0
-				: currentAnimeImageIdx + 1
-		setCurrentAnimeImageIdx(nextIdx)
-	}
+			const nextIdx =
+				currentAnimeImageIdx === animeImages.length - 1
+					? 0
+					: currentAnimeImageIdx + 1
+			setCurrentAnimeImageIdx(nextIdx)
+		}, [animeImages, currentAnimeImageIdx])
+
+	const onKeyDown = useCallback(
+		(event: any) => {
+			if (event.code === 'ArrowRight') onClickRightArrow(event)
+			if (event.code === 'ArrowLeft') onClickLeftArrow(event)
+		},
+		[onClickRightArrow, onClickLeftArrow]
+	)
+
+	useEffect(() => {
+		window.addEventListener('keydown', onKeyDown)
+		return () => window.removeEventListener('keydown', onKeyDown)
+	}, [onKeyDown])
 
 	const arrowDisabled = animeImages[currentAnimeImageIdx]
 		? ''

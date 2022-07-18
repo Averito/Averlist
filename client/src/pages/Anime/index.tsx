@@ -25,7 +25,7 @@ export const Anime: NextPage<AnimeProps> = ({ years, genres, titleList }) => {
 			/>
 			<section className={styles.wrapper}>
 				<h1 className={styles.title}>Новинки {dayjs().year()} года</h1>
-				<div className={styles.tags}>xp xa xas</div>
+				<div className={styles.tags}>Тут будут различные теги</div>
 				<div className={styles.searchBlock}>
 					<Search
 						value={searchValue}
