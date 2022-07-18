@@ -11,7 +11,7 @@ export const IgnorePaths: FC<PropsWithChildren<IgnorePathsProps>> = ({
 }) => {
 	const router = useRouter()
 
-	const currentRouteIgnored = ignorePaths.some(path => path === router.pathname)
+	const currentRouteIgnored = ignorePaths.includes(router.pathname)
 	if (currentRouteIgnored) return <></>
 
 	return <>{children}</>

@@ -11,6 +11,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			files: animeImages
-		}
+		},
+		revalidate: 60
 	}
 }

@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import styles from './Gallery.module.scss'
@@ -25,6 +24,7 @@ import {
 	setScrollHeight
 } from '@store/reducers/galleryReducer'
 import { at } from '@helpers/at'
+import { Meta } from '@utils/Meta'
 
 interface GalleryProps {
 	files: string[]
@@ -113,9 +113,10 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 
 	return (
 		<>
-			<Head>
-				<title>Averlist | Галерея</title>
-			</Head>
+			<Meta
+				title='Averlist | Галерея'
+				description='Коллекция NSFW (и не очень) артов)'
+			/>
 			<div className={styles.container}>
 				<div className={styles.tabsSegment}>
 					<Tabs tabs={tabs} currentTab={currentTab} selectTab={onSelectTab} />

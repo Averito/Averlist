@@ -30,12 +30,12 @@ export const HomeDesktop: FC<HomeDesktopProps> = ({
 			<AnimeSlider
 				titleList={reversedUpdatesTitleList}
 				title='Новинки'
-				href='/'
+				href='/anime'
 			/>
 			<AnimeSlider
 				titleList={changesTitleList}
 				title='Последние изменённые'
-				href='/'
+				href='/anime'
 			/>
 			<div>
 				<h3 className={styles.scheludeTitle}>Расписание тайтлов</h3>

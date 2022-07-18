@@ -47,7 +47,9 @@ export const GalleryImageViewer: NextPage = () => {
 		if (!animeImages[currentAnimeImageIdx]) return
 
 		const nextIdx =
-			currentAnimeImageIdx === animeImages.length ? 0 : currentAnimeImageIdx + 1
+			currentAnimeImageIdx === animeImages.length - 1
+				? 0
+				: currentAnimeImageIdx + 1
 		setCurrentAnimeImageIdx(nextIdx)
 	}
 

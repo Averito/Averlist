@@ -1,7 +1,7 @@
 .hamburgerPlaceholder {
   display: none;
 
-  @media all and (max-width: 600px) {
+  @media all and (max-width: 768px) {
     display: block;
   }
 }
@@ -12,7 +12,7 @@
   transition: left 0.3s ease;
   z-index: 99999;
 
-  @media all and (max-width: 600px) {
+  @media all and (max-width: 768px) {
     display: flex;
   }
 }

@@ -1,4 +1,4 @@
-// Данная функция возвращает НОВЫЙ реверсивный начальному массив
+// Возвращает НОВЫЙ реверсивный начальному массив
 
 export const reverseArray = (anyArray: Array<any>): Array<any> => {
 	const copyArray = JSON.parse(JSON.stringify(anyArray))

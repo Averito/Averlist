@@ -32,6 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			changesTitleList,
 			firstFiveTitles,
 			scheludeOfWeek
-		}
+		},
+		revalidate: 60
 	}
 }

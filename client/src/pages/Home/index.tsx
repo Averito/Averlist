@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 import { Schedule, Title } from '@anilibriaApi/types'
 import { MainAnimeSlider } from './components/MainAnimeSlider'
-import { usePropsOnClient } from '@pages/Home/hooks/usePropsOnClient'
 import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
+import { reverseArray } from '@helpers/reverseArray'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -18,28 +18,18 @@ export const Home: NextPage<HomeProps> = ({
 	firstFiveTitles,
 	scheludeOfWeek
 }) => {
-	const {
-		newFirstFiveTitles,
-		newScheludeOfWeek,
-		newChangesTitleList,
-		reversedUpdatesTitleList
-	} = usePropsOnClient(
-		updatesTitleList,
-		changesTitleList,
-		firstFiveTitles,
-		scheludeOfWeek
-	)
+	const reversedUpdatesTitleList = reverseArray(updatesTitleList)
 
 	return (
 		<div>
 			{/* MainAnimeSlider only for desktop */}
-			<MainAnimeSlider titleList={newFirstFiveTitles} />
+			<MainAnimeSlider titleList={firstFiveTitles} />
 			<HomeDesktop
-				changesTitleList={newChangesTitleList}
+				changesTitleList={changesTitleList}
 				reversedUpdatesTitleList={reversedUpdatesTitleList}
-				scheludeOfWeek={newScheludeOfWeek}
+				scheludeOfWeek={scheludeOfWeek}
 			/>
-			<HomeMobile titleList={newChangesTitleList} />
+			<HomeMobile titleList={changesTitleList} />
 		</div>
 	)
 }

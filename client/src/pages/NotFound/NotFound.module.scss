@@ -4,4 +4,8 @@
   align-items: center;
   flex-direction: column;
   height: 100vh;
+
+  > h1, p {
+    text-align: center;
+  }
 }
