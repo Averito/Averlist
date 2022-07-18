@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { Tab } from '@components/Tabs'
+import { tabs } from '@pages/Gallery/tabs'
+
 const gallerySlice = createSlice({
 	name: 'gallery',
 	initialState: {
 		animeImages: [] as string[],
-		savedScrollHeight: 0
+		savedScrollHeight: 0,
+		currentTab: tabs[0] as Tab
 	},
 	reducers: {
 		setAnimeImages: (state, { payload }: PayloadAction<string[]>) => {
@@ -15,10 +19,17 @@ const gallerySlice = createSlice({
 		},
 		setScrollHeight: (state, { payload }: PayloadAction<number>) => {
 			state.savedScrollHeight = payload
+		},
+		setCurrentTab: (state, { payload }: PayloadAction<Tab>) => {
+			state.currentTab = payload
 		}
 	}
 })
 
 export const galleryReducer = gallerySlice.reducer
-export const { setAnimeImages, appendAnimeImages, setScrollHeight } =
-	gallerySlice.actions
+export const {
+	setAnimeImages,
+	appendAnimeImages,
+	setScrollHeight,
+	setCurrentTab
+} = gallerySlice.actions

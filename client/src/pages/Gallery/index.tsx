@@ -21,6 +21,7 @@ import { tabs } from '@pages/Gallery/tabs'
 import {
 	appendAnimeImages,
 	setAnimeImages,
+	setCurrentTab,
 	setScrollHeight
 } from '@store/reducers/galleryReducer'
 import { at } from '@helpers/at'
@@ -34,16 +35,16 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 	const dispatch = useAppDispatch()
 
 	const isAdult = useAppSelector(state => state.main.isAdult)
-	const { animeImages, savedScrollHeight } = useAppSelector(
+	const { animeImages, savedScrollHeight, currentTab } = useAppSelector(
 		state => state.gallery
 	)
-
-	const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
 
 	useEffect(() => {
 		window.scrollTo({ top: savedScrollHeight })
 
-		dispatch(setAnimeImages(files))
+		const oldAnimeImages =
+			animeImages.length >= files.length ? animeImages : files
+		dispatch(setAnimeImages(oldAnimeImages))
 	}, [dispatch, files, savedScrollHeight])
 
 	const getAnimeImages = useCallback(async () => {
@@ -79,7 +80,7 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 			dispatch(setAnimeImages([]))
 		}
 
-		setCurrentTab(newSelectedTab)
+		dispatch(setCurrentTab(newSelectedTab))
 		setIsFetch(true)
 	}
 
@@ -88,7 +89,7 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 	}
 	const onOkConfirmModal: MouseEventHandler<HTMLButtonElement> = () => {
 		dispatch(setAnimeImages([]))
-		setCurrentTab(tabs[1])
+		dispatch(setCurrentTab(tabs[1]))
 		setIsFetch(true)
 		setConfirmModalOpened(false)
 
@@ -110,8 +111,6 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 		}
 	}
 
-	const animeImagesTernary = animeImages.length ? animeImages : files
-
 	return (
 		<>
 			<Head>
@@ -122,7 +121,7 @@ export const Gallery: NextPage<GalleryProps> = ({ files }) => {
 					<Tabs tabs={tabs} currentTab={currentTab} selectTab={onSelectTab} />
 				</div>
 				<div className={styles.animeImagesContainer}>
-					{animeImagesTernary.map((image, idx) => (
+					{animeImages.map((image, idx) => (
 						<AnimeImageCard
 							onClick={openImageViewer}
 							animeImage={image}
