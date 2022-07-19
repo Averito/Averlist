@@ -1,4 +1,4 @@
-import { QueryObject } from '@helpers/generateQueryParamsString'
+import { QueryObject } from '@helpers/queryParamsString'
 
 export interface Torrent {
 	id: number

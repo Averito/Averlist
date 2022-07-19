@@ -42,6 +42,7 @@ export const GalleryImageViewer: NextPage = () => {
 			const nextIdx = currentAnimeImageIdx
 				? currentAnimeImageIdx - 1
 				: animeImages.length - 1
+
 			setCurrentAnimeImageIdx(nextIdx)
 		}, [animeImages, currentAnimeImageIdx])
 	const onClickRightArrow: MouseEventHandler<HTMLDivElement> =
@@ -52,6 +53,7 @@ export const GalleryImageViewer: NextPage = () => {
 				currentAnimeImageIdx === animeImages.length - 1
 					? 0
 					: currentAnimeImageIdx + 1
+
 			setCurrentAnimeImageIdx(nextIdx)
 		}, [animeImages, currentAnimeImageIdx])
 

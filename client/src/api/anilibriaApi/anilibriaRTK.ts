@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import { Schedule, ScheludeRequest, Title } from '@anilibriaApi/types'
-import { QueryObject } from '@helpers/generateQueryParamsString'
+import { QueryObject } from '@helpers/queryParamsString'
 
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 

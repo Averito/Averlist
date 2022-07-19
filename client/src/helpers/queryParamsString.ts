@@ -3,7 +3,7 @@ type QueryObjectValue = string[] | string | number | number[]
 export type QueryObject = Record<string, QueryObjectValue>
 type StringQueryParamsObject = Record<string, string[]>
 
-export const generateQueryParamsString = (queryParamsObject: QueryObject) => {
+export const queryParamsString = (queryParamsObject: QueryObject) => {
 	const stringQueryParamsObject: StringQueryParamsObject = {}
 	const queryString = new URLSearchParams()
 	for (const key in queryParamsObject) {

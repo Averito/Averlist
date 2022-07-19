@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next'
 
 import { Home } from '@pages/Home'
-import { QueryObject } from '@helpers/generateQueryParamsString'
+import { QueryObject } from '@helpers/queryParamsString'
 import { anilibriaSSR, objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
 import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
 
