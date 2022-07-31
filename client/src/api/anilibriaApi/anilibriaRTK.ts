@@ -41,6 +41,14 @@ export const anilibriaRTK = createApi({
 					days: config.days
 				}
 			})
+		}),
+		searchTitles: builder.query<Title[], QueryObject>({
+			query: queryObject => ({
+				url: '/searchTitles',
+				params: {
+					...queryObject
+				}
+			})
 		})
 	})
 })
@@ -49,5 +57,6 @@ export const {
 	useGetTitleQuery,
 	useGetUpdatesQuery,
 	useGetChangesQuery,
-	useGetScheduleQuery
+	useGetScheduleQuery,
+	useSearchTitlesQuery
 } = anilibriaRTK

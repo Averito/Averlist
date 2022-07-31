@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next'
 
 import { Anime } from '@pages/Anime'
-import { anilibriaSSR, objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
+import { anilibriaSSR, queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
 import dayjs from 'dayjs'
 
 export default Anime
@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	const genres = await anilibriaSSR.getGenres()
 
 	const queryObject = {
-		filter: objectParamsByDefault.filter,
+		filter: queryObjectByDefault.filter,
 		limit: 44,
 		since: new Date(`0-0-${dayjs().year()}`).getDate()
 	}

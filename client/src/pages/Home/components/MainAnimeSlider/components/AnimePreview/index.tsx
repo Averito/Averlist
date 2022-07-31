@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import styles from './AnimePreview.module.scss'
 import { SeriesUsually, Title } from '@anilibriaApi/types'
-import { Tag } from '@components/Tag'
+import { DescriptionTag } from '@components/DescriptionTag'
 
 interface AnimePreviewProps {
 	series: SeriesUsually
@@ -22,10 +22,10 @@ export const AnimePreview: FC<AnimePreviewProps> = ({ series, title }) => {
 		>
 			<div className={styles.container}>
 				<div className={styles.tags}>
-					<Tag type='status' title={title} />
-					<Tag type='string' title={title} />
-					<Tag type='series' title={title} />
-					<Tag type='length' title={title} />
+					<DescriptionTag type='status' title={title} />
+					<DescriptionTag type='string' title={title} />
+					<DescriptionTag type='series' title={title} />
+					<DescriptionTag type='length' title={title} />
 				</div>
 				<h2 className={styles.title}>
 					<Link href={`/anime/${title.code}`}>{title.names.ru}</Link>

@@ -1,3 +1,5 @@
+import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 import dayjs from 'dayjs'
 
@@ -6,7 +8,13 @@ import { Meta } from '@utils/Meta'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
 import { Search } from '@components/Search'
+import { Tag } from '@components/Tag'
 import { useInput } from '@hooks/useInput'
+import { useSearchTitlesQuery } from '@anilibriaApi/anilibriaRTK'
+import { queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
+import { QueryObject } from '@helpers/queryParamsString'
+import { findAllByDisplayValue } from '@testing-library/dom'
+import { Tags } from '@pages/Anime/components/Tags'
 
 interface AnimeProps {
 	years: number[]
@@ -15,7 +23,20 @@ interface AnimeProps {
 }
 
 export const Anime: NextPage<AnimeProps> = ({ years, genres, titleList }) => {
+	const router = useRouter()
+
 	const { value: searchValue, setValue: setSearchValue } = useInput()
+
+	const queryObject: QueryObject = {
+		filter: queryObjectByDefault.filter,
+		limit: 44,
+		year: router.query?.year ?? '',
+		genres: router.query?.genres ?? ''
+	}
+
+	const { data: searchTitleList } = useSearchTitlesQuery(queryObject)
+
+	const endedTitleList = searchTitleList?.length ? searchTitleList : titleList
 
 	return (
 		<>
@@ -25,20 +46,18 @@ export const Anime: NextPage<AnimeProps> = ({ years, genres, titleList }) => {
 			/>
 			<section className={styles.wrapper}>
 				<h1 className={styles.title}>Новинки {dayjs().year()} года</h1>
-				<div className={styles.tags}>Тут будут различные теги</div>
+				<Tags years={years} genres={genres} />
 				<div className={styles.searchBlock}>
 					<Search
 						value={searchValue}
 						onChange={setSearchValue}
-						placeholder='Поиск'
+						placeholder='Поиск не доделан'
 					/>
 				</div>
 				<div className={styles.recommendations}>
-					{titleList
-						.filter(title => title.names.ru.includes(searchValue))
-						.map(title => (
-							<AnimeCard title={title} key={title.id} />
-						))}
+					{endedTitleList.map(title => (
+						<AnimeCard title={title} key={title.id} />
+					))}
 				</div>
 			</section>
 		</>

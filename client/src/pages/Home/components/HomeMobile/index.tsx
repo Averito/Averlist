@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react'
 import styles from './HomeMobile.module.scss'
 import { AnimeCard } from '@components/AnimeCard'
 import { Title } from '@anilibriaApi/types'
-import { anilibriaSSR, objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
+import { anilibriaSSR, queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { uniqueIds } from '@helpers/uniqueIds'
 
@@ -20,7 +20,7 @@ export const HomeMobile: FC<HomeMobileProps> = ({ titleList }) => {
 
 	const onFetch = useCallback(async () => {
 		const queryObject = {
-			...objectParamsByDefault,
+			...queryObjectByDefault,
 			limit: pageSize,
 			after: pageSize * currentPage
 		}

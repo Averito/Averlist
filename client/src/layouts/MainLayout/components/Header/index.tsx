@@ -18,9 +18,9 @@ export const Header: FC = () => {
 	}
 
 	const mainPage =
-		router.asPath === '/'
-			? styles.containerMainPage
-			: styles.containerNotMainPage
+		router.pathname !== '/'
+			? styles.containerNotMainPage
+			: styles.containerMainPage
 
 	return (
 		<IgnorePaths ignorePaths={['/gallery/[animeImage]']}>

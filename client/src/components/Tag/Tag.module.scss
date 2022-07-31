@@ -1,12 +1,19 @@
 .tag {
-  background: #49485C;
+  display: block;
+  width: fit-content;
+  border: none;
+  padding: 4px 8px;
+  color: var(--primary-text-color);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 }
 
-.redTag {
-  background: var(--secondary-color);
-}
-
-.tag, .redTag {
-  padding: 5px 10px;
-  border-radius: 5px;
+.checked {
+  background-color: rgba(0, 0, 0, 0.3);
 }

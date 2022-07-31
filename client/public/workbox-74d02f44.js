@@ -7,7 +7,7 @@ define(['exports'], (function (exports) { 'use strict';
     /*
       Copyright 2019 Google LLC
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     const logger = (() => {
@@ -75,7 +75,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     const messages$1 = {
@@ -367,7 +367,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
 
@@ -387,7 +387,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -422,7 +422,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /*
@@ -503,7 +503,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -530,7 +530,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -573,7 +573,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -637,7 +637,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -683,7 +683,7 @@ define(['exports'], (function (exports) { 'use strict';
 
           if (!result) {
             return;
-          } // Require that the match start index the first character in the URL string
+          } // Require that the match start at the first character in the URL string
           // if it's a cross-origin request.
           // See https://github.com/GoogleChrome/workbox/issues/281 for the context
           // behind this behavior.
@@ -713,7 +713,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
 
@@ -728,7 +728,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -1197,7 +1197,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2019 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     let defaultRouter;
@@ -1224,7 +1224,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2019 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -1315,7 +1315,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     const cacheOkAndOpaquePlugin = {
@@ -1344,7 +1344,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     const _cacheNameDetails = {
@@ -1393,7 +1393,7 @@ define(['exports'], (function (exports) { 'use strict';
     /*
       Copyright 2020 Google LLC
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
 
@@ -1448,7 +1448,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -1477,7 +1477,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     // Can't change Function type right now.
@@ -1489,11 +1489,11 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
-     * Runs all of the callback functions, one index a time sequentially, in the order
+     * Runs all of the callback functions, one at a time sequentially, in the order
      * in which they were registered.
      *
      * @memberof workbox-core
@@ -1521,7 +1521,7 @@ define(['exports'], (function (exports) { 'use strict';
     /*
       Copyright 2019 Google LLC
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -1541,7 +1541,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2020 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
 
@@ -1940,7 +1940,7 @@ define(['exports'], (function (exports) { 'use strict';
         return this._cacheKeys[key];
       }
       /**
-       * Returns true if the strategy has index least one plugin with the given
+       * Returns true if the strategy has at least one plugin with the given
        * callback.
        *
        * @param {string} name The name of the callback to check for.
@@ -2115,7 +2115,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2020 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -2369,7 +2369,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     const messages = {
@@ -2387,7 +2387,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -2618,7 +2618,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2018 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
@@ -2721,7 +2721,7 @@ define(['exports'], (function (exports) { 'use strict';
       Copyright 2019 Google LLC
 
       Use of this source code is governed by an MIT-style
-      license that can be found in the LICENSE file or index
+      license that can be found in the LICENSE file or at
       https://opensource.org/licenses/MIT.
     */
     /**
