@@ -1,5 +1,11 @@
 import { useRouter } from 'next/router'
-import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
+import {
+	KeyboardEventHandler,
+	MouseEventHandler,
+	useCallback,
+	useEffect,
+	useState
+} from 'react'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import classnames from 'classnames'
@@ -8,6 +14,7 @@ import styles from './GalleryImageViewer.module.scss'
 import arrowLeftLine from '@assets/icons/arrow-left-s-line.png'
 import arrowRightLine from '@assets/icons/arrow-right-s-line.png'
 import { useAppSelector } from '@hooks/useAppSelector'
+import animeImage from '../../../pages/gallery/[animeImage]'
 
 const WAIFU_PICS_URI = process.env.NEXT_PUBLIC_WAIFU_PICS_URI
 
@@ -27,6 +34,11 @@ export const GalleryImageViewer: NextPage = () => {
 		? animeImages[currentAnimeImageIdx] ?? currentAnimeImageUri
 		: currentAnimeImageUri
 
+	const preloadImage = (nextImg: string) => {
+		const img = document.createElement('img')
+		img.src = nextImg
+	}
+
 	const onClickImageViewer: MouseEventHandler<HTMLDivElement> = event => {
 		const tag = event.target as HTMLElement
 
@@ -35,34 +47,35 @@ export const GalleryImageViewer: NextPage = () => {
 		router.push('/gallery')
 	}
 
-	const onClickLeftArrow: MouseEventHandler<HTMLDivElement> =
-		useCallback(() => {
-			if (!animeImages[currentAnimeImageIdx]) return
+	const onClickOnArrow = useCallback(
+		(direction: 'right' | 'left'): MouseEventHandler<HTMLDivElement> => {
+			if (!animeImages[currentAnimeImageIdx]) return () => {}
+			let nextId = 0
 
-			const nextIdx = currentAnimeImageIdx
-				? currentAnimeImageIdx - 1
-				: animeImages.length - 1
+			if (direction === 'right') {
+				nextId =
+					currentAnimeImageIdx === animeImages.length - 1
+						? 0
+						: currentAnimeImageIdx + 1
+			} else {
+				nextId = currentAnimeImageIdx
+					? currentAnimeImageIdx - 1
+					: animeImages.length - 1
+			}
 
-			setCurrentAnimeImageIdx(nextIdx)
-		}, [animeImages, currentAnimeImageIdx])
-	const onClickRightArrow: MouseEventHandler<HTMLDivElement> =
-		useCallback(() => {
-			if (!animeImages[currentAnimeImageIdx]) return
-
-			const nextIdx =
-				currentAnimeImageIdx === animeImages.length - 1
-					? 0
-					: currentAnimeImageIdx + 1
-
-			setCurrentAnimeImageIdx(nextIdx)
-		}, [animeImages, currentAnimeImageIdx])
-
+			return () => {
+				setCurrentAnimeImageIdx(nextId)
+				preloadImage(animeImages[nextId])
+			}
+		},
+		[animeImages, currentAnimeImageIdx]
+	)
 	const onKeyDown = useCallback(
 		(event: any) => {
-			if (event.code === 'ArrowRight') onClickRightArrow(event)
-			if (event.code === 'ArrowLeft') onClickLeftArrow(event)
+			if (event.code === 'ArrowRight') onClickOnArrow('right')(event)
+			if (event.code === 'ArrowLeft') onClickOnArrow('left')(event)
 		},
-		[onClickRightArrow, onClickLeftArrow]
+		[onClickOnArrow]
 	)
 
 	useEffect(() => {
@@ -78,7 +91,7 @@ export const GalleryImageViewer: NextPage = () => {
 		<div className={styles.imageViewerContainer} onClick={onClickImageViewer}>
 			<div
 				className={classnames(styles.arrow, arrowDisabled)}
-				onClick={onClickLeftArrow}
+				onClick={onClickOnArrow('left')}
 				data-type='arrow'
 			>
 				<Image src={arrowLeftLine} width={20} height={30} alt='Стрелочка' />
@@ -90,12 +103,12 @@ export const GalleryImageViewer: NextPage = () => {
 					width={400}
 					height={550}
 					layout='responsive'
-					priority={true}
+					priority
 				/>
 			</div>
 			<div
 				className={classnames(styles.arrow, arrowDisabled)}
-				onClick={onClickRightArrow}
+				onClick={onClickOnArrow('right')}
 				data-type='arrow'
 			>
 				<Image src={arrowRightLine} width={20} height={30} alt='Стрелочка' />

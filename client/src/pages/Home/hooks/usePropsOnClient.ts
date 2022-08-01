@@ -1,6 +1,6 @@
 import { Schedule, Title } from '@anilibriaApi/types'
 import { reverseArray } from '@helpers/reverseArray'
-import { objectParamsByDefault } from '@anilibriaApi/anilibriaSSR'
+import { queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
 import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
 import {
 	useGetChangesQuery,
@@ -14,23 +14,20 @@ export const usePropsOnClient = (
 	firstFiveTitles: Title[],
 	scheludeOfWeek: Schedule[]
 ) => {
-	const { data: newUpdatesTitleList } = useGetUpdatesQuery(
-		objectParamsByDefault
-	)
+	const { data: newUpdatesTitleList } = useGetUpdatesQuery(queryObjectByDefault)
 	const reversedUpdatesTitleList = reverseArray(
 		newUpdatesTitleList ?? updatesTitleList
 	)
 
-	const { data: changesTitleListUnstable } = useGetChangesQuery(
-		objectParamsByDefault
-	)
+	const { data: changesTitleListUnstable } =
+		useGetChangesQuery(queryObjectByDefault)
 	const newChangesTitleList = changesTitleListUnstable
 		? changesTitleListUnstable
 		: changesTitleList
 
 	const config = {
 		params: {
-			filter: objectParamsByDefault.filter
+			filter: queryObjectByDefault.filter
 		},
 		days: [0, 1, 2, 3, 4, 5, 6]
 	}
@@ -40,7 +37,7 @@ export const usePropsOnClient = (
 		: scheludeOfWeek
 
 	const queryObject = {
-		filter: [...(objectParamsByDefault.filter as string[]), 'player'],
+		filter: [...(queryObjectByDefault.filter as string[]), 'player'],
 		limit: 5
 	}
 	const { data: firstFiveTitlesUnstable } = useGetChangesQuery(queryObject)

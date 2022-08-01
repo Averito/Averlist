@@ -5,7 +5,7 @@ import { Schedule, Title } from './types'
 
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
 
-export const objectParamsByDefault: QueryObject = {
+export const queryObjectByDefault: QueryObject = {
 	filter: ['id', 'names', 'description', 'posters', 'status', 'type', 'code'],
 	limit: 30
 }
