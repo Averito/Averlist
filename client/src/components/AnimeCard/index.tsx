@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import styles from './AnimeCard.module.scss'
 import { Title } from '@anilibriaApi/types'
@@ -12,7 +12,7 @@ interface AnimeCardProps {
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimeCard: FC<AnimeCardProps> = ({ title }) => {
+export const AnimeCard: FC<AnimeCardProps> = memo(({ title }) => {
 	const router = useRouter()
 
 	const toAnime = `/anime/${title.code}`
@@ -40,4 +40,4 @@ export const AnimeCard: FC<AnimeCardProps> = ({ title }) => {
 			</div>
 		</div>
 	)
-}
+})

@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC, memo, MouseEventHandler } from 'react'
 import classnames from 'classnames'
 
 import styles from './Tag.module.scss'
@@ -9,7 +9,7 @@ interface TagProps {
 	onClick: MouseEventHandler<HTMLSpanElement>
 }
 
-export const Tag: FC<TagProps> = ({ title, checked, onClick }) => {
+export const Tag: FC<TagProps> = memo(({ title, checked, onClick }) => {
 	const checkedClass = checked ? styles.checked : ''
 
 	return (
@@ -17,4 +17,4 @@ export const Tag: FC<TagProps> = ({ title, checked, onClick }) => {
 			{title}
 		</span>
 	)
-}
+})

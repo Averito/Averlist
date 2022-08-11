@@ -1,16 +1,17 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { Provider } from 'react-redux'
-import 'react-pure-modal/dist/react-pure-modal.min.css'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { Layout } from '@layouts/MainLayout'
-import { store } from '@store/index'
 import 'swiper/css'
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<Provider store={store}>
+		<QueryClientProvider client={queryClient}>
 			<Head>
 				<meta charSet='utf-8' />
 				<link rel='icon' href='./favicon.ico' />
@@ -38,7 +39,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Layout>
 				<Component {...pageProps} />
 			</Layout>
-		</Provider>
+			<ReactQueryDevtools initialIsOpen={false} />
+		</QueryClientProvider>
 	)
 }
 

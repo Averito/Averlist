@@ -104,7 +104,7 @@ export interface Schedule {
 	list: Title[]
 }
 
-export interface ScheludeRequest {
+export interface ScheduleRequest {
 	params: QueryObject
 	days: number[]
 }

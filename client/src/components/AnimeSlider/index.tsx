@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import styles from './AnimeSlider.module.scss'
 import { Title } from '@anilibriaApi/types'
@@ -11,21 +11,19 @@ interface AnimeSliderProps {
 	href?: string
 }
 
-export const AnimeSlider: FC<AnimeSliderProps> = ({
-	titleList,
-	title,
-	href
-}) => {
-	return (
-		<div className={styles.container}>
-			<h3 className={styles.title}>
-				{href ? <Link href={href}>{title}</Link> : title}
-			</h3>
-			<div className={styles.slider}>
-				{titleList.map(title => (
-					<AnimeCard key={title.id} title={title} />
-				))}
+export const AnimeSlider: FC<AnimeSliderProps> = memo(
+	({ titleList, title, href }) => {
+		return (
+			<div className={styles.container}>
+				<h3 className={styles.title}>
+					{href ? <Link href={href}>{title}</Link> : title}
+				</h3>
+				<div className={styles.slider}>
+					{titleList.map(title => (
+						<AnimeCard key={title.id} title={title} />
+					))}
+				</div>
 			</div>
-		</div>
-	)
-}
+		)
+	}
+)
