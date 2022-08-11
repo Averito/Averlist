@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC } from 'react'
+import { ChangeEventHandler, FC, memo } from 'react'
 
 import styles from './Search.module.scss'
 
@@ -8,14 +8,16 @@ interface SearchProps {
 	placeholder: string
 }
 
-export const Search: FC<SearchProps> = ({ value, onChange, placeholder }) => {
-	return (
-		<input
-			className={styles.input}
-			name='search'
-			value={value}
-			onChange={onChange}
-			placeholder={placeholder}
-		/>
-	)
-}
+export const Search: FC<SearchProps> = memo(
+	({ value, onChange, placeholder }) => {
+		return (
+			<input
+				className={styles.input}
+				name='search'
+				value={value}
+				onChange={onChange}
+				placeholder={placeholder}
+			/>
+		)
+	}
+)

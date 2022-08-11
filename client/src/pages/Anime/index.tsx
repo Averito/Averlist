@@ -1,4 +1,4 @@
-import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 import dayjs from 'dayjs'
@@ -8,13 +8,11 @@ import { Meta } from '@utils/Meta'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
 import { Search } from '@components/Search'
-import { Tag } from '@components/Tag'
 import { useInput } from '@hooks/useInput'
-import { useSearchTitlesQuery } from '@anilibriaApi/anilibriaRTK'
-import { queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
+import { queryObjectByDefault } from '@anilibriaApi/anilibria'
 import { QueryObject } from '@helpers/queryParamsString'
-import { findAllByDisplayValue } from '@testing-library/dom'
 import { Tags } from '@pages/Anime/components/Tags'
+import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
 
 interface AnimeProps {
 	years: number[]
@@ -27,16 +25,23 @@ export const Anime: NextPage<AnimeProps> = ({ years, genres, titleList }) => {
 
 	const { value: searchValue, setValue: setSearchValue } = useInput()
 
-	const queryObject: QueryObject = {
-		filter: queryObjectByDefault.filter,
-		limit: 44,
-		year: router.query?.year ?? '',
-		genres: router.query?.genres ?? ''
-	}
+	const queryObject: QueryObject = useMemo(
+		() => ({
+			filter: queryObjectByDefault.filter,
+			limit: 44,
+			year: router.query?.year ?? '',
+			genres: router.query?.genres ?? ''
+		}),
+		[router]
+	)
 
-	const { data: searchTitleList } = useSearchTitlesQuery(queryObject)
+	const { data: searchTitleList } = useGetSearchTitles(queryObject)
 
-	const endedTitleList = searchTitleList?.length ? searchTitleList : titleList
+	const endedTitleList = useMemo(
+		() => (searchTitleList?.length ? searchTitleList : titleList),
+		[titleList, searchTitleList]
+	)
+	const currentYear = useMemo(() => dayjs().year(), [])
 
 	return (
 		<>
@@ -45,7 +50,7 @@ export const Anime: NextPage<AnimeProps> = ({ years, genres, titleList }) => {
 				description='Выбери что по нраву, мой юный господин...'
 			/>
 			<section className={styles.wrapper}>
-				<h1 className={styles.title}>Новинки {dayjs().year()} года</h1>
+				<h1 className={styles.title}>Новинки {currentYear} года</h1>
 				<Tags years={years} genres={genres} />
 				<div className={styles.searchBlock}>
 					<Search

@@ -9,15 +9,17 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"@reduxjs/toolkit": "^1.8.3",
+		"@tanstack/react-query": "^4.1.0",
+		"@tanstack/react-query-devtools": "^4.0.10",
 		"axios": "^0.27.2",
 		"classnames": "^2.3.1",
 		"dayjs": "^1.11.3",
+		"mobx": "^6.6.1",
+		"mobx-react-lite": "^3.4.0",
 		"next": "12.1.6",
 		"next-pwa": "^5.5.2",
 		"react": "18.1.0",
 		"react-dom": "18.1.0",
-		"react-pure-modal": "^2.1.1",
 		"react-redux": "^8.0.2",
 		"sharp": "^0.30.4",
 		"swiper": "^8.1.4"

@@ -17,7 +17,6 @@ export namespace WaifuPics {
 		| 'kiss'
 		| 'lick'
 		| 'pat'
-		| 'pat'
 		| 'smug'
 		| 'bonk'
 		| 'yeet'

@@ -21,11 +21,6 @@ export const menu: MenuItem[] = [
 		to: '/random'
 	},
 	{
-		id: 3,
-		name: 'Галерея',
-		to: '/gallery'
-	},
-	{
 		id: 4,
 		name: 'Аниме',
 		to: '/anime'

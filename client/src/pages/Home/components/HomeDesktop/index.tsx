@@ -5,13 +5,13 @@ import { AnimeSlider } from '@components/AnimeSlider'
 import { Schedule, Title } from '@anilibriaApi/types'
 
 interface HomeDesktopProps {
-	scheludeOfWeek: Schedule[]
+	scheduleOfWeek: Schedule[]
 	reversedUpdatesTitleList: Title[]
 	changesTitleList: Title[]
 }
 
 export const HomeDesktop: FC<HomeDesktopProps> = ({
-	scheludeOfWeek,
+	scheduleOfWeek,
 	changesTitleList,
 	reversedUpdatesTitleList
 }) => {
@@ -38,12 +38,12 @@ export const HomeDesktop: FC<HomeDesktopProps> = ({
 				href='/anime'
 			/>
 			<div>
-				<h3 className={styles.scheludeTitle}>Расписание тайтлов</h3>
-				{scheludeOfWeek.map(schelude => (
+				<h3 className={styles.scheduleTitle}>Расписание тайтлов</h3>
+				{scheduleOfWeek.map(schedule => (
 					<AnimeSlider
-						key={schelude.day}
-						titleList={schelude.list}
-						title={daysOfWeek[schelude.day]}
+						key={schedule.day}
+						titleList={schedule.list}
+						title={daysOfWeek[schedule.day]}
 					/>
 				))}
 			</div>

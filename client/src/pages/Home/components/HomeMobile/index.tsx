@@ -3,7 +3,7 @@ import { FC, useCallback, useState } from 'react'
 import styles from './HomeMobile.module.scss'
 import { AnimeCard } from '@components/AnimeCard'
 import { Title } from '@anilibriaApi/types'
-import { anilibriaSSR, queryObjectByDefault } from '@anilibriaApi/anilibriaSSR'
+import { anilibria, queryObjectByDefault } from '@anilibriaApi/anilibria'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { uniqueIds } from '@helpers/uniqueIds'
 
@@ -25,7 +25,7 @@ export const HomeMobile: FC<HomeMobileProps> = ({ titleList }) => {
 			after: pageSize * currentPage
 		}
 
-		const newTitles = await anilibriaSSR.getChanges(queryObject)
+		const newTitles = await anilibria.getChanges(queryObject)
 
 		setTitleListCopy(
 			prevTitleList => uniqueIds([...prevTitleList, ...newTitles]) as Title[]

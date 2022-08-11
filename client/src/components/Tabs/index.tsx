@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC, memo, MouseEventHandler } from 'react'
 import classnames from 'classnames'
 
 import styles from './Tabs.module.scss'
@@ -14,7 +14,7 @@ interface TabsProps {
 	currentTab: Tab
 }
 
-export const Tabs: FC<TabsProps> = ({ selectTab, tabs, currentTab }) => {
+export const Tabs: FC<TabsProps> = memo(({ selectTab, tabs, currentTab }) => {
 	const onClickTab = (
 		newSelectedTab: Tab
 	): MouseEventHandler<HTMLDivElement> => {
@@ -41,4 +41,4 @@ export const Tabs: FC<TabsProps> = ({ selectTab, tabs, currentTab }) => {
 			})}
 		</div>
 	)
-}
+})

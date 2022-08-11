@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { queryParamsString, QueryObject } from '@helpers/queryParamsString'
+import { QueryObject, queryParamsString } from '@helpers/queryParamsString'
 import { Schedule, Title } from './types'
 
 const ANILIBRIA_API_URI = process.env.NEXT_PUBLIC_ANILIBRIA_API_URI
@@ -10,7 +10,7 @@ export const queryObjectByDefault: QueryObject = {
 	limit: 30
 }
 
-export const anilibriaSSR = {
+export const anilibria = {
 	async getTitle(queryParams: QueryObject = {}) {
 		const url = ANILIBRIA_API_URI + '/getTitle' + queryParamsString(queryParams)
 		const response = await axios.get<Title>(url)
