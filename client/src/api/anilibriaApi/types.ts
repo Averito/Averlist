@@ -25,7 +25,7 @@ export interface SeriesUsually {
 }
 
 export interface Series {
-	[s: string]: {
+	[key: number]: {
 		preview: string
 		serie: number
 		hls: {
