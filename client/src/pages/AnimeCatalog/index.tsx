@@ -4,33 +4,32 @@ import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 import dayjs from 'dayjs'
 
-import styles from './Anime.module.scss'
+import styles from './AnimeCatalog.module.scss'
 import { Meta } from '@utils/Meta'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
 import { Autocomplete } from '@components/Autocomplete'
 import { queryObjectByDefault } from '@anilibriaApi/anilibria'
 import { QueryObject } from '@helpers/queryParamsString'
-import { Tags } from '@pages/Anime/components/Tags'
+import { Tags } from '@pages/AnimeCatalog/components/Tags'
 import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { useGetUpdates } from '@hooks/useGetUpdates'
 import animeCatalog from '@stores/animeCatalog.store'
 
-interface AnimeProps {
+interface AnimeCatalogProps {
 	years: number[]
 	genres: string[]
 	titleList: Title[]
 }
 
-export const Anime: NextPage<AnimeProps> = observer(
+export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 	({ years, genres, titleList }) => {
 		const router = useRouter()
 
 		const pageSize = 24
 
 		const [firstRender, setFirstRender] = useState<boolean>(true)
-		const [searchValue, setSearchValue] = useState<string>('')
 		const [currentPage, setCurrentPage] = useState<number>(1)
 
 		const searchQueryObject = useMemo<QueryObject>(
@@ -38,11 +37,11 @@ export const Anime: NextPage<AnimeProps> = observer(
 				filter: queryObjectByDefault.filter,
 				limit: pageSize,
 				after: (currentPage - 1) * pageSize,
-				search: searchValue,
+				search: animeCatalog.searchValue,
 				year: router.query?.year ?? '',
 				genres: router.query?.genres ?? ''
 			}),
-			[router, currentPage, searchValue]
+			[router, currentPage]
 		)
 		const updatesQueryObject = useMemo<QueryObject>(
 			() => ({
@@ -79,10 +78,14 @@ export const Anime: NextPage<AnimeProps> = observer(
 		useEffect(() => {
 			setCurrentPage(1)
 
-			if (router.query?.years || router.query?.genres || searchValue.length)
+			if (
+				router.query?.years ||
+				router.query?.genres ||
+				animeCatalog.searchValue.length
+			)
 				return setGetUpdatesEnable(false)
 			setGetUpdatesEnable(true)
-		}, [router.query, searchValue])
+		}, [router.query])
 
 		useEffect(() => {
 			if (firstRender) return
@@ -91,7 +94,7 @@ export const Anime: NextPage<AnimeProps> = observer(
 		useEffect(() => {
 			if (firstRender) return
 			animeCatalog.resetUpdatesTitleList()
-		}, [searchValue])
+		}, [])
 
 		const endedTitleList = animeCatalog.searchTitleList.length
 			? animeCatalog.searchTitleList
@@ -113,8 +116,8 @@ export const Anime: NextPage<AnimeProps> = observer(
 					<Tags years={years} genres={genres} />
 					<div className={styles.searchBlock}>
 						<Autocomplete
-							value={searchValue}
-							onChange={setSearchValue}
+							value={animeCatalog.searchValue}
+							onChange={animeCatalog.setSearchValue}
 							name='search'
 							placeholder='Поиск'
 							width='100%'

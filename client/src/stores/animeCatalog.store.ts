@@ -4,6 +4,11 @@ import { Title } from '@anilibriaApi/types'
 import { uniqueIds } from '@helpers/uniqueIds'
 
 class AnimeCatalogStore {
+	private _searchValue = ''
+	get searchValue() {
+		return this._searchValue
+	}
+
 	private _updatesTitleList: Title[] = []
 	get updatesTitleList() {
 		return this._updatesTitleList
@@ -16,6 +21,10 @@ class AnimeCatalogStore {
 
 	constructor() {
 		makeAutoObservable(this)
+	}
+
+	public setSearchValue = (value: string) => {
+		this._searchValue = value
 	}
 
 	public reset = () => {

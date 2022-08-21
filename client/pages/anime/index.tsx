@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next'
 
-import { Anime } from '@pages/Anime'
+import { AnimeCatalog } from '@pages/AnimeCatalog'
 import { anilibria, queryObjectByDefault } from '@anilibriaApi/anilibria'
 import dayjs from 'dayjs'
 
-export default Anime
+export default AnimeCatalog
 
 export const getStaticProps: GetStaticProps = async () => {
 	const years = await anilibria.getYears()
