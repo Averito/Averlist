@@ -7,6 +7,7 @@
 }
 
 .hamburger {
+  position: fixed;
   display: none;
   top: 0;
   transition: left 0.3s ease;
@@ -17,21 +18,34 @@
   }
 }
 
-.hamburgerAbsolute {
-  position: absolute;
-}
-
-.hamburgerFixed {
-  position: fixed;
-}
-
 .hamburgerInActive {
   left: -220px;
 }
 
 .hamburgerActive {
   left: 0;
+
+}
+
+.hamburgerBackground {
+  display: none;
   position: fixed;
+  z-index: 99998;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 200vh;
+  width: 100%;
+  transition: left 0.25s ease-in-out;
+
+  @media all and (max-width: 768px) {
+    display: block;
+  }
+}
+
+.hamburgerBackgroundActive {
+  left: 0;
+}
+.hamburgerBackgroundInActive {
+  left: -100%;
 }
 
 .content {

@@ -1,3 +1,5 @@
+import { QueryKey, UseQueryOptions } from '@tanstack/react-query'
+
 import { QueryObject } from '@helpers/queryParamsString'
 
 export interface Torrent {
@@ -108,3 +110,8 @@ export interface ScheduleRequest {
 	params: QueryObject
 	days: number[]
 }
+
+export type UseQueryTypesSearchTitles = Omit<
+	UseQueryOptions<Title[], unknown, Title[], QueryKey>,
+	'initialData' | 'queryKey'
+>

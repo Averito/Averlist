@@ -7,7 +7,7 @@ export const useGetSchedule = (
 	days: number[],
 	queryObject = queryObjectByDefault
 ) => {
-	return useQuery<Schedule[]>(['getSchedule'], () =>
+	return useQuery<Schedule[]>(['getSchedule', queryObject], () =>
 		anilibria.getSchedule(queryObject, days)
 	)
 }

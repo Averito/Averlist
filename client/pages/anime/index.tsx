@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	const queryObject = {
 		filter: queryObjectByDefault.filter,
 		limit: 44,
-		since: new Date(`0-0-${dayjs().year()}`).getDate()
+		since: new Date(`01-01-${dayjs().year()}`).getDate()
 	}
 	const updatesTitleList = await anilibria.getUpdates(queryObject)
 

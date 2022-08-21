@@ -16,7 +16,7 @@ export const AnimeCard: FC<AnimeCardProps> = memo(({ title }) => {
 	const router = useRouter()
 
 	const toAnime = `/anime/${title.code}`
-	const poster = `${ANILIBRIA_URI}${title.posters.original.url}`
+	const poster = `${ANILIBRIA_URI}${title.posters?.original?.url}`
 
 	const onClickPoster = () => {
 		router.push(toAnime)

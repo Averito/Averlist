@@ -24,7 +24,7 @@
       "@assets/*": ["src/assets/*"],
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
-      "@store/*": ["src/store/*"],
+      "@stores/*": ["src/stores/*"],
       "@utils/*": ["src/utils/*"]
     }
   },
