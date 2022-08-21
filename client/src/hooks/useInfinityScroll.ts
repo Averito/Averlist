@@ -3,19 +3,14 @@ import { useCallback, useEffect, useState } from 'react'
 export const useInfinityScroll = (onFetch: () => unknown) => {
 	const [isFetch, setIsFetch] = useState<boolean>(false)
 
-	const onScroll = useCallback(
-		(event: any) => {
-			if (isFetch) return setIsFetch(false)
+	const onScroll = useCallback((event: any) => {
+		const { innerHeight } = window
+		const { offsetHeight, scrollTop } = document.documentElement
 
-			const { innerHeight } = window
-			const { scrollHeight, scrollTop } = event.target.documentElement
-
-			if (scrollHeight - (innerHeight + scrollTop) < 10) {
-				return setIsFetch(true)
-			}
-		},
-		[setIsFetch, isFetch]
-	)
+		if (innerHeight + scrollTop === offsetHeight) {
+			return setIsFetch(true)
+		}
+	}, [])
 
 	useEffect(() => {
 		window.addEventListener('scroll', onScroll)
@@ -23,10 +18,12 @@ export const useInfinityScroll = (onFetch: () => unknown) => {
 	}, [onScroll])
 
 	useEffect(() => {
-		if (isFetch) {
-			onFetch()
+		const asyncWrapper = async () => {
+			if (!isFetch) return
+			await onFetch()
 			setIsFetch(false)
 		}
+		asyncWrapper()
 	}, [isFetch, onFetch])
 
 	return { setIsFetch }

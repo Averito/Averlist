@@ -5,6 +5,7 @@ import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
 import { reverseArray } from '@helpers/reverseArray'
 import { useMemo } from 'react'
+import { Meta } from '@utils/Meta'
 
 interface HomeProps {
 	updatesTitleList: Title[]
@@ -26,6 +27,10 @@ export const Home: NextPage<HomeProps> = ({
 
 	return (
 		<div>
+			<Meta
+				title='Averlist'
+				description='Смотри своё любимое аниме вместе с друзьями!'
+			/>
 			{/* MainAnimeSlider only for desktop */}
 			<MainAnimeSlider titleList={firstFiveTitles} />
 			<HomeDesktop

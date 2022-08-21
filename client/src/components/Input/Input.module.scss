@@ -1,14 +1,10 @@
 .input {
-  padding: 4px 5px;
+  padding: 8px 10px;
   border-radius: 4px;
   color: var(--primary-text-color);
   background-color: #1F1739;
   border: none;
-  font-weight: 300;
-
-  &:placeholder {
-    color: rgba(255, 255, 255, 0.7)
-  }
+  font-weight: 400;
 
   &:focus {
     outline: none;

@@ -3,8 +3,8 @@ interface AnyArray {
 	[key: string]: any
 }
 
-export const uniqueIds = (array: AnyArray[]) => {
-	const resultArray: AnyArray[] = []
+export const uniqueIds = <T extends AnyArray>(array: T[]): T[] => {
+	const resultArray: T[] = []
 
 	for (const key in array) {
 		let includes = false

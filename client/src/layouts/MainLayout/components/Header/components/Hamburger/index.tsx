@@ -1,40 +1,32 @@
-import { FC, MouseEventHandler, useState } from 'react'
+import { FC, MouseEventHandler, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import classnames from 'classnames'
 import Link from 'next/link'
 
 import styles from './Hamburger.module.scss'
 import { menu } from '@layouts/MainLayout/components/Header/menu'
+import { useOutside } from '@hooks/useOutside'
 
 export const Hamburger: FC = () => {
 	const router = useRouter()
 
 	const [active, setActive] = useState<boolean>(false)
-	const [absolute, setAbsolute] = useState<boolean>(true)
 
-	const positionAbsolute = absolute
-		? styles.hamburgerAbsolute
-		: styles.hamburgerFixed
 	const activeClass = active ? styles.hamburgerActive : styles.hamburgerInActive
+	const hamburgerBackgroundActive = active
+		? styles.hamburgerBackgroundActive
+		: styles.hamburgerBackgroundInActive
 	const toggleButtonClass = active
 		? styles.toggleButtonActive
 		: styles.toggleButtonInActive
 
-	let positionTimeout: ReturnType<typeof setTimeout> | undefined
 	const hamburgerClose = () => {
-		clearTimeout(positionTimeout)
-		setActive(!active)
-		setAbsolute(false)
-
-		if (active) {
-			positionTimeout = setTimeout(() => {
-				setAbsolute(true)
-			}, 300)
-		}
+		setActive(false)
 	}
 
-	const onClickActiveButton: MouseEventHandler<HTMLDivElement> = () => {
-		hamburgerClose()
+	const onClickActiveButton: MouseEventHandler<HTMLDivElement> = event => {
+		if (!active) event.stopPropagation()
+		setActive(!active)
 	}
 
 	const onClickOnTitle = () => {
@@ -47,13 +39,20 @@ export const Hamburger: FC = () => {
 		setActive(false)
 	}
 
+	const hamburger = useRef<HTMLDivElement>(null)
+	useOutside(hamburger, hamburgerClose)
+
 	return (
 		<>
 			<span className={styles.hamburgerPlaceholder} />
 			<div
-				className={classnames(styles.hamburger, activeClass, positionAbsolute)}
-			>
-				<aside className={styles.content}>
+				className={classnames(
+					styles.hamburgerBackground,
+					hamburgerBackgroundActive
+				)}
+			/>
+			<div className={classnames(styles.hamburger, activeClass)}>
+				<aside ref={hamburger} className={styles.content}>
 					<h1 className={styles.title} onClick={onClickOnTitle}>
 						Averlist
 					</h1>
