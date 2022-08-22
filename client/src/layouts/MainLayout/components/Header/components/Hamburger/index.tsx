@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useRef, useState } from 'react'
+import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import classnames from 'classnames'
 import Link from 'next/link'
@@ -38,6 +38,10 @@ export const Hamburger: FC = () => {
 		hamburgerClose()
 		setActive(false)
 	}
+
+	useEffect(() => {
+		document.body.style.overflow = active ? 'hidden' : 'hidden auto'
+	}, [active])
 
 	const hamburger = useRef<HTMLDivElement>(null)
 	useOutside(hamburger, hamburgerClose)

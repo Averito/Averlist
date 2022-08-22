@@ -35,6 +35,10 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({ title }) => {
 				<Button>Смотреть онлайн</Button>
 			</div>
 			<Description title={title} />
+			<div className={styles.description}>
+				<h2 className={styles.descriptionTitle}>Описание:</h2>
+				<p>{title.description}</p>
+			</div>
 		</div>
 	)
 }

@@ -8,6 +8,12 @@ interface DescriptionProps {
 }
 
 export const Description: FC<DescriptionProps> = ({ title }) => {
+	const duration = `${title.type.length} минуты ${
+		title.type.series
+			? `(${title.type.length * title.type.series} минут всего)`
+			: ''
+	}`
+
 	return (
 		<div>
 			<h2 className={styles.aboutTitle}>Подробнее:</h2>
@@ -17,7 +23,7 @@ export const Description: FC<DescriptionProps> = ({ title }) => {
 					{title.player.series.first !== 1
 						? title.player.series.string
 						: title.player.series.last}{' '}
-					из {title.type.series} эпизодов
+					из {title.type.series ?? '?'} эпизодов
 					{title.announce && (
 						<>
 							<br />
@@ -26,10 +32,7 @@ export const Description: FC<DescriptionProps> = ({ title }) => {
 					)}
 				</p>
 				<p>Длительность:</p>
-				<p>
-					{title.type.length} минуты ({title.type.length * title.type.series}{' '}
-					минут всего)
-				</p>
+				<p>{duration}</p>
 				<p>Жанры:</p>
 				<p>{title.genres.join(', ')}</p>
 				{title.team.voice.join(', ') && (
