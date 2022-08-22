@@ -1,0 +1,25 @@
+.mobile {
+  display: none;
+  min-height: 100vh;
+  background-color: var(--primary-color);
+  padding: 15px;
+
+  @media all and (max-width: 768px) {
+    display: block;
+  }
+}
+
+.posterWrapper {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+
+.poster {
+  border-radius: 5px;
+}
+
+.titleName {
+  font-size: 27px;
+  margin-bottom: 8px;
+}

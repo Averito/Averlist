@@ -1,0 +1,29 @@
+.tags {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  > span {
+    opacity: 0.65;
+    color: lightgray;
+
+    &:not(:last-of-type) {
+      margin-right: 5px;
+    }
+  }
+}
+
+.status {
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  padding: 5px 8px;
+  background-color: transparent;
+}
+
+.dot {
+  font-size: 26px;
+}
+
+.year, .type {
+  border-bottom: 1px dashed lightgray;
+}

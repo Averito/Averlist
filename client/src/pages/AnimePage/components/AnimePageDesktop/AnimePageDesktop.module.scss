@@ -1,0 +1,53 @@
+.desktop {
+  display: block;
+  padding: 20px 15px;
+
+  @media all and (max-width: 768px) {
+   display: none;
+  }
+}
+
+.flexTwoColumn {
+  display: flex;
+
+  > div:first-of-type {
+    margin-right: 20px;
+    flex: 0 0 270px;
+  }
+}
+
+.poster {
+  width: 100%;
+  border-radius: 7px;
+}
+
+.watchOnlineButton {
+  margin-top: 18px;
+}
+
+.names {
+  margin-bottom: 8px;
+}
+
+.nameRu {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.nameEn {
+  font-size: 14px;
+  color: lightgray;
+}
+
+.descriptionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: lightgray;
+  margin: 20px 0 5px 0;
+}
+
+.description {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: var(--primary-text-color);
+}

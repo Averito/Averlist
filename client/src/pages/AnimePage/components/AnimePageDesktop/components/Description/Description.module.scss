@@ -1,0 +1,37 @@
+.aboutTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: lightgray;
+  margin-bottom: 5px;
+}
+
+.description {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+
+  > p {
+    color: lightgray;
+
+    &:not(:nth-of-type(odd)) {
+      color: var(--primary-text-color);
+    }
+
+    &:nth-of-type(odd) {
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 4.5px;
+    }
+  }
+}
+
+.announce {
+  color: yellow;
+  font-size: 13px;
+}
+
+.white {
+  color: var(--primary-text-color);
+}

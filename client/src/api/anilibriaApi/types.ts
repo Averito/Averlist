@@ -25,7 +25,7 @@ export interface SeriesUsually {
 }
 
 export interface Series {
-	[key: number]: {
+	[key: number | string]: {
 		preview: string
 		serie: number
 		hls: {
@@ -81,7 +81,8 @@ export interface Title {
 		series: number
 		length: number
 	}
-	last_changes: string
+	last_changes: number
+	updated: number
 	team: {
 		voice: string[]
 		timing: string[]
@@ -97,6 +98,11 @@ export interface Title {
 	player: {
 		host: string
 		playlist: Series | SeriesUsually[]
+		series: {
+			first: number
+			last: number
+			string: string
+		}
 	}
 	torrents?: Torrent[]
 }
