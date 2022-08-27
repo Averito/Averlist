@@ -1,0 +1,46 @@
+.descriptionWrapper {
+  margin-top: 20px;
+}
+
+.descriptionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: lightgray;
+  margin-bottom: 8px;
+}
+
+.description {
+  border-radius: 10px;
+  padding: 0 0 10px 0;
+  background-color: #2d2252;
+}
+
+.gridBlock {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gridBlock, .block {
+  padding: 10px;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid rgba(63, 47, 114, 0.52);
+  }
+}
+
+.label {
+  font-weight: 600;
+  color: lightgray;
+  margin: 0 5px 5px 0;
+}
+
+.labelValue {
+  font-size: 14px;
+  margin: 0;
+  color: var(--primary-text-color);
+}
+
+.announce {
+  font-size: 12px;
+  color: yellow;
+}

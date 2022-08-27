@@ -113,7 +113,7 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 
 		const autocompleteMenuList = endedTitleList.map(title => ({
 			id: title.id,
-			name: title.names.ru
+			name: title.names?.ru || title.names?.en
 		}))
 
 		return (

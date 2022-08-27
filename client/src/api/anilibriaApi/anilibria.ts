@@ -10,52 +10,39 @@ export const queryObjectByDefault: QueryObject = {
 	limit: 30
 }
 
+const getData = async <T>(
+	method: string,
+	queryParams: QueryObject
+): Promise<T> => {
+	const url = ANILIBRIA_API_URI + method + queryParamsString(queryParams)
+	const response = await axios.get<T>(url)
+	return response.data
+}
+
 export const anilibria = {
 	async getTitle(queryParams: QueryObject = {}) {
-		const url = ANILIBRIA_API_URI + '/getTitle' + queryParamsString(queryParams)
-		const response = await axios.get<Title>(url)
-		return response.data
+		return getData<Title>('/getTitle', queryParams)
 	},
 	async getTitles(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/getTitles' + queryParamsString(queryParams)
-		const response = await axios.get<Title[]>(url)
-		return response.data
+		return getData<Title[]>('/getTitles', queryParams)
 	},
 	async getRandomTitle(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/getRandomTitle' + queryParamsString(queryParams)
-		const response = await axios.get<Title>(url)
-		return response.data
+		return getData<Title[]>('/getRandomTitle', queryParams)
 	},
 	async getUpdates(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/getUpdates' + queryParamsString(queryParams)
-		const response = await axios.get<Title[]>(url)
-		return response.data
+		return getData<Title[]>('/getUpdates', queryParams)
 	},
 	async getChanges(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/getChanges' + queryParamsString(queryParams)
-		const response = await axios.get<Title[]>(url)
-		return response.data
+		return getData<Title[]>('/getChanges', queryParams)
 	},
 	async getGenres(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/getGenres' + queryParamsString(queryParams)
-		const response = await axios.get<string[]>(url)
-		return response.data
+		return getData<string[]>('/getGenres', queryParams)
 	},
 	async getYears(queryParams: QueryObject = {}) {
-		const url = ANILIBRIA_API_URI + '/getYears' + queryParamsString(queryParams)
-		const response = await axios.get<number[]>(url)
-		return response.data
+		return getData<number[]>('/getYears', queryParams)
 	},
 	async searchTitles(queryParams: QueryObject = {}) {
-		const url =
-			ANILIBRIA_API_URI + '/searchTitles' + queryParamsString(queryParams)
-		const response = await axios.get<Title[]>(url)
-		return response.data
+		return getData<Title[]>('/searchTitles', queryParams)
 	},
 	async getSchedule(queryParams: QueryObject = {}, days: number[]) {
 		queryParams.days = days

@@ -1,22 +1,20 @@
-.button {
+.watchOnline {
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #6c5dd4;
   cursor: pointer;
-  background: var(--secondary-color);
-  border: 1px solid var(--secondary-color);
-  transition: filter 0.3s ease;
-  color: white;
-  margin-top: 10px;
+  border: none;
+  color: #fff;
+  transition: background-color .3s ease,outline .03s ease;
+  font-size: 13px;
 
   &:hover {
-    filter: brightness(0.9);
+    background-color: #5d51bb;
   }
-}
 
-.downloadButton {
-  padding: 8px;
-  border-radius: 50%;
-}
-
-.notDownloadButton {
-  padding: 5px 22px;
-  border-radius: 10px;
+  &:active {
+    background-color: #584cb0;
+    outline: 3px solid rgba(88, 76, 176, 0.77);
+  }
 }

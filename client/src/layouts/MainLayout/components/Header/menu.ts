@@ -16,12 +16,7 @@ export const menu: MenuItem[] = [
 		to: '/news'
 	},
 	{
-		id: 2,
-		name: 'Рандом',
-		to: '/random'
-	},
-	{
-		id: 4,
+		id: 3,
 		name: 'Аниме',
 		to: '/anime'
 	}
