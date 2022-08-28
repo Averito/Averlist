@@ -148,6 +148,8 @@ export class CollectionService {
 		if (!collections.length)
 			throw new BadRequestException(USER_WITH_THIS_COLLECTION_NOT_FOUND)
 
+		await removePrevFile('posters', collections[0].poster)
+
 		return this.prisma.collection.delete({
 			where: {
 				id: collectionId
