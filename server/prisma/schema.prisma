@@ -95,3 +95,12 @@ model Invitation {
 
   @@map("invitations")
 }
+
+model News {
+  id         String   @id @default(uuid())
+  title      String
+  text       String
+  image      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

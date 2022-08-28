@@ -7,7 +7,7 @@ import { ROLES_KEY } from '@decorators/role.decorator'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-	constructor(private reflector: Reflector) {}
+	constructor(private readonly reflector: Reflector) {}
 
 	canActivate(context: ExecutionContext): boolean {
 		const roles = this.reflector.get<Role[]>(ROLES_KEY, context.getHandler())
