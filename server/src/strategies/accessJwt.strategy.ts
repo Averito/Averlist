@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '../prisma.service'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
+import { extractAccessJwtFromCookie } from '@utils/extractAccessJwtFromCookie'
 
 @Injectable()
 export class AccessJwtStrategy extends PassportStrategy(
@@ -17,7 +18,10 @@ export class AccessJwtStrategy extends PassportStrategy(
 	) {
 		super({
 			secretOrKey: configService.get('ACCESS_JWT_SECRET'),
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+			jwtFromRequest: ExtractJwt.fromExtractors([
+				ExtractJwt.fromAuthHeaderAsBearerToken(),
+				extractAccessJwtFromCookie
+			])
 		})
 	}
 

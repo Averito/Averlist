@@ -1,16 +1,18 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 import * as packageJSON from '../package.json'
 import 'colors'
 
 const PORT = process.env.PORT || 3000
 const MODE = process.env.MODE
+const development = MODE === 'development'
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
-	if (MODE === 'development') {
+	if (development) {
 		const config = new DocumentBuilder()
 			.setTitle(packageJSON.name)
 			.setDescription(packageJSON.description)
@@ -24,9 +26,19 @@ async function bootstrap() {
 		SwaggerModule.setup('api', app, document)
 	}
 
-	if (MODE === 'production') {
+	if (!development) {
 		app.setGlobalPrefix('api')
 	}
+
+	if (development) {
+		app.enableCors()
+	} else {
+		app.enableCors({
+			origin: 'https://averlist.xyz'
+		})
+	}
+
+	app.use(cookieParser())
 
 	await app.listen(PORT)
 	console.log(`Server is running on http://localhost:${PORT}`.cyan.bold)
