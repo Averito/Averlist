@@ -22,6 +22,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			(title.player.playlist as Series)[1]?.preview
 		}") 0 0/100% 100%`
 	}
+
 	return (
 		<>
 			<Meta

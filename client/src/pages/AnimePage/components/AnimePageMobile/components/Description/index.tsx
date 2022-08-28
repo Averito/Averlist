@@ -23,7 +23,7 @@ export const Description: FC<DescriptionProps> = ({ title }) => {
 							{title.player.series.first !== 1
 								? title.player.series.string
 								: title.player.series.last}{' '}
-							из {title.type.series} эпизодов
+							из {title.type.series ?? '?'} эпизодов
 							{title.announce && (
 								<>
 									<br />
