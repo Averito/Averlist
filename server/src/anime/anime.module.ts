@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-
 import { AnimeController } from './anime.controller'
 import { AnimeService } from './anime.service'
-import { AnimeEntity } from './anime.entity'
+import { PrismaService } from '../prisma.service'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([AnimeEntity])],
 	controllers: [AnimeController],
-	providers: [AnimeService]
+	providers: [AnimeService, PrismaService]
 })
 export class AnimeModule {}

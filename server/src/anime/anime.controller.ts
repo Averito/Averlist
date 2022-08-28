@@ -1,45 +1,62 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Patch,
-	Post,
-	Req,
-	UseGuards,
-	UsePipes,
-	ValidationPipe
+	Post
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
-
-import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { Anime, User } from '@prisma/client'
+import { Auth } from '@decorators/auth.decorator'
 import { AnimeService } from './anime.service'
-import { AnimeDto } from './DTO/anime.dto'
+import { CurrentUser } from '@decorators/user.decorator'
+import { CreateAnimeBodyDto } from '@DTO/createAnimeBody.dto'
+import { CreateAnimeResponseDto } from '@DTO/createAnimeResponse.dto'
+import { AnimeDto } from '@DTO/anime.dto'
+import { ChangeAnimeStatusBodyDto } from '@DTO/changeAnimeStatusBody.dto'
+import { AnimeStatus } from '@enums/animeStatus.enum'
 
-@ApiTags('Anime')
-@UseGuards(JwtAuthGuard)
 @Controller('anime')
+@Auth()
+@ApiTags('Anime')
 export class AnimeController {
 	constructor(private readonly animeService: AnimeService) {}
 
 	@Get()
-	getAllAnime() {
-		return this.animeService.getAllAnime()
-	}
-
-	@Get('me')
-	getAllAnimeByUserId(@Req() req) {
-		return this.animeService.getAllAnimeByUserId(req.user.id)
+	@ApiOkResponse({ type: [AnimeDto] })
+	async getAnimeList(@CurrentUser() user: User): Promise<Anime[]> {
+		return this.animeService.getAnimeList(user.id)
 	}
 
 	@Post()
-	@UsePipes(new ValidationPipe({ transform: true }))
-	createAnime(@Body() anime: AnimeDto) {
-		return this.animeService.createAnime(anime)
+	@ApiOkResponse({ type: [CreateAnimeResponseDto] })
+	@ApiBody({ type: CreateAnimeBodyDto })
+	async createAnime(
+		@Body() anime: CreateAnimeBodyDto,
+		@CurrentUser() user: User
+	): Promise<Anime> {
+		return this.animeService.createAnime(anime, user.id)
 	}
 
-	@Patch(':id')
-	editStatusAnime(@Param() params, @Body('status') status: number) {
-		return this.animeService.editStatusAnime(params.id, status)
+	@Patch(':animeId')
+	@ApiOkResponse({ type: AnimeDto })
+	@ApiBody({ type: ChangeAnimeStatusBodyDto })
+	async changeStatus(
+		@CurrentUser() user: User,
+		@Body('newStatus') newStatus: AnimeStatus,
+		@Param('animeId') animeId: string
+	) {
+		return this.animeService.changeStatus(animeId, newStatus, user.id)
+	}
+
+	@Delete(':animeId')
+	@ApiOkResponse({ type: AnimeDto })
+	async removeAnime(
+		@CurrentUser() user: User,
+		@Param('animeId') animeId: string
+	): Promise<Anime> {
+		return this.animeService.removeAnime(animeId, user.id)
 	}
 }

@@ -1,113 +1,280 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import * as bcrypt from 'bcrypt'
-import * as jwt from 'jsonwebtoken'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { JwtService } from '@nestjs/jwt'
-
-import { UserDto } from '../user/DTO/user.dto'
-import { UserService } from '../user/user.service'
 import {
-	NOT_FOUND_USER_ERROR,
-	UNVERIFY_TOKEN_ERROR,
-	WRONG_PASSWORD,
-	INCORRECT_OLD_PASSWORD_ERROR,
-	NOT_FOUND_USER_ON_EMAIL_ERROR,
-	USER_FOUND_ERROR
+	BadRequestException,
+	Injectable,
+	UnauthorizedException
+} from '@nestjs/common'
+import { User } from '@prisma/client'
+import { JwtService, JwtSignOptions } from '@nestjs/jwt'
+import { MailerService } from '@nestjs-modules/mailer'
+import { ConfigService } from '@nestjs/config'
+import { compare, genSalt, hash } from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
+import { PrismaService } from '../prisma.service'
+import {
+	ACTIVATE_LINK_NOT_VALID,
+	PASSWORD_WRONG,
+	REFRESH_TOKEN_WRONG,
+	USER_NOT_FOUND,
+	USER_WAS_FOUND
 } from './auth.constants'
-import { UserEntity } from '../user/user.entity'
+import { JwtPayload } from '@interfaces/jwtPayload.interface'
+import { Login, Registration } from './auth.interfaces'
 
 @Injectable()
 export class AuthService {
 	constructor(
-		@InjectRepository(UserEntity)
-		private readonly userRepository: Repository<UserEntity>,
-		private readonly JwtService: JwtService,
-		private readonly userService: UserService
+		private readonly prisma: PrismaService,
+		private readonly jwtService: JwtService,
+		private readonly configService: ConfigService,
+		private readonly mailerService: MailerService
 	) {}
 
-	public async authUser(user: UserEntity) {
-		const { id, login, email, description, avatar } = user
-		const dataForToken: any = {
-			id,
-			login,
-			email,
-			description,
-			avatar
-		}
-
-		const access_token = await this.generateToken(dataForToken)
-
-		return { access_token, userId: id }
-	}
-	public async validateUser(user: UserDto) {
-		const hasUser = await this.userRepository.findOneBy({ email: user.email })
-
-		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ERROR)
-
-		const isValidPassword = await bcrypt.compare(
-			user.password,
-			hasUser.password
-		)
-
-		if (!isValidPassword) throw new BadRequestException(WRONG_PASSWORD)
-
-		return hasUser
-	}
-	public async checkAuth(token: string) {
-		const valid = this.JwtService.verify(token, {
-			secret: process.env.JWT_KEY
+	public async registration(user: User): Promise<Registration> {
+		const hasUser = await this.prisma.user.findUnique({
+			where: { email: user.email }
 		})
 
-		if (!valid) throw new BadRequestException(UNVERIFY_TOKEN_ERROR)
+		if (hasUser) throw new BadRequestException(USER_WAS_FOUND)
 
-		const user = jwt.decode(token) as { email: string }
-		const hasUser = this.userRepository.findOneBy({ email: user.email })
-		if (!hasUser) throw new BadRequestException(NOT_FOUND_USER_ERROR)
+		const hashPassword = await this.genHash(user.password)
 
-		return valid
+		const activateLink = uuidv4()
+		const activateLinkHash = await this.genHash(activateLink)
+
+		const createdUser = await this.prisma.user.create({
+			data: {
+				...user,
+				activate_link: activateLinkHash,
+				password: hashPassword
+			}
+		})
+
+		const jwtPayload: JwtPayload = {
+			userId: createdUser.id,
+			email: createdUser.email,
+			login: createdUser.login,
+			role: 'user'
+		}
+		const accessToken = await this.genAccessToken(jwtPayload)
+		const refreshToken = await this.genRefreshToken(jwtPayload)
+
+		await this.setCurrentRefreshToken(refreshToken, createdUser.id)
+
+		this.sendMailForActivate(createdUser.email, activateLink, createdUser.id)
+
+		return {
+			user: createdUser,
+			tokens: {
+				accessToken,
+				refreshToken
+			}
+		}
 	}
-	public async registrationUser(user: UserDto) {
-		const { login, password, email, description, avatar } = user
-		const hash = await this.hashPassword(password, 10)
-		const hasUser = await this.userRepository.findOneBy({ email })
+	public async login(email: string, password: string): Promise<Login> {
+		const user = await this.validateUser(email, password)
 
-		if (hasUser) throw new BadRequestException(USER_FOUND_ERROR)
-
-		const newUser = {
-			login,
+		const jwtPayload: JwtPayload = {
+			userId: user.id,
 			email,
-			password: hash,
-			description,
-			avatar,
-			friendList: []
+			login: user.login,
+			role: user.role
 		}
-		return this.userRepository.save(newUser)
-	}
-	public async forgotPassword(user: UserDto & { oldPassword: string }) {
-		const { login, email, password, oldPassword } = user
+		const accessToken = await this.genAccessToken(jwtPayload)
+		let refreshToken = null
 
-		const dbuser = await this.userRepository.findOneBy({ email, login })
-		if (!dbuser) throw new BadRequestException(NOT_FOUND_USER_ON_EMAIL_ERROR)
-
-		const validOldPassword = await bcrypt.compare(oldPassword, dbuser.password)
-		if (!validOldPassword) {
-			throw new BadRequestException(INCORRECT_OLD_PASSWORD_ERROR)
+		if (!user.refreshTokenHash) {
+			refreshToken = await this.genRefreshToken(jwtPayload)
+			await this.setCurrentRefreshToken(refreshToken, user.id)
 		}
 
-		const passwordHash = await this.hashPassword(password, 10)
-		dbuser.password = passwordHash
-
-		return await this.userRepository.save(dbuser)
+		return {
+			refreshToken,
+			accessToken,
+			userId: user.id
+		}
 	}
-	private async generateToken(payload: any) {
-		return await this.JwtService.signAsync(payload)
-	}
-	private async hashPassword(enteredPassword: string, rounds: number) {
-		const salt = await bcrypt.genSalt(rounds)
-		const hash = await bcrypt.hash(enteredPassword, salt)
+	public async getAccessTokenFromRefreshToken(
+		refreshToken: string
+	): Promise<Pick<Login, 'accessToken'>> {
+		const { email } = (await this.jwtService.decode(refreshToken)) as JwtPayload
 
-		return hash
+		const user = await this.prisma.user.findUnique({ where: { email } })
+		if (!user) throw new BadRequestException(USER_NOT_FOUND)
+
+		const isValidRefreshToken = compare(refreshToken, user.refreshTokenHash)
+		if (!isValidRefreshToken)
+			throw new UnauthorizedException(REFRESH_TOKEN_WRONG)
+
+		await this.jwtService.verifyAsync(
+			refreshToken,
+			this.getRefreshTokenOptions()
+		)
+
+		const jwtPayload: JwtPayload = {
+			userId: user.id,
+			email: user.email,
+			login: user.login,
+			role: user.role
+		}
+		return {
+			accessToken: await this.genAccessToken(jwtPayload)
+		}
+	}
+	public async removeCurrentRefreshToken(userId: string): Promise<User> {
+		return this.prisma.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				refreshTokenHash: null
+			}
+		})
+	}
+	public async emailActivate(
+		activateLink: string,
+		userId: string
+	): Promise<string> {
+		const user = await this.prisma.user.findUnique({ where: { id: userId } })
+
+		const isValidActivateLink = await compare(activateLink, user.activate_link)
+		if (!isValidActivateLink)
+			throw new BadRequestException(ACTIVATE_LINK_NOT_VALID)
+
+		await this.prisma.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				emailActive: true
+			}
+		})
+
+		return '<h1 style="font-family: Arial, sans-serif">Почта успешно активирована, можете закрыть данную страницу</h1>'
+	}
+
+	public async resetPassword(email: string): Promise<User> {
+		const user = await this.prisma.user.findUnique({ where: { email } })
+		if (!user) throw new BadRequestException(USER_NOT_FOUND)
+
+		const newPassword = uuidv4()
+		this.sendMailForResetPassword(email, newPassword)
+
+		const newPasswordHash = await this.genHash(newPassword)
+
+		return this.prisma.user.update({
+			where: {
+				email
+			},
+			data: {
+				password: newPasswordHash
+			}
+		})
+	}
+
+	public async changePassword(
+		userId: string,
+		oldPassword: string,
+		newPassword: string
+	): Promise<User> {
+		const user = await this.prisma.user.findUnique({ where: { id: userId } })
+
+		const isValidPassword = await compare(oldPassword, user.password)
+		if (!isValidPassword) throw new BadRequestException(PASSWORD_WRONG)
+
+		const newPasswordHash = await this.genHash(newPassword)
+
+		return this.prisma.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				password: newPasswordHash
+			}
+		})
+	}
+
+	private async setCurrentRefreshToken(
+		refreshToken: string,
+		userId: string
+	): Promise<User> {
+		const refreshTokenHash = await this.genHash(refreshToken)
+
+		return this.prisma.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				refreshTokenHash
+			}
+		})
+	}
+	private async validateUser(email: string, password: string): Promise<User> {
+		const user = await this.prisma.user.findUnique({ where: { email } })
+		if (!user) throw new BadRequestException(USER_NOT_FOUND)
+
+		const isValidPassword = await compare(password, user.password)
+		if (!isValidPassword) throw new BadRequestException(PASSWORD_WRONG)
+
+		return user
+	}
+	private async genRefreshToken(payload: JwtPayload): Promise<string> {
+		return this.jwtService.signAsync(payload, this.getRefreshTokenOptions())
+	}
+	private async genAccessToken(payload: JwtPayload): Promise<string> {
+		return this.jwtService.signAsync(payload, this.getAccessTokenOptions())
+	}
+	private getRefreshTokenOptions(): JwtSignOptions {
+		return {
+			secret: this.configService.get('REFRESH_JWT_SECRET'),
+			expiresIn: this.configService.get('REFRESH_EXP_JWT')
+		}
+	}
+
+	private getAccessTokenOptions(): JwtSignOptions {
+		return {
+			secret: this.configService.get('ACCESS_JWT_SECRET'),
+			expiresIn: this.configService.get('ACCESS_EXP_JWT')
+		}
+	}
+
+	private async genHash(enteredData: string, rounds = 10): Promise<string> {
+		const salt = await genSalt(rounds)
+		return hash(enteredData, salt)
+	}
+
+	private sendMailForActivate(
+		to: string,
+		activateLink: string,
+		userId: string
+	) {
+		const uri =
+			process.env.MODE === 'development'
+				? process.env.LOCALHOST_URI
+				: process.env.AVERLIST_URI
+
+		this.mailerService.sendMail({
+			to,
+			from: process.env.MAILER_FROM,
+			subject: 'Averlist',
+			text: 'Активируйте свою почту',
+			html: `<div>
+				<h1>Активация электронной почты на Averlist</h1>
+				<p>Для активации перейдите по ссылке: ${uri}/auth/activate/${activateLink}?userId=${userId}</p>
+			</div>`
+		})
+	}
+
+	private sendMailForResetPassword(to: string, newPassword: string) {
+		this.mailerService.sendMail({
+			to,
+			from: process.env.MAILER_FROM,
+			subject: 'Averlist',
+			text: 'Сброс пароля',
+			html: `<div>
+				<h1>Сброс пароля на Averlist</h1>
+				<p>Ваш новый пароль: ${newPassword}</p>
+				<strong>Не забудьте его сменить!</strong>
+			</div>`
+		})
 	}
 }

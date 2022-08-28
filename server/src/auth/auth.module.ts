@@ -1,31 +1,33 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { PassportModule } from '@nestjs/passport'
-import { JwtModule } from '@nestjs/jwt'
-
-import { AuthController } from './auth.controller'
+import { JwtModule, JwtService } from '@nestjs/jwt'
 import { AuthService } from './auth.service'
-import { UserService } from '../user/user.service'
-import { getJWTConfig } from '../config/jwt.config'
-import { JwtStrategy } from './strategies/jwt.strategy'
-import { UserModule } from '../user/user.module'
-import { UserEntity } from '../user/user.entity'
+import { AuthController } from './auth.controller'
+import { PrismaService } from '../prisma.service'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { getJwtConfig } from '@config/jwt.config'
+import { PassportModule } from '@nestjs/passport'
+import { AccessJwtStrategy } from '@strategies/accessJwt.strategy'
+import { RefreshJwtStrategy } from '@strategies/refreshJwt.strategy'
 
 @Module({
 	imports: [
-		ConfigModule,
+		ConfigModule.forRoot(),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			useFactory: getJWTConfig
+			useFactory: getJwtConfig
 		}),
-		TypeOrmModule.forFeature([UserEntity]),
-		PassportModule,
-		UserModule,
 		PassportModule.register({ defaultStrategy: 'jwt' })
 	],
+	providers: [
+		AuthService,
+		ConfigService,
+		JwtService,
+		PrismaService,
+		AccessJwtStrategy,
+		RefreshJwtStrategy
+	],
 	controllers: [AuthController],
-	providers: [AuthService, UserService, JwtStrategy]
+	exports: [JwtModule, AccessJwtStrategy, RefreshJwtStrategy, PassportModule]
 })
 export class AuthModule {}

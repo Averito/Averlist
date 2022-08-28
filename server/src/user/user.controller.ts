@@ -5,94 +5,107 @@ import {
 	Get,
 	Param,
 	Patch,
-	Post,
-	Req,
+	Query,
 	Res,
-	UploadedFile,
-	UseGuards,
-	UseInterceptors,
-	UsePipes,
-	ValidationPipe
+	UploadedFile
 } from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { Express } from 'express'
-import { diskStorage } from 'multer'
-import { ApiQuery, ApiTags } from '@nestjs/swagger'
-
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator'
+import { User } from '@prisma/client'
+import { Response } from 'express'
 import { UserService } from './user.service'
-import { JwtAuthGuard } from '../auth/guards/jwt.guard'
-import { imageFileFilter } from '../helpers/imageFileFilter'
-import { editFileName } from '../helpers/editFileName'
+import { Roles } from '@decorators/role.decorator'
+import { Role } from '@enums/role.enum'
+import { CurrentUser } from '@decorators/user.decorator'
+import { GetAllUsersType } from '../types/getAllUsers.type'
+import { UserDto } from '@DTO/user.dto'
+import { GetAllUsersResponseDto } from '@DTO/getAllUsersResponse.dto'
+import { RemoveUserBodyDto } from '@DTO/removeUserBody.dto'
+import { EditUserNameBodyDto } from '@DTO/editUserNameBody.dto'
+import { ImageFile } from '@decorators/imageFile.decorator'
+import { ApiFile } from '@decorators/apiFile.decorator'
+import { Public } from '@decorators/public.decorator'
+import { AccessJwt } from '@decorators/accessJwt.decorator'
+import { EmailActive } from '@decorators/emailActive.decorator'
 
-@ApiTags('User')
 @Controller('users')
+@AccessJwt()
+@ApiBearerAuth()
+@ApiTags('Users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@ApiQuery({ name: 'GetAllUsers' })
 	@Get()
-	@UseGuards(JwtAuthGuard)
-	getAllUsers() {
-		return this.userService.getAllUsers()
+	@Roles(Role.ADMIN)
+	@ApiOkResponse({ type: [UserDto], description: 'get all users for admin' })
+	async getUsers(): Promise<User[]> {
+		return this.userService.getAllForAdmin()
+	}
+
+	@Get('all')
+	@EmailActive()
+	@ApiOkResponse({
+		type: [GetAllUsersResponseDto],
+		description: 'get all users'
+	})
+	async getAllUsers(
+		@Query('limit') limit?: string,
+		@Query('page') page?: string
+	): Promise<GetAllUsersType[]> {
+		return this.userService.getAll(+(limit ?? 15), +(page ?? 1))
 	}
 
 	@Get('me')
-	@UseGuards(JwtAuthGuard)
-	getMe(@Req() request) {
-		return this.userService.getMe(request.user.id)
+	@ApiOkResponse({ type: UserDto })
+	async getMe(@CurrentUser() user: User): Promise<User> {
+		return this.userService.getMe(user.id)
 	}
 
-	@ApiQuery({ name: 'getAvatar' })
-	@Get('me/avatar/:avatarId')
-	serveAvatar(@Param('avatarId') avatarId, @Res() res) {
-		res.sendFile(avatarId, { root: 'uploads/avatars' })
+	@Get('avatars/:avatarName')
+	@Public()
+	async getAvatar(
+		@Param('avatarName') avatarName: string,
+		@Res() res: Response
+	): Promise<void> {
+		return res.sendFile(avatarName, { root: './uploads/avatars' })
 	}
 
-	@Patch('me')
-	@UseGuards(JwtAuthGuard)
-	editDescription(
-		@Body('description') description: string,
-		@Body('login') login: string,
-		@Req() request
-	) {
-		return this.userService.editDescriptionAndLogin(
-			description,
-			login,
-			request.user.id
-		)
+	@Patch('me/edit-name')
+	@ApiOkResponse({ type: UserDto })
+	@ApiBody({ type: EditUserNameBodyDto })
+	async editName(
+		@CurrentUser() user: User,
+		@Body('name') name: string
+	): Promise<User> {
+		return this.userService.editName(user.id, name)
 	}
 
-	@Post('me/avatar')
-	@UseGuards(JwtAuthGuard)
-	@UseInterceptors(
-		FileInterceptor('avatar', {
-			storage: diskStorage({
-				destination: './uploads/avatars',
-				filename: editFileName
-			}),
-			fileFilter: imageFileFilter
-		})
-	)
-	editAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() request) {
-		return this.userService.uploadAvatar(avatar, request.user.id)
+	@Patch('me/avatar')
+	@ImageFile('avatar', './uploads/avatars')
+	@ApiOkResponse({ type: UserDto })
+	@ApiFile('avatar')
+	@ApiImplicitFile({ name: 'avatar' })
+	async setAvatar(
+		@UploadedFile() avatar: Express.Multer.File,
+		@CurrentUser() user: User
+	): Promise<User> {
+		return this.userService.setAvatar(avatar, user.id)
 	}
 
-	@Delete('me/avatar')
-	@UseGuards(JwtAuthGuard)
-	removeAvatar(@Req() req) {
-		return this.userService.removeAvatar(req.user.id)
+	@Delete('remove-friend/:friendId')
+	@ApiOkResponse({ type: UserDto })
+	async removeFriend(
+		@Param('friendId') friendId: string,
+		@CurrentUser() user: User
+	): Promise<User> {
+		return this.userService.removeFriend(friendId, user.id)
 	}
 
-	@Get(':id')
-	@UseGuards(JwtAuthGuard)
-	@UsePipes(new ValidationPipe({ transform: true }))
-	getUserbyId(@Param() param) {
-		return this.userService.getUserById(param.id)
-	}
-
-	@Delete('me/friends/:friendId')
-	@UseGuards(JwtAuthGuard)
-	removeFriend(@Param('friendId') friendId, @Req() req) {
-		return this.userService.removeFriend(req.user.id, friendId)
+	@Delete(':userId')
+	@Roles(Role.ADMIN)
+	@ApiOkResponse({ type: UserDto })
+	@ApiBody({ type: RemoveUserBodyDto })
+	async removeUser(@Param('userId') userId: string): Promise<User> {
+		return this.userService.removeUserById(userId)
 	}
 }

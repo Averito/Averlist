@@ -1,29 +1,31 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { MulterModule } from '@nestjs/platform-express'
-
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
+import { MulterModule } from '@nestjs/platform-express'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { getNodemailerConfig } from '@config/nodemailer.config'
 import { AnimeModule } from './anime/anime.module'
+import { CollectionModule } from './collection/collection.module'
 import { InvitationModule } from './invitation/invitation.module'
-import { NewsModule } from './news/news.module'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot(),
-		TypeOrmModule.forRoot({
-			autoLoadEntities: true
-		}),
+		UserModule,
+		AuthModule,
 		MulterModule.register({
 			dest: './uploads'
 		}),
-		UserModule,
-		InvitationModule,
-		AuthModule,
+		MailerModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getNodemailerConfig
+		}),
 		AnimeModule,
-		InvitationModule,
-		NewsModule
-	]
+		CollectionModule,
+		InvitationModule
+	],
+	controllers: [],
+	providers: []
 })
 export class AppModule {}

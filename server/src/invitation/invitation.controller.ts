@@ -1,49 +1,53 @@
-import {
-	Controller,
-	Delete,
-	Get,
-	Param,
-	Post,
-	Req,
-	UseGuards
-} from '@nestjs/common'
-
-import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { User, Invitation } from '@prisma/client'
+import { Auth } from '@decorators/auth.decorator'
 import { InvitationService } from './invitation.service'
-import { UserService } from '../user/user.service'
-import { ApiTags } from '@nestjs/swagger'
+import { CurrentUser } from '@decorators/user.decorator'
+import { InvitationDto } from '@DTO/invitation.dto'
+import { UserDto } from '@DTO/user.dto'
 
-@ApiTags('Invitation')
-@UseGuards(JwtAuthGuard)
 @Controller('invitation')
+@Auth()
+@ApiTags('Invitation')
 export class InvitationController {
-	constructor(
-		private readonly invitationService: InvitationService,
-		private readonly userService: UserService
-	) {}
+	constructor(private readonly invitationService: InvitationService) {}
 
-	@Get()
-	getAllMyInvitations(@Req() req) {
-		return this.userService.getMe(req.user.id)
+	@Get('my')
+	@ApiOkResponse({ type: [InvitationDto] })
+	async myInvitations(@CurrentUser() user: User): Promise<Invitation[]> {
+		return this.invitationService.myInvitations(user.id)
 	}
 
-	@Post(':userId')
-	sendInvitation(@Req() req, @Param('userId') userId: string) {
-		return this.invitationService.sendInvitation(req.user.id, userId)
+	@Get('me')
+	@ApiOkResponse({ type: [InvitationDto] })
+	async meInvitations(@CurrentUser() user: User): Promise<Invitation[]> {
+		return this.invitationService.meInvitations(user.id)
 	}
 
-	@Delete(':userId')
-	removeInvitation(@Req() req, @Param('userId') userId: string) {
-		return this.invitationService.removeInvitation(req.user.id, userId)
+	@Post('send/:invitedUserId')
+	@ApiOkResponse({ type: InvitationDto })
+	async sendInvitation(
+		@Param('invitedUserId') invitedUserId: string,
+		@CurrentUser() user: User
+	): Promise<Invitation> {
+		return this.invitationService.sendInvitation(invitedUserId, user.id)
 	}
 
-	@Get('accept/:invitationId')
-	acceptInvitation(@Param('invitationId') invitationId: string) {
-		return this.invitationService.acceptInvitation(invitationId)
+	@Post('accept/:invitationId')
+	@ApiOkResponse({ type: UserDto })
+	async acceptInvitation(
+		@Param('invitationId') invitationId: string,
+		@CurrentUser() user: User
+	): Promise<User> {
+		return this.invitationService.acceptInvitation(invitationId, user.id)
 	}
 
-	@Delete('decline/:invitationId')
-	declineInvitation(@Param('invitationId') invitationId: string) {
-		return this.invitationService.declineInvitation(invitationId)
+	@Delete(':invitationId')
+	@ApiOkResponse({ type: InvitationDto })
+	async removeInvitation(
+		@Param('invitationId') invitationId: string
+	): Promise<Invitation> {
+		return this.invitationService.removeInvitation(invitationId)
 	}
 }

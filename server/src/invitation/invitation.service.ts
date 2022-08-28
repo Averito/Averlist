@@ -1,144 +1,97 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-
-import {
-	INVITATION_WAS_FOUND_ERROR,
-	INVITATION_NOT_FOUND_ERROR,
-	FRIEND_WAS_FOUND_ERROR
-} from './invitation.constants'
-import { InvitationEntity } from './invitation.entity'
-import { UserEntity } from '../user/user.entity'
-import { uniqueFriendList } from '../helpers/uniqueFriendList'
+import { Invitation, User } from '@prisma/client'
+import { PrismaService } from '../prisma.service'
+import { INVITATION_FOUND, INVITATION_NOT_FOUND } from './invitation.constants'
 
 @Injectable()
 export class InvitationService {
-	constructor(
-		@InjectRepository(InvitationEntity)
-		private readonly invitationRepository: Repository<InvitationEntity>,
-		@InjectRepository(UserEntity)
-		private readonly userRepository: Repository<UserEntity>
-	) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-	public async sendInvitation(meId: number, foreignIdStr: string) {
-		const foreignId = +foreignIdStr
-
-		const guardInvite = await this.invitationRepository.findOneBy({
-			invitedUser: {
-				id: foreignId
-			},
-			senderUser: {
-				id: meId
-			}
-		})
-		const meFriendList = await this.userRepository.findOne({
-			relations: ['friendList'],
+	public async myInvitations(userId: string): Promise<Invitation[]> {
+		return this.prisma.invitation.findMany({
 			where: {
-				id: meId
-			}
-		})
-		const friendContain = meFriendList.friendList.find(
-			friend => (friend as UserEntity).id === foreignId
-		)
-
-		if (friendContain) throw new BadRequestException(FRIEND_WAS_FOUND_ERROR)
-		if (guardInvite) throw new BadRequestException(INVITATION_WAS_FOUND_ERROR)
-
-		const newInvitation = {
-			invitedUser: foreignId,
-			senderUser: meId
-		}
-		const createdInvitation = await this.invitationRepository.save(
-			newInvitation
-		)
-		const savedInvitation = await this.invitationRepository.findOne({
-			relations: ['senderUser', 'invitedUser'],
-			where: {
-				id: createdInvitation.id
-			}
-		})
-		return savedInvitation
-	}
-	public async removeInvitation(meId: number, foreignIdStr: string) {
-		const foreignId = +foreignIdStr
-		const inviteForRemove = await this.invitationRepository.findOneBy({
-			invitedUser: {
-				id: foreignId
+				senderUserId: userId
 			},
-			senderUser: {
-				id: meId
+			include: {
+				invitedUser: true
+			}
+		})
+	}
+	public async meInvitations(userId: string): Promise<Invitation[]> {
+		return this.prisma.invitation.findMany({
+			where: {
+				invitedUserId: userId
+			},
+			include: {
+				senderUser: true
+			}
+		})
+	}
+	public async sendInvitation(
+		invitedUserId: string,
+		senderUserId: string
+	): Promise<Invitation> {
+		const invitation = await this.prisma.invitation.findMany({
+			where: {
+				invitedUserId,
+				senderUserId
+			}
+		})
+		if (invitation.length) throw new BadRequestException(INVITATION_FOUND)
+
+		return this.prisma.invitation.create({
+			data: {
+				invitedUserId,
+				senderUserId
+			},
+			include: {
+				invitedUser: true
+			}
+		})
+	}
+	public async removeInvitation(invitationId: string): Promise<Invitation> {
+		const invitation = await this.prisma.invitation.findUnique({
+			where: { id: invitationId }
+		})
+		if (!invitation) throw new BadRequestException(INVITATION_NOT_FOUND)
+
+		return this.prisma.invitation.delete({
+			where: {
+				id: invitationId
+			}
+		})
+	}
+	public async acceptInvitation(
+		invitationId: string,
+		userId: string
+	): Promise<User> {
+		const invitation = await this.prisma.invitation.findUnique({
+			where: { id: invitationId }
+		})
+		if (!invitation) throw new BadRequestException(INVITATION_NOT_FOUND)
+
+		await this.prisma.userFriendList.create({
+			data: {
+				senderUserId: invitation.senderUserId,
+				invitedUserId: invitation.invitedUserId
 			}
 		})
 
-		if (!inviteForRemove) {
-			throw new BadRequestException(INVITATION_NOT_FOUND_ERROR)
-		}
-
-		return await this.invitationRepository.remove(inviteForRemove)
-	}
-	public async acceptInvitation(invitationIdStr: string) {
-		const invitationId = +invitationIdStr
-		const currentInvitation = await this.invitationRepository.findOne({
-			relations: ['senderUser', 'invitedUser'],
+		await this.prisma.invitation.delete({
 			where: {
 				id: invitationId
 			}
 		})
 
-		if (!currentInvitation) {
-			throw new BadRequestException(INVITATION_NOT_FOUND_ERROR)
-		}
-
-		const senderUser = await this.userRepository.findOne({
-			relations: ['friendList'],
+		return await this.prisma.user.findUnique({
 			where: {
-				id: (currentInvitation.senderUser as UserEntity).id
+				id: userId
+			},
+			include: {
+				friend_with: true,
+				invitedBy: true,
+				senderTo: true
 			}
 		})
-		const invitedUser = await this.userRepository.findOne({
-			relations: ['friendList'],
-			where: {
-				id: (currentInvitation.invitedUser as UserEntity).id
-			}
-		})
-
-		senderUser.friendList.push(invitedUser)
-		senderUser.friendList = uniqueFriendList(
-			senderUser.friendList as UserEntity[]
-		)
-		await this.userRepository.save(senderUser)
-
-		invitedUser.friendList.push(senderUser)
-		invitedUser.friendList = uniqueFriendList(
-			invitedUser.friendList as UserEntity[]
-		)
-		await this.userRepository.save(invitedUser)
-
-		const savedSenderUser = await this.userRepository.findOne({
-			relations: ['friendList'],
-			where: {
-				id: senderUser.id
-			}
-		})
-		const savedInvitedUser = await this.userRepository.findOne({
-			relations: ['friendList'],
-			where: {
-				id: invitedUser.id
-			}
-		})
-
-		await this.invitationRepository.remove(currentInvitation)
-
-		return {
-			savedSenderUser,
-			savedInvitedUser
-		}
-	}
-	public async declineInvitation(invitationIdStr: string) {
-		const invitationId = +invitationIdStr
-		const invitation = await this.invitationRepository.findOneBy({
-			id: invitationId
-		})
-		return await this.invitationRepository.remove(invitation)
 	}
 }

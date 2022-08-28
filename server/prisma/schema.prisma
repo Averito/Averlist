@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String                       @id @default(uuid())
+  login               String
+  name                String
+  email               String                       @unique
+  emailActive         Boolean                      @default(false)
+  avatar              String?
+  password            String
+  refreshTokenHash    String?
+  activate_link       String                       @unique
+  role                String                       @default("user")
+  friend_by           UserFriendList[]             @relation("invitedUser2")
+  friend_with         UserFriendList[]             @relation("senderUser2")
+  invitedBy           Invitation[]                 @relation("invitedUser")
+  senderTo            Invitation[]                 @relation("senderUser")
+  anime_list          Anime[]
+  collections         Collection[]
+  favoriteCollections FavoriteCollectionsOnUsers[]
+  created_at          DateTime                     @default(now())
+  updated_at          DateTime                     @updatedAt
+
+  @@map("users")
+}
+
+model UserFriendList {
+  senderUser    User   @relation("senderUser2", fields: [senderUserId], references: [id])
+  senderUserId  String
+  invitedUser   User   @relation("invitedUser2", fields: [invitedUserId], references: [id])
+  invitedUserId String
+
+  @@id([senderUserId, invitedUserId])
+}
+
+model Anime {
+  id           String      @id @default(uuid())
+  name         String
+  poster       String?
+  status       String
+  aniuId       String?
+  anilibriaId  Int?
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collectionId String?
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  @@map("anime")
+}
+
+model Collection {
+  id          String                       @id @default(uuid())
+  name        String
+  poster      String
+  type        String
+  anime_list  Anime[]
+  createdBy   User                         @relation(fields: [createdById], references: [id])
+  createdById String
+  favoritesBy FavoriteCollectionsOnUsers[]
+  created_at  DateTime                     @default(now())
+  updated_at  DateTime                     @updatedAt
+
+  @@map("collections")
+}
+
+model FavoriteCollectionsOnUsers {
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String
+
+  @@id([userId, collectionId])
+}
+
+model Invitation {
+  id            String   @id @default(uuid())
+  senderUser    User     @relation("senderUser", fields: [senderUserId], references: [id])
+  senderUserId  String
+  invitedUser   User     @relation("invitedUser", fields: [invitedUserId], references: [id])
+  invitedUserId String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("invitations")
+}
