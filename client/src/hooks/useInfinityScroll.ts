@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 export const useInfinityScroll = (onFetch: () => unknown) => {
 	const [isFetch, setIsFetch] = useState<boolean>(false)
 
-	const onScroll = useCallback((event: any) => {
+	const onScroll = useCallback(() => {
 		const { innerHeight } = window
 		const { offsetHeight, scrollTop } = document.documentElement
 

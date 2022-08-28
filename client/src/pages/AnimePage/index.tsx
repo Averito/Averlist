@@ -14,9 +14,6 @@ interface AnimePageProps {
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
 export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
-	const router = useRouter()
-
-	console.log(title)
 	const wrapperBackground = {
 		background: `url("${ANILIBRIA_URI}${
 			(title.player.playlist as Series)[1]?.preview

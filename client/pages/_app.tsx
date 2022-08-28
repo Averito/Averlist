@@ -24,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta property='og:image' content='./favicon.ico' />
 				<link rel='apple-touch-icon' href='./favicon.ico' />
 				<link rel='manifest' href='./manifest.json' />
+				<title>Averlist</title>
 			</Head>
 			<Layout>
 				<Component {...pageProps} />

@@ -21,7 +21,7 @@ export const MainAnimeSlider: FC<MainAnimeSliderProps> = ({ titleList }) => {
 				disableOnInteraction: false
 			}}
 		>
-			{titleList.map((title, idx) => (
+			{titleList.map((title) => (
 				<SwiperSlide key={title.id}>
 					<AnimePreview
 						series={(title.player.playlist as SeriesUsually[])[0]}

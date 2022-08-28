@@ -4,7 +4,6 @@ export const firstSeriesToSeriesUsually = (
 	titleList: Title[],
 	limit = titleList.length
 ): Title[] => {
-	const seriesArr: SeriesUsually[] = []
 	const titleListCopy = JSON.parse(JSON.stringify(titleList)) as Title[]
 
 	for (let idx = 0; idx < limit; idx++) {

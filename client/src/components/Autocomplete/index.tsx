@@ -3,14 +3,12 @@ import {
 	FC,
 	FocusEventHandler,
 	memo,
-	MouseEventHandler,
 	useEffect,
 	useState
 } from 'react'
 import classnames from 'classnames'
 
 import styles from './Autocomplete.module.scss'
-import { prev } from 'dom7'
 
 export interface AutocompleteMenu {
 	id: number

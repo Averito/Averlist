@@ -5,7 +5,7 @@ import { anilibria } from '@anilibriaApi/anilibria'
 
 export default AnimePage
 
-export const getStaticPaths: GetStaticPaths = async context => {
+export const getStaticPaths: GetStaticPaths = async () => {
 	const queryObject = {
 		filter: ['code'],
 		limit: -1

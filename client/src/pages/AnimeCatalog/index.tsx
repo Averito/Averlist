@@ -9,14 +9,12 @@ import { Meta } from '@utils/Meta'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
 import { Autocomplete } from '@components/Autocomplete'
-import { queryObjectByDefault } from '@anilibriaApi/anilibria'
 import { QueryObject } from '@helpers/queryParamsString'
 import { Tags } from '@pages/AnimeCatalog/components/Tags'
 import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { useGetUpdates } from '@hooks/useGetUpdates'
 import animeCatalog from '@stores/animeCatalog.store'
-import anime from '../../../pages/anime'
 
 interface AnimeCatalogProps {
 	years: number[]
