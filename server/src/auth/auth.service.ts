@@ -15,7 +15,8 @@ import {
 	PASSWORD_WRONG,
 	REFRESH_TOKEN_WRONG,
 	USER_NOT_FOUND,
-	USER_WAS_FOUND
+	USER_WAS_FOUND,
+	USER_WITH_THIS_ID_NOT_FOUND
 } from './auth.constants'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
 import { Login, Registration } from './auth.interfaces'
@@ -51,8 +52,6 @@ export class AuthService {
 
 		const jwtPayload: JwtPayload = {
 			userId: createdUser.id,
-			email: createdUser.email,
-			login: createdUser.login,
 			role: 'user'
 		}
 		const accessToken = await this.genAccessToken(jwtPayload)
@@ -75,8 +74,6 @@ export class AuthService {
 
 		const jwtPayload: JwtPayload = {
 			userId: user.id,
-			email,
-			login: user.login,
 			role: user.role
 		}
 		const accessToken = await this.genAccessToken(jwtPayload)
@@ -96,10 +93,12 @@ export class AuthService {
 	public async getAccessTokenFromRefreshToken(
 		refreshToken: string
 	): Promise<Pick<Login, 'accessToken'>> {
-		const { email } = (await this.jwtService.decode(refreshToken)) as JwtPayload
+		const { userId } = (await this.jwtService.decode(
+			refreshToken
+		)) as JwtPayload
 
-		const user = await this.prisma.user.findUnique({ where: { email } })
-		if (!user) throw new BadRequestException(USER_NOT_FOUND)
+		const user = await this.prisma.user.findUnique({ where: { id: userId } })
+		if (!user) throw new BadRequestException(USER_WITH_THIS_ID_NOT_FOUND)
 
 		const isValidRefreshToken = compare(refreshToken, user.refreshTokenHash)
 		if (!isValidRefreshToken)
@@ -112,8 +111,6 @@ export class AuthService {
 
 		const jwtPayload: JwtPayload = {
 			userId: user.id,
-			email: user.email,
-			login: user.login,
 			role: user.role
 		}
 		return {
