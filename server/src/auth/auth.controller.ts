@@ -7,10 +7,12 @@ import {
 	Patch,
 	Post,
 	Query,
-	UseGuards
+	UseGuards,
+	Res
 } from '@nestjs/common'
 import { User } from '@prisma/client'
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { Response } from 'express'
 import { AuthService } from './auth.service'
 import { CurrentUser } from '@decorators/user.decorator'
 import { Login, Registration } from './auth.interfaces'
@@ -34,24 +36,47 @@ export class AuthController {
 	@Post('registration')
 	@ApiOkResponse({ type: RegistrationResponseDto })
 	@ApiBody({ type: RegistrationBodyDto })
-	async registration(@Body() user: User): Promise<Registration> {
-		return this.authService.registration(user)
+	async registration(
+		@Body() user: User,
+		@Res({ passthrough: true }) response: Response
+	): Promise<Registration> {
+		const registrationResult = await this.authService.registration(user)
+
+		response.cookie('accessToken', registrationResult.tokens.accessToken)
+		response.cookie('refreshToken', registrationResult.tokens.refreshToken)
+
+		return registrationResult
 	}
 
 	@Patch('login')
 	@ApiOkResponse({ type: LoginResponseDto })
 	@ApiBody({ type: LoginBodyDto })
 	async login(
-		@Body() emailPassword: Pick<User, 'password' | 'email'>
+		@Body() emailPassword: Pick<User, 'password' | 'email'>,
+		@Res({ passthrough: true }) response: Response
 	): Promise<Login> {
-		return this.authService.login(emailPassword.email, emailPassword.password)
+		const loginResult = await this.authService.login(
+			emailPassword.email,
+			emailPassword.password
+		)
+
+		response.cookie('accessToken', loginResult.accessToken)
+		response.cookie('refreshToken', loginResult.refreshToken)
+
+		return loginResult
 	}
 
 	@Patch('logout')
 	@AccessJwt()
 	@ApiBearerAuth()
 	@ApiOkResponse({ type: UserDto })
-	async logout(@CurrentUser() user: User): Promise<User> {
+	async logout(
+		@CurrentUser() user: User,
+		@Res({ passthrough: true }) response: Response
+	): Promise<User> {
+		response.cookie('accessToken', '')
+		response.cookie('refreshToken', '')
+
 		return this.authService.removeCurrentRefreshToken(user.id)
 	}
 
@@ -82,10 +107,16 @@ export class AuthController {
 	@ApiOkResponse({ type: GetAccessResponseDto })
 	@ApiBody({ description: 'Refresh token required' })
 	async getAccessToken(
-		@Headers('authorization') authorization: string
+		@Headers('authorization') authorization: string,
+		@Res({ passthrough: true }) response: Response
 	): Promise<Pick<Login, 'accessToken'>> {
 		const refreshToken = authorization.replace('Bearer ', '')
-		return this.authService.getAccessTokenFromRefreshToken(refreshToken)
+		const objWithAccessToken =
+			await this.authService.getAccessTokenFromRefreshToken(refreshToken)
+
+		response.cookie('accessToken', objWithAccessToken.accessToken)
+
+		return objWithAccessToken
 	}
 
 	@Get('activate/:activateLink')

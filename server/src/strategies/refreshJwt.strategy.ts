@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '../prisma.service'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
+import { extractRefreshJwtFromCookie } from '@utils/extractRefreshJwtFromCookie'
 
 @Injectable()
 export class RefreshJwtStrategy extends PassportStrategy(
@@ -17,7 +18,10 @@ export class RefreshJwtStrategy extends PassportStrategy(
 	) {
 		super({
 			secretOrKey: configService.get('REFRESH_JWT_SECRET'),
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+			jwtFromRequest: ExtractJwt.fromExtractors([
+				ExtractJwt.fromAuthHeaderAsBearerToken(),
+				extractRefreshJwtFromCookie
+			])
 		})
 	}
 
