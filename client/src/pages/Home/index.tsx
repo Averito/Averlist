@@ -4,7 +4,6 @@ import { MainAnimeSlider } from './components/MainAnimeSlider'
 import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
 import { reverseArray } from '@helpers/reverseArray'
-import { useMemo } from 'react'
 import { Meta } from '@utils/Meta'
 
 interface HomeProps {
@@ -20,10 +19,7 @@ export const Home: NextPage<HomeProps> = ({
 	firstFiveTitles,
 	scheduleOfWeek
 }) => {
-	const reversedUpdatesTitleList = useMemo(
-		() => reverseArray(updatesTitleList),
-		[updatesTitleList]
-	)
+	const reversedUpdatesTitleList = reverseArray(updatesTitleList)
 
 	return (
 		<div>

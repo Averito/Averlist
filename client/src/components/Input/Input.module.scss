@@ -10,3 +10,15 @@
     outline: none;
   }
 }
+
+@-webkit-keyframes autofill {
+  to {
+    color: inherit;
+    background: transparent;
+  }
+}
+
+.label {
+  margin-bottom: 5px;
+  font-size: 17px;
+}

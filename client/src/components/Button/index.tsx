@@ -12,7 +12,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = memo(
 	({ children, onClick, className }) => {
 		return (
 			<button
-				className={classnames(styles.watchOnline, className)}
+				className={classnames(styles.button, className)}
 				onClick={onClick}
 			>
 				{children}

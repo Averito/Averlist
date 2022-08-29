@@ -1,0 +1,39 @@
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #302457;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.dropdownMenuOn {
+  max-height: 200px;
+  padding: 4px 0;
+
+  @media all and (max-width: 768px) {
+    max-height: 0;
+    padding: 0;
+  }
+}
+
+.dropdownMenuOff {
+  max-height: 0;
+  padding: 0;
+}
+
+.menuItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #2b214f;
+  }
+}

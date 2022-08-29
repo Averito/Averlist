@@ -9,6 +9,7 @@ import defaultAvatar from '@assets/images/defaultAvatar.png'
 import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
 import { menu } from '@layouts/MainLayout/components/Header/menu'
 import { IgnorePaths } from '@utils/IgnorePaths'
+import { Dropdown } from '@components/Dropdown'
 
 export const Header: FC = () => {
 	const router = useRouter()
@@ -22,8 +23,21 @@ export const Header: FC = () => {
 			? styles.containerNotMainPage
 			: styles.containerMainPage
 
+	const dropdownMenus = [
+		{
+			id: 1,
+			label: 'Регистрация',
+			href: 'registration'
+		},
+		{
+			id: 2,
+			label: 'Войти',
+			href: 'login'
+		}
+	]
+
 	return (
-		<IgnorePaths ignorePaths={['/gallery/[animeImage]']}>
+		<IgnorePaths ignorePaths={['/registration', '/login']}>
 			<header className={classnames(styles.container, mainPage)}>
 				<Hamburger />
 				<div className={styles.containerBlock1}>
@@ -54,13 +68,17 @@ export const Header: FC = () => {
 					</nav>
 				</div>
 				<div className={styles.containerBlock2}>
-					<Image
-						width={35}
-						height={35}
-						style={{ borderRadius: '50%' }}
-						src={defaultAvatar}
-						alt='Ава'
-					/>
+					<Dropdown options={dropdownMenus}>
+						<Link href='registration'>
+							<Image
+								width={35}
+								height={35}
+								style={{ borderRadius: '50%' }}
+								src={defaultAvatar}
+								alt='Ава'
+							/>
+						</Link>
+					</Dropdown>
 					<p className={styles.login}>Гость</p>
 				</div>
 			</header>
