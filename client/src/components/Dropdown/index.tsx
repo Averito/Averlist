@@ -1,4 +1,9 @@
-import React, { FC, MouseEventHandler, PropsWithChildren, useState } from 'react'
+import React, {
+	FC,
+	MouseEventHandler,
+	PropsWithChildren,
+	useState
+} from 'react'
 import Link from 'next/link'
 import classnames from 'classnames'
 
@@ -15,7 +20,10 @@ interface DropdownProps {
 	options: DropdownMenu[]
 }
 
-export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({ options, children }) => {
+export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
+	options,
+	children
+}) => {
 	const [active, setActive] = useState<boolean>(false)
 
 	let timeout: ReturnType<typeof setTimeout>
@@ -27,29 +35,28 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({ options, childr
 		timeout = setTimeout(() => setActive(false), 200)
 	}
 
-	const dropdownMenuActive = active ? styles.dropdownMenuOn : styles.dropdownMenuOff
+	const dropdownMenuActive = active
+		? styles.dropdownMenuOn
+		: styles.dropdownMenuOff
 
 	return (
 		<div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-			<div>
-				{children}
-			</div>
+			<div>{children}</div>
 			<div className={styles.dropdownWrapper}>
 				<div className={classnames(styles.dropdownMenu, dropdownMenuActive)}>
 					{options.map(option => (
 						<React.Fragment key={option.id}>
 							{option.href ? (
 								<div className={styles.menuItem} onClick={option.onClick}>
-									<Link href={option.href}>
-										{option.label}
-									</Link>
+									<Link href={option.href}>{option.label}</Link>
 								</div>
 							) : (
-								<div className={styles.menuItem} onClick={option.onClick}>{option.label}</div>
+								<div className={styles.menuItem} onClick={option.onClick}>
+									{option.label}
+								</div>
 							)}
 						</React.Fragment>
-						)
-					)}
+					))}
 				</div>
 			</div>
 		</div>

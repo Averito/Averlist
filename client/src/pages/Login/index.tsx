@@ -11,7 +11,7 @@ export const Login: NextPage = () => {
 	const { value: email, setValue: setEmail } = useInput()
 	const { value: password, setValue: setPassword } = useInput()
 
-	const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+	const onSubmit: FormEventHandler<HTMLFormElement> = event => {
 		event.preventDefault()
 		console.log('submit')
 	}
@@ -23,8 +23,7 @@ export const Login: NextPage = () => {
 				<div className={styles.form}>
 					<h1 className={styles.title}>Логин</h1>
 					<form onSubmit={onSubmit}>
-						<div className={styles.block}>
-						</div>
+						<div className={styles.block}></div>
 						<div className={styles.block}>
 							<Input
 								type='email'

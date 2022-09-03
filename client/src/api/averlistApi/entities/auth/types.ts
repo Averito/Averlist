@@ -1,11 +1,13 @@
 import { User } from '@averlistApi/entities/users/types'
 
-
 export interface Registration {
 	login: string
 	name: string
 	email: string
 	password: string
+	avatar?: string
+	emailActive?: boolean
+	accessToken?: string
 }
 
 export interface Tokens {
@@ -20,7 +22,8 @@ export interface RegistrationResponse {
 
 export interface Login {
 	email: string
-	password: string
+	password?: string
+	accessToken?: string
 }
 
 export interface LoginResponse {

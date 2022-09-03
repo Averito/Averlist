@@ -7,6 +7,11 @@ module.exports = withPWA({
 		dest: 'public'
 	},
 	images: {
-		domains: ['dl-20211030-963.anilib.top', 'static.aniuApi.ru', 'aniuApi.ru', 'averlist.xyz']
+		domains: [
+			'dl-20211030-963.anilib.top',
+			'static.aniuApi.ru',
+			'aniuApi.ru',
+			'averlist.xyz'
+		]
 	}
 })
