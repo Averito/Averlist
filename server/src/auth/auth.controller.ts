@@ -37,7 +37,7 @@ export class AuthController {
 	@ApiOkResponse({ type: RegistrationResponseDto })
 	@ApiBody({ type: RegistrationBodyDto })
 	async registration(
-		@Body() user: User,
+		@Body() user: RegistrationBodyDto,
 		@Res({ passthrough: true }) response: Response
 	): Promise<Registration> {
 		const registrationResult = await this.authService.registration(user)
@@ -52,12 +52,13 @@ export class AuthController {
 	@ApiOkResponse({ type: LoginResponseDto })
 	@ApiBody({ type: LoginBodyDto })
 	async login(
-		@Body() emailPassword: Pick<User, 'password' | 'email'>,
+		@Body() emailPassword: LoginBodyDto,
 		@Res({ passthrough: true }) response: Response
 	): Promise<Login> {
 		const loginResult = await this.authService.login(
 			emailPassword.email,
-			emailPassword.password
+			emailPassword.password,
+			emailPassword.accessToken
 		)
 
 		response.cookie('accessToken', loginResult.accessToken)

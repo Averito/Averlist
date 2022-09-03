@@ -7,6 +7,25 @@ export class RegistrationBodyDto {
 	@ApiProperty({ name: 'name' })
 	name: string
 
+	@ApiProperty({
+		name: 'avatar',
+		description: 'For not standard auth. Example: OAuth'
+	})
+	avatar?: string
+
+	@ApiProperty({
+		name: 'emailActive',
+		description:
+			'For not standard auth. WARNING: Password will generated and sent to email if emailActive is true'
+	})
+	emailActive?: boolean
+
+	@ApiProperty({
+		name: 'accessToken',
+		description: 'From other services. Example: Discord access token.'
+	})
+	accessToken?: string
+
 	@ApiProperty({ name: 'email' })
 	email: string
 

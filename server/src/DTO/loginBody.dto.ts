@@ -5,5 +5,11 @@ export class LoginBodyDto {
 	email: string
 
 	@ApiProperty({ name: 'password' })
-	password: string
+	password?: string
+
+	@ApiProperty({
+		name: 'accessToken',
+		description: 'From other services. Example: Discord access token.'
+	})
+	accessToken?: string
 }
