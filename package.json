@@ -5,7 +5,7 @@
   "main": "server/src/main.ts",
   "scripts": {
     "start": "concurrently \"cd client && npm run start\" \"cd server && npm run start\"",
-    "start:dev": "concurrently \"cd client && npm run start\" \"cd server && npm run start:dev\"",
+    "start:dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run start:dev\"",
     "build": "concurrently \"cd client && npm run build\" \"cd server && npm run build\"",
     "lint": "concurrently \"cd client && npm run lint\" \"cd server && npm run lint\"",
     "install:project": "concurrently \"cd client && npm install\" \"cd server && npm install\"",
@@ -45,5 +45,7 @@
   "devDependencies": {
     "concurrently": "^7.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cookie": "^0.5.0"
+  }
 }

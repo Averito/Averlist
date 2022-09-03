@@ -1,10 +1,19 @@
 import { Averlist } from '@averlistApi/types'
-import { AccessToken, LoginResponse, RegistrationResponse } from '@averlistApi/entities/auth/types'
+import {
+	AccessToken,
+	LoginResponse,
+	RegistrationResponse
+} from '@averlistApi/entities/auth/types'
 import { axios } from '@averlistApi/averlist'
 
 export const auth = {
-	async registration(user: Averlist.Registration): Promise<RegistrationResponse> {
-		const response = await axios.post<RegistrationResponse>('/auth/registration', user)
+	async registration(
+		user: Averlist.Registration
+	): Promise<RegistrationResponse> {
+		const response = await axios.post<RegistrationResponse>(
+			'/auth/registration',
+			user
+		)
 		return response.data
 	},
 	async login(loginData: Averlist.Login): Promise<LoginResponse> {
@@ -15,12 +24,22 @@ export const auth = {
 		const response = await axios.patch<Averlist.User>('/auth/logout')
 		return response.data
 	},
-	async resetPassword(resetPasswordData: Averlist.ResetPassword): Promise<Averlist.User> {
-		const response = await axios.patch<Averlist.User>('/auth/reset-password', resetPasswordData)
+	async resetPassword(
+		resetPasswordData: Averlist.ResetPassword
+	): Promise<Averlist.User> {
+		const response = await axios.patch<Averlist.User>(
+			'/auth/reset-password',
+			resetPasswordData
+		)
 		return response.data
 	},
-	async changePassword(changePasswordData: Averlist.ChangePassword): Promise<Averlist.User> {
-		const response = await axios.patch<Averlist.User>('/auth/reset-password', changePasswordData)
+	async changePassword(
+		changePasswordData: Averlist.ChangePassword
+	): Promise<Averlist.User> {
+		const response = await axios.patch<Averlist.User>(
+			'/auth/reset-password',
+			changePasswordData
+		)
 		return response.data
 	},
 	async getAccess(): Promise<AccessToken> {

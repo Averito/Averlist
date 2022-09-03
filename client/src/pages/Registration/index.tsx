@@ -1,22 +1,41 @@
+import { FormEventHandler } from 'react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 
 import styles from './Registration.module.scss'
 import { Input } from '@components/Input'
 import { Meta } from '@utils/Meta'
 import { Button } from '@components/Button'
 import { useInput } from '@hooks/useInput'
-import { FormEventHandler } from 'react'
+import { averlist } from '@averlistApi/averlist'
 
 export const Registration: NextPage = () => {
+	const router = useRouter()
+
 	const { value: login, setValue: setLogin } = useInput()
 	const { value: name, setValue: setName } = useInput()
 	const { value: email, setValue: setEmail } = useInput()
 	const { value: password, setValue: setPassword } = useInput()
 	const { value: passwordAgain, setValue: setPasswordAgain } = useInput()
 
-	const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+	const onSubmit: FormEventHandler<HTMLFormElement> = event => {
 		event.preventDefault()
-		console.log('submit')
+		if (!login || !name || !email)
+			return toast.error('Все поля не должны быть пустыми')
+		if (password !== passwordAgain) return toast.error('Пароли не совпадают')
+		if (!email.includes('@'))
+			return toast.error('Электронная почта введена не в верном формате')
+
+		averlist.auth.registration({
+			login,
+			email,
+			name,
+			password
+		})
+
+		toast.success('Регистрация прошла успешно')
+		router.push('/lk')
 	}
 
 	return (
@@ -75,7 +94,9 @@ export const Registration: NextPage = () => {
 							/>
 						</div>
 						<div className={styles.submitButtonWrapper}>
-							<Button className={styles.submitButton}>Зарегистрироваться</Button>
+							<Button className={styles.submitButton}>
+								Зарегистрироваться
+							</Button>
 						</div>
 					</form>
 				</div>

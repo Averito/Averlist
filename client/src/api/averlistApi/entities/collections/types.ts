@@ -8,7 +8,7 @@ export interface Collection {
 	name: string
 	poster: string
 	type: CollectionType
-	anime_list:  Anime[]
+	anime_list: Anime[]
 	createdBy: User
 	createdById: string
 	favoritesBy?: User[]
@@ -17,12 +17,12 @@ export interface Collection {
 }
 
 export interface NewCollection {
-	name: string,
-	type: CollectionType,
+	name: string
+	type: CollectionType
 	anime_list: string
 }
 
 export interface EditCollection {
-	name?: string,
+	name?: string
 	type?: CollectionType
 }

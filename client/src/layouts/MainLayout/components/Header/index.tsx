@@ -27,12 +27,12 @@ export const Header: FC = () => {
 		{
 			id: 1,
 			label: 'Регистрация',
-			href: 'registration'
+			href: '/registration'
 		},
 		{
 			id: 2,
 			label: 'Войти',
-			href: 'login'
+			href: '/login'
 		}
 	]
 
@@ -69,14 +69,16 @@ export const Header: FC = () => {
 				</div>
 				<div className={styles.containerBlock2}>
 					<Dropdown options={dropdownMenus}>
-						<Link href='registration'>
-							<Image
-								width={35}
-								height={35}
-								style={{ borderRadius: '50%' }}
-								src={defaultAvatar}
-								alt='Ава'
-							/>
+						<Link href='/registration'>
+							<a href='#'>
+								<Image
+									width={35}
+									height={35}
+									style={{ borderRadius: '50%' }}
+									src={defaultAvatar}
+									alt='Ава'
+								/>
+							</a>
 						</Link>
 					</Dropdown>
 					<p className={styles.login}>Гость</p>
