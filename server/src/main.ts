@@ -27,14 +27,18 @@ async function bootstrap() {
 	}
 
 	if (!development) {
-		app.setGlobalPrefix('api')
+		app.setGlobalPrefix('api/v1')
 	}
 
 	if (development) {
-		app.enableCors()
+		app.enableCors({
+			origin: 'http://localhost:3000',
+			credentials: true
+		})
 	} else {
 		app.enableCors({
-			origin: 'https://averlist.xyz'
+			origin: 'https://averlist.xyz',
+			credentials: true
 		})
 	}
 

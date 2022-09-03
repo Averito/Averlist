@@ -20,6 +20,7 @@ import {
 } from './auth.constants'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
 import { Login, Registration } from './auth.interfaces'
+import { RegistrationBodyDto } from '@DTO/registrationBody.dto'
 
 @Injectable()
 export class AuthService {
@@ -30,23 +31,42 @@ export class AuthService {
 		private readonly mailerService: MailerService
 	) {}
 
-	public async registration(user: User): Promise<Registration> {
+	public async registration(
+		registrationBody: RegistrationBodyDto
+	): Promise<Registration> {
 		const hasUser = await this.prisma.user.findUnique({
-			where: { email: user.email }
+			where: { email: registrationBody.email }
 		})
 
 		if (hasUser) throw new BadRequestException(USER_WAS_FOUND)
 
-		const hashPassword = await this.genHash(user.password)
+		let hashPassword
+		if (registrationBody.emailActive) {
+			const password = uuidv4()
+			hashPassword = await this.genHash(password)
+			this.sendMailWithPassword(registrationBody.email, password)
+		} else {
+			hashPassword = await this.genHash(registrationBody.password)
+		}
 
 		const activateLink = uuidv4()
 		const activateLinkHash = await this.genHash(activateLink)
 
+		let anotherAccessTokenHash = null
+		if (registrationBody.accessToken) {
+			anotherAccessTokenHash = await this.genHash(registrationBody.accessToken)
+		}
+
 		const createdUser = await this.prisma.user.create({
 			data: {
-				...user,
+				login: registrationBody.login,
+				name: registrationBody.name,
+				avatar: registrationBody.avatar,
+				email: registrationBody.email,
+				emailActive: !!registrationBody.emailActive,
 				activate_link: activateLinkHash,
-				password: hashPassword
+				password: hashPassword,
+				anotherAccessToken: anotherAccessTokenHash
 			}
 		})
 
@@ -59,7 +79,9 @@ export class AuthService {
 
 		await this.setCurrentRefreshToken(refreshToken, createdUser.id)
 
-		this.sendMailForActivate(createdUser.email, activateLink, createdUser.id)
+		if (!registrationBody.emailActive) {
+			this.sendMailForActivate(createdUser.email, activateLink, createdUser.id)
+		}
 
 		return {
 			user: createdUser,
@@ -69,8 +91,12 @@ export class AuthService {
 			}
 		}
 	}
-	public async login(email: string, password: string): Promise<Login> {
-		const user = await this.validateUser(email, password)
+	public async login(
+		email: string,
+		password?: string,
+		anotherAccessToken?: string
+	): Promise<Login> {
+		const user = await this.validateUser(email, password, anotherAccessToken)
 
 		const jwtPayload: JwtPayload = {
 			userId: user.id,
@@ -82,6 +108,18 @@ export class AuthService {
 		if (!user.refreshTokenHash) {
 			refreshToken = await this.genRefreshToken(jwtPayload)
 			await this.setCurrentRefreshToken(refreshToken, user.id)
+		}
+
+		if (anotherAccessToken) {
+			const anotherAccessTokenHash = await this.genHash(anotherAccessToken)
+			await this.prisma.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					anotherAccessToken: anotherAccessTokenHash
+				}
+			})
 		}
 
 		return {
@@ -205,12 +243,21 @@ export class AuthService {
 			}
 		})
 	}
-	private async validateUser(email: string, password: string): Promise<User> {
+	private async validateUser(
+		email: string,
+		password?: string,
+		anotherAccessToken?: string
+	): Promise<User> {
 		const user = await this.prisma.user.findUnique({ where: { email } })
 		if (!user) throw new BadRequestException(USER_NOT_FOUND)
 
-		const isValidPassword = await compare(password, user.password)
-		if (!isValidPassword) throw new BadRequestException(PASSWORD_WRONG)
+		const isValidPassword = await compare(password || '', user.password)
+		const isValidAnotherAccessToken = await compare(
+			anotherAccessToken,
+			user.anotherAccessToken
+		)
+		if (!isValidPassword && !isValidAnotherAccessToken)
+			throw new BadRequestException(PASSWORD_WRONG)
 
 		return user
 	}
@@ -226,19 +273,16 @@ export class AuthService {
 			expiresIn: this.configService.get('REFRESH_EXP_JWT')
 		}
 	}
-
 	private getAccessTokenOptions(): JwtSignOptions {
 		return {
 			secret: this.configService.get('ACCESS_JWT_SECRET'),
 			expiresIn: this.configService.get('ACCESS_EXP_JWT')
 		}
 	}
-
 	private async genHash(enteredData: string, rounds = 10): Promise<string> {
 		const salt = await genSalt(rounds)
 		return hash(enteredData, salt)
 	}
-
 	private sendMailForActivate(
 		to: string,
 		activateLink: string,
@@ -260,7 +304,6 @@ export class AuthService {
 			</div>`
 		})
 	}
-
 	private sendMailForResetPassword(to: string, newPassword: string) {
 		this.mailerService.sendMail({
 			to,
@@ -271,6 +314,19 @@ export class AuthService {
 				<h1>Сброс пароля на Averlist</h1>
 				<p>Ваш новый пароль: ${newPassword}</p>
 				<strong>Не забудьте его сменить!</strong>
+			</div>`
+		})
+	}
+	private sendMailWithPassword(to: string, password: string) {
+		this.mailerService.sendMail({
+			to,
+			from: process.env.MAILER_FROM,
+			subject: 'Averlist',
+			text: 'Ваш пароль',
+			html: `<div>
+				<h1>Ваш пароль на Averlist</h1>
+				<p>Ваш пароль: ${password}</p>
+				<strong>Не забудьте его сменить! Или оставьте такой, он вполне надёжный ;)</strong>
 			</div>`
 		})
 	}

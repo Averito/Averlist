@@ -3,9 +3,8 @@ import { Role } from '@enums/role.enum'
 import { InvitationDto } from './invitation.dto'
 import { AnimeDto } from './anime.dto'
 import { CollectionDto } from './collection.dto'
-import { User } from '@prisma/client'
 
-export class UserDto implements User {
+export class UserDto {
 	@ApiProperty({ name: 'id', default: 'uuid' })
 	id: string
 
@@ -33,6 +32,9 @@ export class UserDto implements User {
 
 	@ApiProperty({ name: 'refreshTokenHash' })
 	refreshTokenHash: string
+
+	@ApiProperty({ name: 'anotherAccessToken' })
+	anotherAccessToken?: string
 
 	@ApiProperty({
 		name: 'activate_link',
