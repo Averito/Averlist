@@ -12,6 +12,8 @@ datasource db {
 
 model User {
   id                  String                       @id @default(uuid())
+  discordId           Int?                         @unique
+  vkId                Int?                         @unique
   login               String
   name                String
   email               String                       @unique
@@ -19,7 +21,6 @@ model User {
   avatar              String?
   password            String
   refreshTokenHash    String?
-  anotherAccessToken  String?                      @unique
   activate_link       String                       @unique
   role                String                       @default("user")
   friend_by           UserFriendList[]             @relation("invitedUser2")

@@ -1,33 +1,18 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 0 10px;
-}
-
-.form {
-  padding: 12px 24px;
-  background-color: #2b214f;
-  border-radius: 8px;
-  width: min(100%, 500px);
-}
-
-.title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
 .block {
   margin-bottom: 15px;
 }
 
-.submitButtonWrapper {
+.additionalText {
   display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
-}
+  align-items: center;
 
-.submitButton {
-  max-width: fit-content;
+  > p {
+    font-size: var(--medium-font-size);
+    margin: 0 10px 0 0;
+  }
+
+  > a {
+    font-size: var(--medium-font-size);
+    color: lightseagreen;
+  }
 }

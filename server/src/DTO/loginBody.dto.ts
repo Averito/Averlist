@@ -8,8 +8,14 @@ export class LoginBodyDto {
 	password?: string
 
 	@ApiProperty({
-		name: 'accessToken',
-		description: 'From other services. Example: Discord access token.'
+		name: 'discordId',
+		description: 'id from discord'
 	})
-	accessToken?: string
+	discordId?: number
+
+	@ApiProperty({
+		name: 'vkId',
+		description: 'id from vk'
+	})
+	vkId?: number
 }

@@ -4,13 +4,17 @@ import classnames from 'classnames'
 import Link from 'next/link'
 
 import styles from './Hamburger.module.scss'
-import { menu } from '@layouts/MainLayout/components/Header/menu'
 import { useOutside } from '@hooks/useOutside'
+import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
+import authStore from '@stores/auth.store'
+import { averlist } from '@averlistApi/averlist'
 
 export const Hamburger: FC = () => {
 	const router = useRouter()
 
 	const [active, setActive] = useState<boolean>(false)
+
+	const { menus } = useMenu(authStore.isAuth)
 
 	const activeClass = active ? styles.hamburgerActive : styles.hamburgerInActive
 	const hamburgerBackgroundActive = active
@@ -34,9 +38,15 @@ export const Hamburger: FC = () => {
 		router.push('/')
 	}
 
-	const onClickMenuItem = () => {
+	const onClickMenuItem: MouseEventHandler<HTMLLIElement> = () => {
 		hamburgerClose()
 		setActive(false)
+	}
+
+	const onClickLogout: MouseEventHandler<HTMLLIElement> = async () => {
+		await averlist.auth.logout()
+		authStore.logout()
+		await router.push('/')
 	}
 
 	useEffect(() => {
@@ -62,7 +72,7 @@ export const Hamburger: FC = () => {
 					</h1>
 					<nav className={styles.menuListContainer}>
 						<ul className={styles.menuList}>
-							{menu.map(menuItem => (
+							{menus.map(menuItem => (
 								<li onClick={onClickMenuItem} key={menuItem.id}>
 									<Link href={menuItem.to}>{menuItem.name}</Link>
 								</li>
@@ -76,6 +86,7 @@ export const Hamburger: FC = () => {
 									Дискорд
 								</a>
 							</li>
+							{authStore.isAuth && <li onClick={onClickLogout}>Выйти</li>}
 						</ul>
 					</nav>
 				</aside>

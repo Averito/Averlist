@@ -11,7 +11,9 @@ module.exports = withPWA({
 			'dl-20211030-963.anilib.top',
 			'static.aniuApi.ru',
 			'aniuApi.ru',
-			'averlist.xyz'
+			'averlist.xyz',
+			'cdn.discordapp.com',
+			'sun2-4.userapi.com'
 		]
 	}
 })

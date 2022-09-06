@@ -16,11 +16,13 @@ import {
 	REFRESH_TOKEN_WRONG,
 	USER_NOT_FOUND,
 	USER_WAS_FOUND,
-	USER_WITH_THIS_ID_NOT_FOUND
+	USER_WITH_THIS_ID_NOT_FOUND,
+	VK_ID_AND_DISCORD_ID_IS_NULL
 } from './auth.constants'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
 import { Login, Registration } from './auth.interfaces'
 import { RegistrationBodyDto } from '@DTO/registrationBody.dto'
+import { LoginBodyDto } from '@DTO/loginBody.dto'
 
 @Injectable()
 export class AuthService {
@@ -52,21 +54,17 @@ export class AuthService {
 		const activateLink = uuidv4()
 		const activateLinkHash = await this.genHash(activateLink)
 
-		let anotherAccessTokenHash = null
-		if (registrationBody.accessToken) {
-			anotherAccessTokenHash = await this.genHash(registrationBody.accessToken)
-		}
-
 		const createdUser = await this.prisma.user.create({
 			data: {
+				discordId: registrationBody.discordId,
+				vkId: registrationBody.vkId,
 				login: registrationBody.login,
 				name: registrationBody.name,
 				avatar: registrationBody.avatar,
 				email: registrationBody.email,
 				emailActive: !!registrationBody.emailActive,
 				activate_link: activateLinkHash,
-				password: hashPassword,
-				anotherAccessToken: anotherAccessTokenHash
+				password: hashPassword
 			}
 		})
 
@@ -91,35 +89,19 @@ export class AuthService {
 			}
 		}
 	}
-	public async login(
-		email: string,
-		password?: string,
-		anotherAccessToken?: string
-	): Promise<Login> {
-		const user = await this.validateUser(email, password, anotherAccessToken)
+	public async login(loginBody: LoginBodyDto): Promise<Login> {
+		const user = await this.validateUser(loginBody)
 
 		const jwtPayload: JwtPayload = {
 			userId: user.id,
 			role: user.role
 		}
 		const accessToken = await this.genAccessToken(jwtPayload)
-		let refreshToken = null
 
+		let refreshToken = null
 		if (!user.refreshTokenHash) {
 			refreshToken = await this.genRefreshToken(jwtPayload)
 			await this.setCurrentRefreshToken(refreshToken, user.id)
-		}
-
-		if (anotherAccessToken) {
-			const anotherAccessTokenHash = await this.genHash(anotherAccessToken)
-			await this.prisma.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					anotherAccessToken: anotherAccessTokenHash
-				}
-			})
 		}
 
 		return {
@@ -186,7 +168,6 @@ export class AuthService {
 
 		return '<h1 style="font-family: Arial, sans-serif">Почта успешно активирована, можете закрыть данную страницу</h1>'
 	}
-
 	public async resetPassword(email: string): Promise<User> {
 		const user = await this.prisma.user.findUnique({ where: { email } })
 		if (!user) throw new BadRequestException(USER_NOT_FOUND)
@@ -205,7 +186,6 @@ export class AuthService {
 			}
 		})
 	}
-
 	public async changePassword(
 		userId: string,
 		oldPassword: string,
@@ -243,21 +223,40 @@ export class AuthService {
 			}
 		})
 	}
-	private async validateUser(
-		email: string,
-		password?: string,
-		anotherAccessToken?: string
-	): Promise<User> {
-		const user = await this.prisma.user.findUnique({ where: { email } })
+	private async validateUser(loginBody: LoginBodyDto): Promise<User> {
+		const user = await this.prisma.user.findUnique({
+			where: { email: loginBody.email }
+		})
 		if (!user) throw new BadRequestException(USER_NOT_FOUND)
 
-		const isValidPassword = await compare(password || '', user.password)
-		const isValidAnotherAccessToken = await compare(
-			anotherAccessToken,
-			user.anotherAccessToken
+		const isValidPassword = await compare(
+			loginBody.password || '',
+			user.password
 		)
-		if (!isValidPassword && !isValidAnotherAccessToken)
+		if (!isValidPassword && loginBody.password)
 			throw new BadRequestException(PASSWORD_WRONG)
+
+		if (loginBody.password) return user
+
+		let vkUser = null
+		let discordUser = null
+
+		if (loginBody.vkId) {
+			vkUser = await this.prisma.user.findUnique({
+				where: {
+					vkId: loginBody.vkId
+				}
+			})
+		} else if (loginBody.discordId) {
+			discordUser = await this.prisma.user.findUnique({
+				where: {
+					discordId: loginBody.discordId
+				}
+			})
+		}
+
+		if (!vkUser && !discordUser)
+			throw new BadRequestException(VK_ID_AND_DISCORD_ID_IS_NULL)
 
 		return user
 	}

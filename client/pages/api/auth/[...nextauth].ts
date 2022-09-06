@@ -1,11 +1,10 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 import DiscordProvider from 'next-auth/providers/discord'
-import GoogleProvider from 'next-auth/providers/google'
+import VKProvider from 'next-auth/providers/vk'
 import { serialize } from 'cookie'
 
 import { averlist } from '@averlistApi/averlist'
-import { setCookie } from 'cookies-next'
 
 const nextAuthOptions = (
 	req: NextApiRequest,
@@ -17,11 +16,17 @@ const nextAuthOptions = (
 				const registrationBody = {
 					login: user.name || '',
 					name: user.name || '',
-					email: user.email || '',
+					email: (user.email || (account.email as string)) ?? '',
 					avatar: user.image ?? undefined,
 					password: '',
 					emailActive: true,
-					accessToken: account.access_token
+					accessToken: account.access_token,
+					vkId:
+						account.provider === 'vk' ? +account.providerAccountId : undefined,
+					discordId:
+						account.provider === 'discord'
+							? +account.providerAccountId
+							: undefined
 				}
 
 				const {
@@ -40,30 +45,44 @@ const nextAuthOptions = (
 						sameSite: true
 					})
 				])
+
+				return '/lk?reload=true'
 			} catch {
-				const loginData = {
-					email: user.email ?? '',
-					accessToken: account.access_token
+				try {
+					const loginData = {
+						email: (user.email || (account.email as string)) ?? '',
+						vkId:
+							account.provider === 'vk'
+								? +account.providerAccountId
+								: undefined,
+						discordId:
+							account.provider === 'discord'
+								? +account.providerAccountId
+								: undefined
+					}
+
+					const { accessToken, refreshToken } = await averlist.auth.login(
+						loginData
+					)
+
+					res.setHeader('set-cookie', [
+						serialize('accessToken', accessToken, {
+							path: '/',
+							httpOnly: true,
+							sameSite: true
+						}),
+						serialize('refreshToken', refreshToken, {
+							path: '/',
+							httpOnly: true,
+							sameSite: true
+						})
+					])
+				} catch {
+					return true
 				}
-				const { accessToken, refreshToken } = await averlist.auth.login(
-					loginData
-				)
 
-				res.setHeader('set-cookie', [
-					serialize('accessToken', accessToken, {
-						path: '/',
-						httpOnly: true,
-						sameSite: true
-					}),
-					serialize('refreshToken', refreshToken, {
-						path: '/',
-						httpOnly: true,
-						sameSite: true
-					})
-				])
+				return '/lk?reload=true'
 			}
-
-			return '/lk'
 		}
 	},
 	providers: [
@@ -71,9 +90,9 @@ const nextAuthOptions = (
 			clientId: process.env.DISCORD_CLIENT_ID as string,
 			clientSecret: process.env.DISCORD_CLIENT_SECRET as string
 		}),
-		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+		VKProvider({
+			clientId: process.env.VK_CLIENT_ID as string,
+			clientSecret: process.env.VK_CLIENT_SECRET as string
 		})
 	]
 })

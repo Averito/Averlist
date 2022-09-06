@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class RegistrationBodyDto {
+	@ApiProperty({ name: 'discordId', description: 'For auth with discord' })
+	discordId?: number
+
+	@ApiProperty({ name: 'vkId', description: 'For auth with vk' })
+	vkId?: number
+
 	@ApiProperty({ name: 'login' })
 	login: string
 
@@ -19,12 +25,6 @@ export class RegistrationBodyDto {
 			'For not standard auth. WARNING: Password will generated and sent to email if emailActive is true'
 	})
 	emailActive?: boolean
-
-	@ApiProperty({
-		name: 'accessToken',
-		description: 'From other services. Example: Discord access token.'
-	})
-	accessToken?: string
 
 	@ApiProperty({ name: 'email' })
 	email: string

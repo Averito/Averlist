@@ -1,6 +1,8 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
+    "discordId" INTEGER,
+    "vkId" INTEGER,
     "login" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -8,7 +10,6 @@ CREATE TABLE "users" (
     "avatar" TEXT,
     "password" TEXT NOT NULL,
     "refreshTokenHash" TEXT,
-    "anotherAccessToken" TEXT,
     "activate_link" TEXT NOT NULL,
     "role" TEXT NOT NULL DEFAULT 'user',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -86,10 +87,13 @@ CREATE TABLE "News" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+CREATE UNIQUE INDEX "users_discordId_key" ON "users"("discordId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_anotherAccessToken_key" ON "users"("anotherAccessToken");
+CREATE UNIQUE INDEX "users_vkId_key" ON "users"("vkId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_activate_link_key" ON "users"("activate_link");

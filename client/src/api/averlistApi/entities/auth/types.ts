@@ -8,6 +8,8 @@ export interface Registration {
 	avatar?: string
 	emailActive?: boolean
 	accessToken?: string
+	vkId?: number | string
+	discordId?: number | string
 }
 
 export interface Tokens {
@@ -23,7 +25,8 @@ export interface RegistrationResponse {
 export interface Login {
 	email: string
 	password?: string
-	accessToken?: string
+	vkId?: number | string
+	discordId?: number | string
 }
 
 export interface LoginResponse {

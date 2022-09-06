@@ -32,6 +32,9 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 14px;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 200px;
 
   &:hover {
     background-color: #2b214f;

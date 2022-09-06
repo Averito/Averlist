@@ -52,14 +52,10 @@ export class AuthController {
 	@ApiOkResponse({ type: LoginResponseDto })
 	@ApiBody({ type: LoginBodyDto })
 	async login(
-		@Body() emailPassword: LoginBodyDto,
+		@Body() loginBody: LoginBodyDto,
 		@Res({ passthrough: true }) response: Response
 	): Promise<Login> {
-		const loginResult = await this.authService.login(
-			emailPassword.email,
-			emailPassword.password,
-			emailPassword.accessToken
-		)
+		const loginResult = await this.authService.login(loginBody)
 
 		response.cookie('accessToken', loginResult.accessToken)
 		response.cookie('refreshToken', loginResult.refreshToken)

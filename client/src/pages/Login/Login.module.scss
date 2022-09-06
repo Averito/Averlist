@@ -1,18 +1,3 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 0 10px;
-}
-
-.form {
-  padding: 12px 24px;
-  background-color: #2b214f;
-  border-radius: 8px;
-  width: min(100%, 500px);
-}
-
 .title {
   font-size: 24px;
   margin-bottom: 20px;
@@ -29,4 +14,25 @@
 
 .submitButton {
   max-width: fit-content;
+}
+
+.additionalText {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.resetPassword, .registration {
+  display: flex;
+  margin-bottom: 8px;
+
+  > p {
+    font-size: 13px;
+    margin: 0 10px 0 0;
+  }
+
+  > a {
+    font-size: 13px;
+    color: lightseagreen;
+  }
 }

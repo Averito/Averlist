@@ -5,3 +5,5 @@ export const USER_WITH_THIS_ID_NOT_FOUND =
 export const PASSWORD_WRONG = 'Неправильный пароль'
 export const REFRESH_TOKEN_WRONG = 'Токен не верный'
 export const ACTIVATE_LINK_NOT_VALID = 'Ключ активации не валидный'
+export const VK_ID_AND_DISCORD_ID_IS_NULL =
+	'Дискорд id и вк id пустые, требуется хотя бы один'

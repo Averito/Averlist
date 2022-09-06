@@ -1,26 +1,23 @@
 import { GetServerSideProps } from 'next'
-import { getCookie, getCookies } from 'cookies-next'
+import { getCookies } from 'cookies-next'
 
 import { LK } from '@pages/LK'
 import { averlist } from '@averlistApi/averlist'
 
 export default LK
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	try {
 		const me = await averlist.users.me(getCookies({ req }).accessToken)
 
 		return {
 			props: {
-				me,
-				reload: false
+				me
 			}
 		}
-	} catch (err) {
+	} catch {
 		return {
-			props: {
-				reload: true
-			}
+			props: {}
 		}
 	}
 }

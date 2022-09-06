@@ -1,55 +1,82 @@
+import { FormEventHandler } from 'react'
 import { NextPage } from 'next'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import styles from './Login.module.scss'
 import { Input } from '@components/Input'
 import { Meta } from '@utils/Meta'
-import { Button } from '@components/Button'
 import { useInput } from '@hooks/useInput'
-import { FormEventHandler } from 'react'
+import { AuthLayout } from '@layouts/AuthLayout'
+import { averlist } from '@averlistApi/averlist'
 
 export const Login: NextPage = () => {
+	const router = useRouter()
+
 	const { value: email, setValue: setEmail } = useInput()
 	const { value: password, setValue: setPassword } = useInput()
 
-	const onSubmit: FormEventHandler<HTMLFormElement> = event => {
+	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
-		console.log('submit')
+
+		try {
+			await averlist.auth.login({
+				email,
+				password
+			})
+
+			toast.success('Успешный вход')
+			await router.push('/lk')
+		} catch {
+			toast.error('Что-то пошло не так. Проверьте данные или попробуйте позже.')
+		}
 	}
+
+	const additionalText = (
+		<div className={styles.additionalText}>
+			<div className={styles.resetPassword}>
+				<p>Забыли пароль?</p>
+				<Link href='/reset-password'>Сбросить пароль</Link>
+			</div>
+			<div className={styles.registration}>
+				<p>Ещё нет аккаунта?</p>
+				<Link href='/registration'>Регистрация</Link>
+			</div>
+		</div>
+	)
 
 	return (
 		<>
 			<Meta title='Averlist | Вход' description='Логин Averlist' />
-			<div className={styles.container}>
-				<div className={styles.form}>
-					<h1 className={styles.title}>Логин</h1>
-					<form onSubmit={onSubmit}>
-						<div className={styles.block}></div>
-						<div className={styles.block}>
-							<Input
-								type='email'
-								value={email}
-								onChange={setEmail}
-								placeholder='example@gmail.com'
-								width='100%'
-								label='Почта'
-							/>
-						</div>
-						<div className={styles.block}>
-							<Input
-								type='password'
-								value={password}
-								onChange={setPassword}
-								placeholder='Пароль'
-								width='100%'
-								label='Пароль'
-							/>
-						</div>
-						<div className={styles.submitButtonWrapper}>
-							<Button className={styles.submitButton}>Войти</Button>
-						</div>
-					</form>
+			<AuthLayout
+				title='Логин'
+				buttonText='Войти'
+				onSubmit={onSubmit}
+				additionalText={additionalText}
+			>
+				<div className={styles.block}></div>
+				<div className={styles.block}>
+					<Input
+						type='email'
+						value={email}
+						onChange={setEmail}
+						placeholder='example@gmail.com'
+						width='100%'
+						label='Почта'
+					/>
 				</div>
-			</div>
+				<div className={styles.block}>
+					<Input
+						type='password'
+						value={password}
+						onChange={setPassword}
+						placeholder='Пароль'
+						width='100%'
+						label='Пароль'
+					/>
+				</div>
+			</AuthLayout>
 		</>
 	)
 }
