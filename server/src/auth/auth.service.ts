@@ -17,12 +17,13 @@ import {
 	USER_NOT_FOUND,
 	USER_WAS_FOUND,
 	USER_WITH_THIS_ID_NOT_FOUND,
-	VK_ID_AND_DISCORD_ID_IS_NULL
+	WRONG_EMAIL_FORMAT
 } from './auth.constants'
 import { JwtPayload } from '@interfaces/jwtPayload.interface'
 import { Login, Registration } from './auth.interfaces'
 import { RegistrationBodyDto } from '@DTO/registrationBody.dto'
 import { LoginBodyDto } from '@DTO/loginBody.dto'
+import { isValidEmail } from '@helpers/isValidEmail'
 
 @Injectable()
 export class AuthService {
@@ -40,10 +41,13 @@ export class AuthService {
 			where: { email: registrationBody.email }
 		})
 
-		if (hasUser) throw new BadRequestException(USER_WAS_FOUND)
+		if (!isValidEmail(registrationBody.email))
+			throw new BadRequestException(WRONG_EMAIL_FORMAT)
+		if (hasUser || !registrationBody.email)
+			throw new BadRequestException(USER_WAS_FOUND)
 
 		let hashPassword
-		if (registrationBody.emailActive) {
+		if (!registrationBody.password) {
 			const password = uuidv4()
 			hashPassword = await this.genHash(password)
 			this.sendMailWithPassword(registrationBody.email, password)
@@ -56,8 +60,6 @@ export class AuthService {
 
 		const createdUser = await this.prisma.user.create({
 			data: {
-				discordId: registrationBody.discordId,
-				vkId: registrationBody.vkId,
 				login: registrationBody.login,
 				name: registrationBody.name,
 				avatar: registrationBody.avatar,
@@ -230,33 +232,10 @@ export class AuthService {
 		if (!user) throw new BadRequestException(USER_NOT_FOUND)
 
 		const isValidPassword = await compare(
-			loginBody.password || '',
+			loginBody?.password ? loginBody.password : '',
 			user.password
 		)
-		if (!isValidPassword && loginBody.password)
-			throw new BadRequestException(PASSWORD_WRONG)
-
-		if (loginBody.password) return user
-
-		let vkUser = null
-		let discordUser = null
-
-		if (loginBody.vkId) {
-			vkUser = await this.prisma.user.findUnique({
-				where: {
-					vkId: loginBody.vkId
-				}
-			})
-		} else if (loginBody.discordId) {
-			discordUser = await this.prisma.user.findUnique({
-				where: {
-					discordId: loginBody.discordId
-				}
-			})
-		}
-
-		if (!vkUser && !discordUser)
-			throw new BadRequestException(VK_ID_AND_DISCORD_ID_IS_NULL)
+		if (!isValidPassword) throw new BadRequestException(PASSWORD_WRONG)
 
 		return user
 	}
@@ -282,51 +261,63 @@ export class AuthService {
 		const salt = await genSalt(rounds)
 		return hash(enteredData, salt)
 	}
-	private sendMailForActivate(
+	private async sendMailForActivate(
 		to: string,
 		activateLink: string,
 		userId: string
 	) {
-		const uri =
-			process.env.MODE === 'development'
-				? process.env.LOCALHOST_URI
-				: process.env.AVERLIST_URI
+		try {
+			const uri =
+				process.env.MODE === 'development'
+					? process.env.LOCALHOST_URI
+					: process.env.AVERLIST_URI
 
-		this.mailerService.sendMail({
-			to,
-			from: process.env.MAILER_FROM,
-			subject: 'Averlist',
-			text: 'Активируйте свою почту',
-			html: `<div>
-				<h1>Активация электронной почты на Averlist</h1>
-				<p>Для активации перейдите по ссылке: ${uri}/auth/activate/${activateLink}?userId=${userId}</p>
-			</div>`
-		})
+			await this.mailerService.sendMail({
+				to,
+				from: process.env.MAILER_FROM,
+				subject: 'Averlist',
+				text: 'Активируйте свою почту',
+				html: `<div>
+					<h1>Активация электронной почты на Averlist</h1>
+					<p>Для активации перейдите по ссылке: ${uri}/auth/activate/${activateLink}?userId=${userId}</p>
+				</div>`
+			})
+		} catch (err) {
+			console.log(err)
+		}
 	}
-	private sendMailForResetPassword(to: string, newPassword: string) {
-		this.mailerService.sendMail({
-			to,
-			from: process.env.MAILER_FROM,
-			subject: 'Averlist',
-			text: 'Сброс пароля',
-			html: `<div>
-				<h1>Сброс пароля на Averlist</h1>
-				<p>Ваш новый пароль: ${newPassword}</p>
-				<strong>Не забудьте его сменить!</strong>
-			</div>`
-		})
+	private async sendMailForResetPassword(to: string, newPassword: string) {
+		try {
+			await this.mailerService.sendMail({
+				to,
+				from: process.env.MAILER_FROM,
+				subject: 'Averlist',
+				text: 'Сброс пароля',
+				html: `<div>
+					<h1>Сброс пароля на Averlist</h1>
+					<p>Ваш новый пароль: ${newPassword}</p>
+					<strong>Не забудьте его сменить!</strong>
+				</div>`
+			})
+		} catch (err) {
+			console.log(err)
+		}
 	}
-	private sendMailWithPassword(to: string, password: string) {
-		this.mailerService.sendMail({
-			to,
-			from: process.env.MAILER_FROM,
-			subject: 'Averlist',
-			text: 'Ваш пароль',
-			html: `<div>
-				<h1>Ваш пароль на Averlist</h1>
-				<p>Ваш пароль: ${password}</p>
-				<strong>Не забудьте его сменить! Или оставьте такой, он вполне надёжный ;)</strong>
-			</div>`
-		})
+	private async sendMailWithPassword(to: string, password: string) {
+		try {
+			await this.mailerService.sendMail({
+				to,
+				from: process.env.MAILER_FROM,
+				subject: 'Averlist',
+				text: 'Ваш пароль',
+				html: `<div>
+					<h1>Ваш пароль на Averlist</h1>
+					<p>Ваш пароль: ${password}</p>
+					<strong>Не забудьте его сменить! Или оставьте такой, он вполне надёжный ;)</strong>
+				</div>`
+			})
+		} catch (err) {
+			console.log(err)
+		}
 	}
 }

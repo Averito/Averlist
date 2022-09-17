@@ -1,9 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { User } from '@prisma/client'
+import sharp from 'sharp'
+import path from 'path'
 import { PrismaService } from '../prisma.service'
 import { GetAllUsersType } from '../types/getAllUsers.type'
 import { removePrevFile } from '@utils/removePrevFile.util'
 import { FRIEND_NOT_FOUND, LARGE_LIMIT, maxLimit } from './user.constants'
+import { Crop } from '@interfaces/crop.interface'
+import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class UserService {
@@ -68,9 +72,36 @@ export class UserService {
 	}
 	public async setAvatar(
 		avatar: Express.Multer.File,
-		userId: string
+		crop: string,
+		userId: string,
+		width: string,
+		height: string
 	): Promise<User> {
 		const user = await this.prisma.user.findUnique({ where: { id: userId } })
+		const normalCrop: Crop = JSON.parse(crop) as Crop
+		const fullAvatarPath = path.join(
+			__dirname,
+			'../../../uploads/avatars',
+			avatar.filename
+		)
+
+		const splitFileName = avatar.originalname.split('.')
+		const name = splitFileName[0]
+		const fileExtName = splitFileName.at(-1)
+		const randomName = uuidv4()
+		const newAvatarName = `${name}-${randomName}.${fileExtName}`
+
+		await sharp(fullAvatarPath)
+			.resize({ width: +width, height: +height })
+			.extract({
+				height: Math.floor(normalCrop.height),
+				width: Math.floor(normalCrop.width),
+				top: Math.floor(normalCrop.y),
+				left: Math.floor(normalCrop.x)
+			})
+			.png()
+			.toFile(path.join(__dirname, '../../../uploads/avatars', newAvatarName))
+		await removePrevFile('avatars', avatar.filename)
 
 		if (user.avatar) await removePrevFile('avatars', user.avatar)
 
@@ -79,7 +110,7 @@ export class UserService {
 				id: userId
 			},
 			data: {
-				avatar: avatar.filename
+				avatar: newAvatarName
 			}
 		})
 	}

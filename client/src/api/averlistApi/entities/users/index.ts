@@ -1,6 +1,9 @@
+import { Crop } from 'react-image-crop'
+
 import { axios } from '@averlistApi/averlist'
 import { Averlist } from '@averlistApi/types'
 import { queryParamsString } from '@helpers/queryParamsString'
+import { Sizes } from '@averlistApi/entities/users/types'
 
 export const users = {
 	async all(
@@ -33,9 +36,16 @@ export const users = {
 		})
 		return response.data
 	},
-	async editAvatar(avatar: File): Promise<Averlist.User> {
+	async editAvatar(
+		avatar: File,
+		crop: Crop,
+		sizes: Sizes
+	): Promise<Averlist.User> {
 		const formData = new FormData()
 		formData.set('avatar', avatar)
+		formData.set('crop', JSON.stringify(crop))
+		formData.set('width', sizes.width.toString())
+		formData.set('height', sizes.height.toString())
 
 		const response = await axios.patch<Averlist.User>(
 			'users/me/avatar',
