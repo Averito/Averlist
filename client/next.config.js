@@ -13,7 +13,8 @@ module.exports = withPWA({
 			'aniuApi.ru',
 			'averlist.xyz',
 			'cdn.discordapp.com',
-			'sun2-4.userapi.com'
+			'sun2-4.userapi.com',
+			'localhost'
 		]
 	}
 })

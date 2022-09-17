@@ -87,9 +87,12 @@ export class UserController {
 	@ApiImplicitFile({ name: 'avatar' })
 	async setAvatar(
 		@UploadedFile() avatar: Express.Multer.File,
+		@Body('crop') crop: string,
+		@Body('width') width: string,
+		@Body('height') height: string,
 		@CurrentUser() user: User
 	): Promise<User> {
-		return this.userService.setAvatar(avatar, user.id)
+		return this.userService.setAvatar(avatar, crop, user.id, width, height)
 	}
 
 	@Delete('remove-friend/:friendId')
