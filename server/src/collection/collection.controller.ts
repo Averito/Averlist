@@ -1,14 +1,4 @@
-import {
-	Controller,
-	Get,
-	Post,
-	Body,
-	Patch,
-	UploadedFile,
-	Param,
-	Res,
-	Delete
-} from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UploadedFile } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Express, Response } from 'express'
 import { Collection, User } from '@prisma/client'

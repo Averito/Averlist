@@ -1,0 +1,16 @@
+.publicProgressBar {
+  overflow: hidden;
+  height: 7px;
+  border-radius: 5px;
+  background-color: #565656;
+}
+
+.publicProgressBarItem {
+  height: 100%;
+}
+
+.percentage {
+  width: 50px;
+  font-size: var(--medium-font-size);
+  margin-right: 5px;
+}

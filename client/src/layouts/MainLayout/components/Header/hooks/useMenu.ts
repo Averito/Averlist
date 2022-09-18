@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import authStore from '@stores/auth.store'
+import userStore from '@stores/user.store'
 
 export interface MenuItem {
 	id: number
@@ -63,7 +63,7 @@ export const useMenu = (isAuth: boolean) => {
 	const [menus, setMenus] = useState<MenuItem[]>([])
 
 	useEffect(() => {
-		if (authStore.isAuth) return setMenus(menuWithAuth)
+		if (userStore.isAuth) return setMenus(menuWithAuth)
 		setMenus(menuWithoutAuth)
 	}, [isAuth])
 

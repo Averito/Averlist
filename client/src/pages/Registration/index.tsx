@@ -10,6 +10,7 @@ import { Meta } from '@utils/Meta'
 import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { AuthLayout } from '@layouts/AuthLayout'
+import { errorToast, successToast } from '@helpers/toasts'
 
 export const Registration: NextPage = () => {
 	const router = useRouter()
@@ -23,10 +24,10 @@ export const Registration: NextPage = () => {
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
 		if (!login || !name || !email)
-			return toast.error('Поля не должны быть пустыми')
+			return errorToast('Поля не должны быть пустыми')
 		if (password !== passwordAgain) return toast.error('Пароли не совпадают')
 		if (!email.includes('@'))
-			return toast.error('Электронная почта введена не в верном формате')
+			return errorToast('Электронная почта введена не в верном формате')
 
 		await averlist.auth.registration({
 			login,
@@ -35,7 +36,7 @@ export const Registration: NextPage = () => {
 			password
 		})
 
-		toast.success('Регистрация прошла успешно')
+		successToast('Регистрация прошла успешно')
 		await router.push('/lk')
 	}
 

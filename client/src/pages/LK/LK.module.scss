@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.mainBlock {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 230px;
+  margin-top: 15px;
+  gap: 15px;
+  
+  @media all and (max-width: 565px) {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}

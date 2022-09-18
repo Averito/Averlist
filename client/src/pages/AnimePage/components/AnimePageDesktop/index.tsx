@@ -1,19 +1,35 @@
-import { FC } from 'react'
+import { Observer } from 'mobx-react-lite'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { FC } from 'react'
 
 import styles from './AnimePageDesktop.module.scss'
-import { Title } from '@anilibriaApi/types'
 import { Description } from '@pages/AnimePage/components/AnimePageDesktop/components/Description'
 import { StatusYearType } from '@pages/AnimePage/components/StatusYearType'
 import { Button } from '@components/Button'
+import { Dropdown, DropdownMenu } from '@components/Dropdown'
+import { Title } from '@anilibriaApi/types'
+import { AnimeListStats } from '@components/AnimeListStats'
+import { Averlist } from '@averlistApi/types'
+import userStore from '@stores/user.store'
+
+const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
+	ssr: false
+})
 
 interface AnimePageDesktopProps {
 	title: Title
+	dropdownOptions: DropdownMenu[]
+	animeList: Averlist.Anime[]
 }
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({ title }) => {
+export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
+	title,
+	dropdownOptions,
+	animeList
+}) => {
 	return (
 		<div className={styles.desktop}>
 			<div className={styles.flexTwoColumn}>
@@ -26,7 +42,21 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({ title }) => {
 						height={380}
 					/>
 					<Button className={styles.watchOnlineButton}>Смотреть онлайн</Button>
-					{/* todo: <p>Добавить в список</p>*/}
+					<Observer>
+						{() => (
+							<>
+								{userStore.isAuth && (
+									<Dropdown
+										options={dropdownOptions}
+										margin='15px 0 0 0'
+										onClick
+									>
+										<Button>Добавить в список</Button>
+									</Dropdown>
+								)}
+							</>
+						)}
+					</Observer>
 				</div>
 				<div>
 					<div className={styles.names}>
@@ -43,6 +73,13 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({ title }) => {
 						<h2 className={styles.descriptionTitle}>Описание:</h2>
 						<div className={styles.description}>{title.description}</div>
 					</div>
+					<Player title={title} margin='0 0 20px 0' />
+					<h2 className={styles.rating}>Популярность среди пользователей:</h2>
+					<AnimeListStats
+						backgroundColor='transparent'
+						padding='0'
+						animeList={animeList}
+					/>
 				</div>
 			</div>
 		</div>

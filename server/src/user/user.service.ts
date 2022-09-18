@@ -47,13 +47,7 @@ export class UserService {
 				id: userId
 			},
 			include: {
-				anime_list: {
-					orderBy: [
-						{
-							name: 'asc'
-						}
-					]
-				},
+				anime_list: true,
 				collections: true,
 				friend_with: true,
 				friend_by: true,

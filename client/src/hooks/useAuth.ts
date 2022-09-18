@@ -1,8 +1,9 @@
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import { averlist } from '@averlistApi/averlist'
-import authStore from '@stores/auth.store'
+import userStore from '@stores/user.store'
 
 export const useAuth = () => {
 	const router = useRouter()
@@ -12,14 +13,13 @@ export const useAuth = () => {
 			try {
 				const me = await averlist.users.me()
 
-				authStore.userAuth()
-				authStore.setUser(me)
+				userStore.userAuth()
+				userStore.setUser(me)
+
+				await averlist.auth.getAccess(getCookie('refreshToken') as string)
 			} catch {
-				if (router.asPath.includes('lk')) {
-					router.push('/').then(() => {
-						if (router.query.reload === 'true') router.push('/lk')
-					})
-				}
+				if (!router.asPath.includes('lk')) return
+				await router.push('/')
 			}
 		}
 		asyncWrapper()

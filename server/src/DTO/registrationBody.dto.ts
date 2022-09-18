@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class RegistrationBodyDto {
-	@ApiProperty({ name: 'discordId', description: 'For auth with discord' })
-	discordId?: number
-
-	@ApiProperty({ name: 'vkId', description: 'For auth with vk' })
-	vkId?: number
-
 	@ApiProperty({ name: 'login' })
 	login: string
 

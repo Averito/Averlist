@@ -6,6 +6,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  min-width: 100%;
   background-color: #302457;
   border-radius: 4px;
   overflow: hidden;
@@ -13,13 +14,18 @@
 }
 
 .dropdownMenuOn {
-  max-height: 200px;
+  max-height: 210px;
   padding: 4px 0;
 
   @media all and (max-width: 768px) {
     max-height: 0;
     padding: 0;
   }
+}
+
+.dropdownMenuOnClickMod {
+  max-height: 200px;
+  padding: 4px 0;
 }
 
 .dropdownMenuOff {
@@ -32,9 +38,8 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 14px;
-  width: fit-content;
+  width: 100%;
   min-width: 160px;
-  max-width: 200px;
 
   &:hover {
     background-color: #2b214f;

@@ -1,6 +1,5 @@
 import { FormEventHandler } from 'react'
 import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 
 import styles from './ResetPassword.module.scss'
@@ -9,6 +8,7 @@ import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { Input } from '@components/Input'
 import { Meta } from '@utils/Meta'
+import { errorToast, successToast } from '@helpers/toasts'
 
 export const ResetPassword: NextPage = () => {
 	const router = useRouter()
@@ -20,10 +20,10 @@ export const ResetPassword: NextPage = () => {
 
 		try {
 			await averlist.auth.resetPassword({ email })
-			toast.success('Новый пароль отправлен вам на почту')
+			successToast('Новый пароль отправлен вам на почту')
 			await router.push('/login')
 		} catch {
-			toast.error('Аккаунта с такой электронной почтой не существует')
+			errorToast('Аккаунта с такой электронной почтой не существует')
 		}
 	}
 

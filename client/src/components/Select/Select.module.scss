@@ -1,0 +1,64 @@
+.select {
+
+}
+
+.label {
+  font-size: var(--medium-font-size);
+  margin-bottom: 8px;
+}
+
+.mainLabel {
+  background-color: #594795;
+  border-radius: 3px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.icon {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.iconActive {
+  transform: rotate(180deg);
+}
+
+.optionsContainer {
+  margin-top: 4px;
+  position: relative;
+}
+
+.options {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  padding: 0;
+  border-radius: 4px;
+  background-color: #1F1739;
+  height: fit-content;
+  max-height: 0;
+  overflow: hidden auto;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.optionsOpened {
+  padding: 2px 0;
+  max-height: 200px;
+}
+
+.option {
+  padding: 5px 8px;
+  cursor: pointer;
+  background-color: #1F1739;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #261c46;
+  }
+}

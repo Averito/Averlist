@@ -1,12 +1,4 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Param,
-	Patch,
-	Post
-} from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Anime, User } from '@prisma/client'
 import { Auth } from '@decorators/auth.decorator'
@@ -17,6 +9,7 @@ import { CreateAnimeResponseDto } from '@DTO/createAnimeResponse.dto'
 import { AnimeDto } from '@DTO/anime.dto'
 import { ChangeAnimeStatusBodyDto } from '@DTO/changeAnimeStatusBody.dto'
 import { AnimeStatus } from '@enums/animeStatus.enum'
+import { Public } from '@decorators/public.decorator'
 
 @Controller('anime')
 @Auth()
@@ -28,6 +21,15 @@ export class AnimeController {
 	@ApiOkResponse({ type: [AnimeDto] })
 	async getAnimeList(@CurrentUser() user: User): Promise<Anime[]> {
 		return this.animeService.getAnimeList(user.id)
+	}
+
+	@Get(':anilibriaId')
+	@Public()
+	@ApiOkResponse({ type: [AnimeDto] })
+	async getAnimeListByAnilibriaId(
+		@Param('anilibriaId') anilibriaId: string
+	): Promise<Anime[]> {
+		return this.animeService.getAnimeListByAnilibriaId(+anilibriaId)
 	}
 
 	@Post()

@@ -9,6 +9,25 @@ import { AnimeStatus } from '@enums/animeStatus.enum'
 export class AnimeService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	public async getAnimeListByAnilibriaId(
+		anilibriaId: number
+	): Promise<Anime[]> {
+		return this.prisma.anime.findMany({
+			where: {
+				anilibriaId
+			}
+		})
+	}
+	public async getAnimeList(userId: string): Promise<Anime[]> {
+		return this.prisma.anime.findMany({
+			where: {
+				userId
+			},
+			orderBy: {
+				name: 'asc'
+			}
+		})
+	}
 	public async createAnime(
 		anime: CreateAnimeBodyDto,
 		userId: string
@@ -24,16 +43,6 @@ export class AnimeService {
 				aniuId: anime.aniuId,
 				status: anime.status,
 				userId
-			}
-		})
-	}
-	public async getAnimeList(userId: string): Promise<Anime[]> {
-		return this.prisma.anime.findMany({
-			where: {
-				userId
-			},
-			orderBy: {
-				name: 'asc'
 			}
 		})
 	}

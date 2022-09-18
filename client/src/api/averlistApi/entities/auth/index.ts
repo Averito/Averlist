@@ -1,9 +1,5 @@
 import { Averlist } from '@averlistApi/types'
-import {
-	AccessToken,
-	LoginResponse,
-	RegistrationResponse
-} from '@averlistApi/entities/auth/types'
+import { AccessToken, LoginResponse, RegistrationResponse } from '@averlistApi/entities/auth/types'
 import { axios } from '@averlistApi/averlist'
 
 export const auth = {
@@ -42,8 +38,12 @@ export const auth = {
 		)
 		return response.data
 	},
-	async getAccess(): Promise<AccessToken> {
-		const response = await axios.get<AccessToken>('/auth/get-access')
+	async getAccess(refreshToken: string): Promise<AccessToken> {
+		const response = await axios.get<AccessToken>('/auth/get-access', {
+			headers: {
+				authorization: `Bearer ${refreshToken}`
+			}
+		})
 		return response.data
 	}
 }

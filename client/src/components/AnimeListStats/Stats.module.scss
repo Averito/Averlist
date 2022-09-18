@@ -1,0 +1,52 @@
+.stats {
+  border-radius: 10px;
+  min-width: 300px;
+}
+
+.property {
+  position: relative;
+  margin: 0 5px 0 20px;
+  font-size: var(--medium-font-size);
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -12px;
+  }
+
+  &.viewed::before {
+    background-color: var(--viewed);
+  }
+
+  &.planned::before {
+    background-color: var(--planned);
+  }
+
+  &.abandoned::before {
+    background-color: var(--abandoned);
+  }
+
+  &.comingOut::before {
+    background-color: var(--coming-out);
+  }
+
+  &.look::before {
+    background-color: var(--look);
+  }
+
+  &.reconsidering::before {
+    background-color: var(--reconsidering);
+  }
+}
+
+.publicProgressBar {
+  overflow: hidden;
+  height: 7px;
+  border-radius: 5px;
+  background-color: lightgray;
+}

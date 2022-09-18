@@ -1,11 +1,4 @@
-import {
-	ChangeEventHandler,
-	FC,
-	FocusEventHandler,
-	memo,
-	useEffect,
-	useState
-} from 'react'
+import { ChangeEventHandler, FC, FocusEventHandler, memo, useEffect, useState } from 'react'
 import classnames from 'classnames'
 
 import styles from './Autocomplete.module.scss'

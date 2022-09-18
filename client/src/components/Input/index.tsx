@@ -12,14 +12,16 @@ interface InputProps {
 	name?: string
 	width?: string
 	label?: string
+	margin?: string
 }
 
 export const Input: FC<InputProps> = memo(
-	({ value, onChange, placeholder, name, width, label, type }) => {
+	({ value, onChange, placeholder, name, width, label, type, margin }) => {
 		const widthStyle = { width: width ?? '240px' }
+		const marginStyle = { margin }
 
 		return (
-			<div>
+			<div style={marginStyle}>
 				{label && <p className={styles.label}>{label}</p>}
 				<input
 					type={type}
