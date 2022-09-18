@@ -1,8 +1,8 @@
 import { User as UserInterface } from '@averlistApi/entities/users/types'
 import {
 	Collection as CollectionInterface,
-	NewCollection as NewCollectionInterface,
-	EditCollection as EditCollectionInterface
+	EditCollection as EditCollectionInterface,
+	NewCollection as NewCollectionInterface
 } from '@averlistApi/entities/collections/types'
 import {
 	Anime as AnimeInterface,
@@ -11,9 +11,9 @@ import {
 import { Invitation as InvitationInterface } from '@averlistApi/entities/invitations/types'
 import { News as NewsInterface } from '@averlistApi/entities/news/types'
 import {
-	Registration as RegistrationInterface,
-	Login as LoginInterface,
 	ChangePassword as ChangePasswordInterface,
+	Login as LoginInterface,
+	Registration as RegistrationInterface,
 	ResetPassword as ResetPasswordInterface
 } from '@averlistApi/entities/auth/types'
 
@@ -39,6 +39,7 @@ export namespace Averlist {
 		PLANNED = 'Запланировано',
 		ABANDONED = 'Заброшено',
 		COMING_OUT = 'Выходит',
-		LOOK = 'Смотрю'
+		LOOK = 'Смотрю',
+		RECONSIDERING = 'Пересматриваю'
 	}
 }

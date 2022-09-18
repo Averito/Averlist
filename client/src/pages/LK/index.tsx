@@ -1,22 +1,15 @@
-import { observer } from 'mobx-react-lite'
 import { NextPage } from 'next'
 
 import styles from './LK.module.scss'
-import { Averlist } from '@averlistApi/types'
 import { Meta } from '@utils/Meta'
-import authStore from '@stores/auth.store'
 import { useAuth } from '@hooks/useAuth'
 import { Avatar } from '@pages/LK/components/Avatar'
+import { AnimeListStats } from '@components/AnimeListStats'
+import { FavoriteCollections } from '@pages/LK/components/FavoriteCollections'
+import userStore from '@stores/user.store'
 
-interface LKProps {
-	me: Averlist.User
-}
-
-export const LK: NextPage<LKProps> = observer(({ me }) => {
+export const LK: NextPage = () => {
 	useAuth()
-
-	const currentAvatar = authStore.currentAvatar
-	const currentName = authStore.currentName
 
 	return (
 		<>
@@ -27,12 +20,16 @@ export const LK: NextPage<LKProps> = observer(({ me }) => {
 			<div className={styles.container}>
 				<div className={styles.wrapper}>
 					<div className={styles.mainBlock}>
-						<div className={styles.stats}>Статы</div>
-						<Avatar avatar={currentAvatar} name={currentName} />
+						<AnimeListStats
+							backgroundColor={'#2b214f'}
+							padding='15px'
+							animeList={userStore.user.anime_list || []}
+						/>
+						<Avatar />
 					</div>
-					<div className={styles.favoriteCollections}></div>
+					<FavoriteCollections />
 				</div>
 			</div>
 		</>
 	)
-})
+}

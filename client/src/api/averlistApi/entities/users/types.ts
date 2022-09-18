@@ -25,3 +25,8 @@ export interface User {
 	created_at: Date
 	updated_at: Date
 }
+
+export interface Sizes {
+	width: number
+	height: number
+}

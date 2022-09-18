@@ -1,6 +1,5 @@
 import { FormEventHandler } from 'react'
 import { NextPage } from 'next'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -10,6 +9,7 @@ import { Meta } from '@utils/Meta'
 import { useInput } from '@hooks/useInput'
 import { AuthLayout } from '@layouts/AuthLayout'
 import { averlist } from '@averlistApi/averlist'
+import { errorToast, successToast } from '@helpers/toasts'
 
 export const Login: NextPage = () => {
 	const router = useRouter()
@@ -26,10 +26,10 @@ export const Login: NextPage = () => {
 				password
 			})
 
-			toast.success('Успешный вход')
+			successToast('Успешный вход')
 			await router.push('/lk')
 		} catch {
-			toast.error('Что-то пошло не так. Проверьте данные или попробуйте позже.')
+			errorToast('Что-то пошло не так. Проверьте данные или попробуйте позже.')
 		}
 	}
 

@@ -6,7 +6,8 @@ export enum AnimeStatus {
 	PLANNED = 'Запланировано',
 	ABANDONED = 'Заброшено',
 	COMING_OUT = 'Выходит',
-	LOOK = 'Смотрю'
+	LOOK = 'Смотрю',
+	RECONSIDERING = 'Пересматриваю'
 }
 
 export interface Anime {

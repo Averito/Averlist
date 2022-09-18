@@ -12,8 +12,6 @@ datasource db {
 
 model User {
   id                  String                       @id @default(uuid())
-  discordId           Int?                         @unique
-  vkId                Int?                         @unique
   login               String
   name                String
   email               String                       @unique

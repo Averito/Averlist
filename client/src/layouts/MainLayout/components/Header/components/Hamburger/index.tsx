@@ -6,15 +6,18 @@ import Link from 'next/link'
 import styles from './Hamburger.module.scss'
 import { useOutside } from '@hooks/useOutside'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
-import authStore from '@stores/auth.store'
+import userStore from '@stores/user.store'
 import { averlist } from '@averlistApi/averlist'
+
+const NEXT_PUBLIC_DISCORD_INVITE_LINK =
+	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
 
 export const Hamburger: FC = () => {
 	const router = useRouter()
 
 	const [active, setActive] = useState<boolean>(false)
 
-	const { menus } = useMenu(authStore.isAuth)
+	const { menus } = useMenu(userStore.isAuth)
 
 	const activeClass = active ? styles.hamburgerActive : styles.hamburgerInActive
 	const hamburgerBackgroundActive = active
@@ -45,7 +48,7 @@ export const Hamburger: FC = () => {
 
 	const onClickLogout: MouseEventHandler<HTMLLIElement> = async () => {
 		await averlist.auth.logout()
-		authStore.logout()
+		userStore.logout()
 		await router.push('/')
 	}
 
@@ -79,14 +82,14 @@ export const Hamburger: FC = () => {
 							))}
 							<li>
 								<a
-									href='https://discord.gg/h7jCXJ8d6w'
+									href={NEXT_PUBLIC_DISCORD_INVITE_LINK}
 									target='_blank'
 									rel='noreferrer'
 								>
 									Дискорд
 								</a>
 							</li>
-							{authStore.isAuth && <li onClick={onClickLogout}>Выйти</li>}
+							{userStore.isAuth && <li onClick={onClickLogout}>Выйти</li>}
 						</ul>
 					</nav>
 				</aside>

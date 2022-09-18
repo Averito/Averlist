@@ -14,7 +14,7 @@ import { ToastContainer } from 'react-toastify'
 
 const queryClient = new QueryClient()
 
-const MyApp = observer(({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
 	useAuth()
 
 	return (
@@ -42,9 +42,9 @@ const MyApp = observer(({ Component, pageProps }: AppProps) => {
 				position='bottom-right'
 				toastStyle={{ backgroundColor: '#2b214f', color: '#e1dfdf' }}
 			/>
-			<ReactQueryDevtools initialIsOpen={false} />
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	)
-})
+}
 
 export default MyApp

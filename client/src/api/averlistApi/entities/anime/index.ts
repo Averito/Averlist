@@ -3,6 +3,10 @@ import { axios } from '@averlistApi/averlist'
 import { AnimeStatus } from '@averlistApi/entities/anime/types'
 
 export const anime = {
+	async getByAnilibriaId(anilibriaId: number): Promise<Averlist.Anime[]> {
+		const response = await axios.get<Averlist.Anime[]>(`/anime/${anilibriaId}`)
+		return response.data
+	},
 	async list(accessToken = ''): Promise<Averlist.Anime[]> {
 		const response = await axios.get<Averlist.Anime[]>('/anime', {
 			headers: {

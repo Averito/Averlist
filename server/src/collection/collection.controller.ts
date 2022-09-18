@@ -1,13 +1,13 @@
 import {
-	Controller,
-	Get,
-	Post,
 	Body,
-	Patch,
-	UploadedFile,
+	Controller,
+	Delete,
+	Get,
 	Param,
+	Patch,
+	Post,
 	Res,
-	Delete
+	UploadedFile
 } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Express, Response } from 'express'

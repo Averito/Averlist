@@ -12,6 +12,12 @@
   --medium-font-size: 14px;
   --small-font-size: 12px;
   --tiny-font-size: 10px;
+  --viewed: #44de44;
+  --planned: #e1de37;
+  --abandoned: #de4444;
+  --coming-out: #9944de;
+  --look: #44de9e;
+  --reconsidering: #4459de;
 }
 
 * {

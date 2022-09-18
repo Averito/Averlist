@@ -9,13 +9,16 @@ import styles from './Header.module.scss'
 import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
 import { IgnorePaths } from '@utils/IgnorePaths'
 import { Dropdown } from '@components/Dropdown'
-import authStore from '@stores/auth.store'
+import userStore from '@stores/user.store'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
+
+const NEXT_PUBLIC_DISCORD_INVITE_LINK =
+	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
 
 export const Header: FC = observer(() => {
 	const router = useRouter()
 
-	const { menuWithoutAuth } = useMenu(authStore.isAuth)
+	const { menuWithoutAuth } = useMenu(userStore.isAuth)
 
 	const onClickOnTitle = () => {
 		router.push('/')
@@ -56,14 +59,21 @@ export const Header: FC = observer(() => {
 		}
 	]
 
-	const dropdownMenus = authStore.isAuth
+	const dropdownMenus = userStore.isAuth
 		? dropdownMenusWithAuth
 		: dropdownMenusWithoutAuth
 
-	const avatarHref = authStore.isAuth ? '/lk' : '/login'
+	const avatarHref = userStore.isAuth ? '/lk' : '/login'
 
 	return (
-		<IgnorePaths ignorePaths={['/registration', '/login', '/reset-password']}>
+		<IgnorePaths
+			ignorePaths={[
+				'/registration',
+				'/login',
+				'/reset-password',
+				'/set-password'
+			]}
+		>
 			<header className={classnames(styles.container, mainPage)}>
 				<Hamburger />
 				<div className={styles.containerBlock1}>
@@ -83,7 +93,7 @@ export const Header: FC = observer(() => {
 							))}
 							<li>
 								<a
-									href='https://discord.gg/h7jCXJ8d6w'
+									href={NEXT_PUBLIC_DISCORD_INVITE_LINK}
 									target='_blank'
 									rel='noreferrer'
 								>
@@ -101,13 +111,13 @@ export const Header: FC = observer(() => {
 									width={35}
 									height={35}
 									style={{ borderRadius: '50%' }}
-									src={authStore.currentAvatar}
+									src={userStore.currentAvatar}
 									alt='Ава'
 								/>
 							</a>
 						</Link>
 					</Dropdown>
-					<p className={styles.login}>{authStore.currentName}</p>
+					<p className={styles.login}>{userStore.currentName}</p>
 				</div>
 			</header>
 		</IgnorePaths>

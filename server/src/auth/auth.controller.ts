@@ -7,8 +7,8 @@ import {
 	Patch,
 	Post,
 	Query,
-	UseGuards,
-	Res
+	Res,
+	UseGuards
 } from '@nestjs/common'
 import { User } from '@prisma/client'
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
@@ -58,7 +58,9 @@ export class AuthController {
 		const loginResult = await this.authService.login(loginBody)
 
 		response.cookie('accessToken', loginResult.accessToken)
-		response.cookie('refreshToken', loginResult.refreshToken)
+		if (loginResult.refreshToken) {
+			response.cookie('refreshToken', loginResult.refreshToken)
+		}
 
 		return loginResult
 	}

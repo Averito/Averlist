@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { User, Invitation } from '@prisma/client'
+import { Invitation, User } from '@prisma/client'
 import { Auth } from '@decorators/auth.decorator'
 import { InvitationService } from './invitation.service'
 import { CurrentUser } from '@decorators/user.decorator'

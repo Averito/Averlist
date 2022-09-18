@@ -1,8 +1,6 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
-    "discordId" INTEGER,
-    "vkId" INTEGER,
     "login" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -85,12 +83,6 @@ CREATE TABLE "News" (
 
     CONSTRAINT "News_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_discordId_key" ON "users"("discordId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_vkId_key" ON "users"("vkId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

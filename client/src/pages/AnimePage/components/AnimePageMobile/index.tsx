@@ -6,14 +6,23 @@ import { Title } from '@anilibriaApi/types'
 import { StatusYearType } from '@pages/AnimePage/components/StatusYearType'
 import { Button } from '@components/Button'
 import { Description } from './components/Description'
+import { Dropdown, DropdownMenu } from '@components/Dropdown'
+import { Averlist } from '@averlistApi/types'
+import { AnimeListStats } from '@components/AnimeListStats'
 
 interface AnimePageMobileProps {
 	title: Title
+	dropdownOptions: DropdownMenu[]
+	animeList: Averlist.Anime[]
 }
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimePageMobile: FC<AnimePageMobileProps> = ({ title }) => {
+export const AnimePageMobile: FC<AnimePageMobileProps> = ({
+	title,
+	dropdownOptions,
+	animeList
+}) => {
 	return (
 		<div className={styles.mobile}>
 			<div className={styles.posterWrapper}>
@@ -33,12 +42,20 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({ title }) => {
 					type={title.type.string}
 				/>
 				<Button>Смотреть онлайн</Button>
+				<Dropdown options={dropdownOptions} margin='15px 0 0 0' onClick>
+					<Button>Добавить в список</Button>
+				</Dropdown>
 			</div>
 			<Description title={title} />
 			<div className={styles.description}>
 				<h2 className={styles.descriptionTitle}>Описание:</h2>
 				<p>{title.description}</p>
 			</div>
+			<AnimeListStats
+				backgroundColor='transparent'
+				padding='0'
+				animeList={animeList}
+			/>
 		</div>
 	)
 }

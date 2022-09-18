@@ -1,17 +1,18 @@
-import { StaticImageData } from 'next/image'
 import { makeAutoObservable } from 'mobx'
 
 import { Averlist } from '@averlistApi/types'
 import defaultAvatar from '@assets/images/defaultAvatar.png'
+import { getCurrentAvatar } from '@helpers/getCurrentAvatar'
+import { getCurrentName } from '@helpers/getCurrentName'
 
 const AVERLIST_AVATARS_URI = process.env.NEXT_PUBLIC_AVERLIST_AVATARS_URI
 
-class AuthStore {
+class UserStore {
 	public isAuth = false
 	public user: Averlist.User = {} as Averlist.User
 
 	private _currentAvatar: string = defaultAvatar.src
-	public get currentAvatar(): string | StaticImageData {
+	public get currentAvatar(): string {
 		return this._currentAvatar
 	}
 
@@ -39,14 +40,17 @@ class AuthStore {
 		this._currentAvatar = defaultAvatar.src
 		this._currentName = 'Гость'
 	}
-	private setCurrentAvatar(avatar?: string) {
-		if (!avatar) return (this._currentAvatar = defaultAvatar.src)
-		if (avatar.includes('https')) return (this._currentAvatar = avatar)
-		this._currentAvatar = `${AVERLIST_AVATARS_URI}${avatar}`
+	public setCurrentAvatar(avatar?: string) {
+		this._currentAvatar = getCurrentAvatar(avatar)
+		if (avatar) this.user.avatar = avatar
 	}
-	private setCurrentName(name?: string) {
-		if (name) this._currentName = name
+	public setCurrentName(name?: string) {
+		this._currentName = getCurrentName(name)
+		if (name) this.user.name = name
+	}
+	public addToAnimeList(anime: Averlist.Anime) {
+		this.user.anime_list = [...(this.user.anime_list || []), anime]
 	}
 }
 
-export default new AuthStore()
+export default new UserStore()

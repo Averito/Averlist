@@ -2,14 +2,16 @@ import React, {
 	FC,
 	MouseEventHandler,
 	PropsWithChildren,
+	useRef,
 	useState
 } from 'react'
 import Link from 'next/link'
 import classnames from 'classnames'
 
 import styles from './Dropdown.module.scss'
+import { useOutside } from '@hooks/useOutside'
 
-interface DropdownMenu {
+export interface DropdownMenu {
 	id: number
 	label: string
 	href?: string
@@ -18,10 +20,14 @@ interface DropdownMenu {
 
 interface DropdownProps {
 	options: DropdownMenu[]
+	onClick?: boolean
+	margin?: string
 }
 
 export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 	options,
+	onClick,
+	margin,
 	children
 }) => {
 	const [active, setActive] = useState<boolean>(false)
@@ -35,13 +41,38 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 		timeout = setTimeout(() => setActive(false), 200)
 	}
 
+	const open: MouseEventHandler<HTMLDivElement> = event => {
+		event.stopPropagation()
+		if (active) return setActive(false)
+		setActive(true)
+	}
+
+	const dropdownChildren = useRef<HTMLDivElement>(null)
+	useOutside(dropdownChildren, () => {
+		if (!onClick) return
+		setActive(false)
+	})
+
 	const dropdownMenuActive = active
-		? styles.dropdownMenuOn
+		? onClick
+			? styles.dropdownMenuOnClickMod
+			: styles.dropdownMenuOn
 		: styles.dropdownMenuOff
 
+	const marginStyle = { margin }
+
 	return (
-		<div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-			<div>{children}</div>
+		<div
+			onMouseEnter={!onClick ? onMouseEnter : undefined}
+			onMouseLeave={!onClick ? onMouseLeave : undefined}
+		>
+			<div
+				ref={dropdownChildren}
+				style={marginStyle}
+				onClick={onClick ? open : undefined}
+			>
+				{children}
+			</div>
 			<div className={styles.dropdownWrapper}>
 				<div className={classnames(styles.dropdownMenu, dropdownMenuActive)}>
 					{options.map(option => (
