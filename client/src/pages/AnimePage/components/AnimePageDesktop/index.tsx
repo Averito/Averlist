@@ -1,5 +1,7 @@
-import { FC } from 'react'
+import { Observer } from 'mobx-react-lite'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { FC } from 'react'
 
 import styles from './AnimePageDesktop.module.scss'
 import { Description } from '@pages/AnimePage/components/AnimePageDesktop/components/Description'
@@ -9,6 +11,11 @@ import { Dropdown, DropdownMenu } from '@components/Dropdown'
 import { Title } from '@anilibriaApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
 import { Averlist } from '@averlistApi/types'
+import userStore from '@stores/user.store'
+
+const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
+	ssr: false
+})
 
 interface AnimePageDesktopProps {
 	title: Title
@@ -35,9 +42,21 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 						height={380}
 					/>
 					<Button className={styles.watchOnlineButton}>Смотреть онлайн</Button>
-					<Dropdown options={dropdownOptions} margin='15px 0 0 0' onClick>
-						<Button>Добавить в список</Button>
-					</Dropdown>
+					<Observer>
+						{() => (
+							<>
+								{userStore.isAuth && (
+									<Dropdown
+										options={dropdownOptions}
+										margin='15px 0 0 0'
+										onClick
+									>
+										<Button>Добавить в список</Button>
+									</Dropdown>
+								)}
+							</>
+						)}
+					</Observer>
 				</div>
 				<div>
 					<div className={styles.names}>
@@ -54,6 +73,8 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 						<h2 className={styles.descriptionTitle}>Описание:</h2>
 						<div className={styles.description}>{title.description}</div>
 					</div>
+					<Player title={title} margin='0 0 20px 0' />
+					<h2 className={styles.rating}>Популярность среди пользователей:</h2>
 					<AnimeListStats
 						backgroundColor='transparent'
 						padding='0'

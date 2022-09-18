@@ -1,5 +1,6 @@
-import { FC } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { FC } from 'react'
 
 import styles from './AnimePageMobile.module.scss'
 import { Title } from '@anilibriaApi/types'
@@ -9,6 +10,10 @@ import { Description } from './components/Description'
 import { Dropdown, DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
+
+const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
+	ssr: false
+})
 
 interface AnimePageMobileProps {
 	title: Title
@@ -51,6 +56,8 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 				<h2 className={styles.descriptionTitle}>Описание:</h2>
 				<p>{title.description}</p>
 			</div>
+			<Player title={title} margin='0 0 20px 0' />
+			<h2 className={styles.rating}>Популярность среди пользователей:</h2>
 			<AnimeListStats
 				backgroundColor='transparent'
 				padding='0'
