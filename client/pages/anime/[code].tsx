@@ -2,7 +2,6 @@ import { AnimePage } from '@pages/AnimePage'
 import { GetStaticPaths, GetStaticProps } from 'next'
 
 import { anilibria } from '@anilibriaApi/anilibria'
-import { averlist } from '@averlistApi/averlist'
 
 export default AnimePage
 

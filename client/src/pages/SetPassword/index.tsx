@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from 'react'
+import { FormEventHandler } from 'react'
 import { useRouter } from 'next/router'
 import { NextPage } from 'next'
 

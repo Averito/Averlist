@@ -1,11 +1,4 @@
-import {
-	FC,
-	MouseEventHandler,
-	useCallback,
-	useEffect,
-	useRef,
-	useState
-} from 'react'
+import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { MdEdit } from 'react-icons/md'
 
