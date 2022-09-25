@@ -1,4 +1,10 @@
-import { FC, MouseEventHandler, PropsWithChildren, useEffect, useRef } from 'react'
+import {
+	FC,
+	MouseEventHandler,
+	PropsWithChildren,
+	useEffect,
+	useRef
+} from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 import { IoMdClose } from 'react-icons/io'

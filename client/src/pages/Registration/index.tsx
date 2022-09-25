@@ -15,11 +15,11 @@ import { errorToast, successToast } from '@helpers/toasts'
 export const Registration: NextPage = () => {
 	const router = useRouter()
 
-	const { value: login, setValue: setLogin } = useInput()
-	const { value: name, setValue: setName } = useInput()
-	const { value: email, setValue: setEmail } = useInput()
-	const { value: password, setValue: setPassword } = useInput()
-	const { value: passwordAgain, setValue: setPasswordAgain } = useInput()
+	const [login, setLogin] = useInput()
+	const [name, setName] = useInput()
+	const [email, setEmail] = useInput()
+	const [password, setPassword] = useInput()
+	const [passwordAgain, setPasswordAgain] = useInput()
 
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()

@@ -11,15 +11,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		limit: -1
 	}
 	const titleList = await anilibria.getUpdates(queryObject)
-	const paths = titleList.map(title => ({ params: { code: title.code } }))
+	const paths = titleList.map(title => ({ params: { animeCode: title.code } }))
 	return {
 		paths,
-		fallback: 'blocking'
+		fallback: false
 	}
 }
 
 export const getStaticProps: GetStaticProps = async context => {
-	const title = await anilibria.getTitle({ code: context.params?.code ?? '' })
+	const title = await anilibria.getTitle({
+		code: context.params?.animeCode as string
+	})
 
 	return {
 		props: {

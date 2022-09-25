@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Headers, Param, Patch, Post, Query, Res, UseGuards } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Get,
+	Headers,
+	Param,
+	Patch,
+	Post,
+	Query,
+	Res,
+	UseGuards
+} from '@nestjs/common'
 import { User } from '@prisma/client'
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
@@ -47,9 +58,7 @@ export class AuthController {
 		const loginResult = await this.authService.login(loginBody)
 
 		response.cookie('accessToken', loginResult.accessToken)
-		if (loginResult.refreshToken) {
-			response.cookie('refreshToken', loginResult.refreshToken)
-		}
+		response.cookie('refreshToken', loginResult.refreshToken)
 
 		return loginResult
 	}

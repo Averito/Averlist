@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, useRef, useState } from 'react'
-import { IoIosArrowDown } from 'react-icons/all'
+import { IoIosArrowDown } from 'react-icons/io'
 import classNames from 'classnames'
 
 import styles from './Select.module.scss'

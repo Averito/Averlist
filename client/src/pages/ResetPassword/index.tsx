@@ -13,7 +13,7 @@ import { errorToast, successToast } from '@helpers/toasts'
 export const ResetPassword: NextPage = () => {
 	const router = useRouter()
 
-	const { value: email, setValue: setEmail } = useInput()
+	const [email, setEmail] = useInput()
 
 	const onSubmit: FormEventHandler = async event => {
 		event.preventDefault()

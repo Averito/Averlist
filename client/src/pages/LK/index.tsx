@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import { Observer } from 'mobx-react-lite'
 
 import styles from './LK.module.scss'
 import { Meta } from '@utils/Meta'
@@ -9,8 +10,6 @@ import { FavoriteCollections } from '@pages/LK/components/FavoriteCollections'
 import userStore from '@stores/user.store'
 
 export const LK: NextPage = () => {
-	useAuth()
-
 	return (
 		<>
 			<Meta
@@ -20,11 +19,15 @@ export const LK: NextPage = () => {
 			<div className={styles.container}>
 				<div className={styles.wrapper}>
 					<div className={styles.mainBlock}>
-						<AnimeListStats
-							backgroundColor={'#2b214f'}
-							padding='15px'
-							animeList={userStore.user.anime_list || []}
-						/>
+						<Observer>
+							{() => (
+								<AnimeListStats
+									backgroundColor={'#2b214f'}
+									padding='15px'
+									animeList={userStore.user.anime_list || []}
+								/>
+							)}
+						</Observer>
 						<Avatar />
 					</div>
 					<FavoriteCollections />

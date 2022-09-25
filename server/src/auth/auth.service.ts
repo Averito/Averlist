@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
+import {
+	BadRequestException,
+	Injectable,
+	UnauthorizedException
+} from '@nestjs/common'
 import { User } from '@prisma/client'
 import { JwtService, JwtSignOptions } from '@nestjs/jwt'
 import { MailerService } from '@nestjs-modules/mailer'
@@ -96,11 +100,8 @@ export class AuthService {
 		}
 		const accessToken = await this.genAccessToken(jwtPayload)
 
-		let refreshToken = null
-		if (!user.refreshTokenHash) {
-			refreshToken = await this.genRefreshToken(jwtPayload)
-			await this.setCurrentRefreshToken(refreshToken, user.id)
-		}
+		const refreshToken = await this.genRefreshToken(jwtPayload)
+		await this.setCurrentRefreshToken(refreshToken, user.id)
 
 		return {
 			refreshToken,
