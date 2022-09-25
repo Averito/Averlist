@@ -1,4 +1,11 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react'
+import {
+	FC,
+	MouseEventHandler,
+	useCallback,
+	useEffect,
+	useRef,
+	useState
+} from 'react'
 import { observer } from 'mobx-react-lite'
 import { MdEdit } from 'react-icons/md'
 
@@ -16,11 +23,7 @@ interface NicknameEditProps {
 
 export const NicknameEdit: FC<NicknameEditProps> = observer(({ name }) => {
 	const [isEdit, setIsEdit] = useState<boolean>(false)
-	const {
-		value: nickname,
-		setValue: setNickname,
-		setValueNotMod: setNicknameStandard
-	} = useInput(name)
+	const [nickname, setNickname, setNicknameStandard] = useInput(name)
 
 	const onClickEdit: MouseEventHandler<SVGAElement> = event => {
 		event.stopPropagation()

@@ -16,6 +16,7 @@ export const useAuth = () => {
 				userStore.userAuth()
 				userStore.setUser(me)
 
+				if (!getCookie('refreshToken')) return
 				await averlist.auth.getAccess(getCookie('refreshToken') as string)
 			} catch {
 				if (!router.asPath.includes('lk')) return

@@ -7,7 +7,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import styles from './AvatarCutter.module.scss'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
-import { successToast } from '@helpers/toasts'
+import { errorToast, successToast } from '@helpers/toasts'
 
 const Modal = dynamic(() => import('@components/Modal'), { ssr: false })
 
@@ -39,18 +39,22 @@ export const AvatarCutter: FC<AvatarCutterProps> = ({
 	const image = useRef<HTMLImageElement>(null)
 
 	const onClickSave = async () => {
-		if (!image.current) return
+		try {
+			if (!image.current) return
 
-		const sizes = {
-			width: image.current.width,
-			height: image.current.height
+			const sizes = {
+				width: image.current.width,
+				height: image.current.height
+			}
+
+			const user = await averlist.users.editAvatar(avatar, crop, sizes)
+			successToast('Аватарка успешно изменена')
+			userStore.setCurrentAvatar(user.avatar)
+			setNewAvatar('')
+			onClose()
+		} catch {
+			errorToast('Слишком большой вес аватарки, допускается не более 3мб.')
 		}
-
-		const user = await averlist.users.editAvatar(avatar, crop, sizes)
-		successToast('Аватарка успешно изменена')
-		userStore.setCurrentAvatar(user.avatar)
-		setNewAvatar('')
-		onClose()
 	}
 
 	return (

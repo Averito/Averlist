@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { OnProgressProps } from 'react-player/base'
 import ReactPlayer from 'react-player'
 
 import { SeriesUsually, Title } from '@anilibriaApi/types'
 import { Flex } from '@components/Flex'
 import { Select, SelectMenu } from '@components/Select'
 import { anilibria } from '@anilibriaApi/anilibria'
-
-type Quality = 'sd' | 'hd' | 'fhd'
+import { Quality, SeriesInfo } from '@pages/AnimePage/components/Player/types'
 
 const initialQualities = [
 	{
@@ -27,33 +27,74 @@ interface PlayerProps {
 }
 
 const Player: FC<PlayerProps> = ({ title, margin }) => {
+	const [seriesInfo, setSeriesInfo] = useState<SeriesInfo>({} as SeriesInfo)
 	const [titlePlayer, setTitlePlayer] = useState<Title>(title)
-
 	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
 	const [currentSeries, setCurrentSeries] = useState<SelectMenu<SeriesUsually>>(
 		{
 			id: 0,
-			label: '1 серия',
-			value: titlePlayer.player.playlist[0]
+			label: `${titlePlayer.player.playlist[1].serie} серия`,
+			value: titlePlayer.player.playlist[1]
 		}
 	)
-
-	const onChangeSeriesSelect = (series: SelectMenu<SeriesUsually>) => {
-		return () => {
-			setCurrentSeries(series)
-		}
-	}
-
 	const [qualities, setQualities] =
 		useState<SelectMenu<Quality>[]>(initialQualities)
 	const [currentQuality, setCurrentQuality] = useState<SelectMenu<Quality>>(
 		qualities[1]
 	)
+
+	const updateSeriesInfo = useCallback(
+		(time: number = 0) => {
+			localStorage.setItem(
+				title.code,
+				JSON.stringify({
+					series: currentSeries.value.serie,
+					quality: currentQuality.value,
+					time
+				})
+			)
+		},
+		[currentQuality.value, currentSeries.value.serie, title.code]
+	)
+
+	const onChangeSeriesSelect = (series: SelectMenu<SeriesUsually>) => {
+		return () => {
+			setCurrentSeries(series)
+			updateSeriesInfo()
+		}
+	}
 	const onChangeQualitySelect = (quality: SelectMenu<Quality>) => {
 		return () => {
 			setCurrentQuality(quality)
 		}
 	}
+
+	const selectCurrentSeries = useCallback(
+		(allSeries: SelectMenu<SeriesUsually>[]) => {
+			const newSeriesInfo = JSON.parse(
+				localStorage.getItem(title.code) as string
+			) as SeriesInfo | null
+			if (!newSeriesInfo) {
+				updateSeriesInfo()
+				return
+			}
+
+			const foundCurrentSeries = allSeries.find(
+				series => series.value.serie === newSeriesInfo.series
+			)
+			const foundCurrentQuality = qualities.find(
+				quality => quality.value === newSeriesInfo.quality
+			)
+			if ((!foundCurrentSeries && !currentQuality) || !foundCurrentSeries)
+				return updateSeriesInfo()
+
+			setCurrentSeries(foundCurrentSeries)
+			if (foundCurrentQuality) setCurrentQuality(foundCurrentQuality)
+
+			setSeriesInfo(newSeriesInfo)
+		},
+		[currentQuality, qualities, title.code, updateSeriesInfo]
+	)
 
 	useEffect(() => {
 		const allSeriesForSelect: SelectMenu<SeriesUsually>[] = []
@@ -62,14 +103,14 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 			const idx = +series[0]
 			allSeriesForSelect.push({
 				id: idx,
-				label: `${idx} серия`,
+				label: `${series[1].serie} серия`,
 				value: series[1] as SeriesUsually
 			})
 		}
 
 		setAllSeries(allSeriesForSelect)
-		setCurrentSeries(allSeriesForSelect[0])
-	}, [title.player.playlist])
+		selectCurrentSeries(allSeriesForSelect)
+	}, [title.player.playlist, selectCurrentSeries])
 
 	useEffect(() => {
 		const asyncWrapper = async () => {
@@ -103,11 +144,18 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 		])
 	}, [currentSeries.value?.hls?.fhd, qualities])
 
+	const onProgressPlayer = (progress: OnProgressProps) => {
+		updateSeriesInfo(progress.playedSeconds)
+	}
+
+	const player = useRef<ReactPlayer>(null)
+	const onStartPlayer = () => {
+		player.current?.seekTo(seriesInfo.time || 0)
+	}
+
 	const host = title.player.host
 	const videoUrl = `https://${host}${
-		(currentSeries.value as SeriesUsually)?.hls[
-			currentQuality.value as 'hd' | 'sd' | 'fhd'
-		]
+		(currentSeries.value as SeriesUsually)?.hls[currentQuality.value]
 	}`
 
 	return (
@@ -125,7 +173,15 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 					onChange={onChangeSeriesSelect}
 				/>
 			</Flex>
-			<ReactPlayer url={videoUrl} width='100%' height='auto' controls />
+			<ReactPlayer
+				ref={player}
+				url={videoUrl}
+				width='100%'
+				height='auto'
+				controls
+				onProgress={onProgressPlayer}
+				onStart={onStartPlayer}
+			/>
 		</Flex>
 	)
 }

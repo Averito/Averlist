@@ -13,7 +13,7 @@ import { successToast } from '@helpers/toasts'
 export const SetPassword: NextPage = () => {
 	const router = useRouter()
 
-	const { value: password, setValue: setPassword } = useInput()
+	const [password, setPassword] = useInput()
 
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
