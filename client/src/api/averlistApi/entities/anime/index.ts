@@ -20,8 +20,8 @@ export const anime = {
 		return response.data
 	},
 	async editStatus(
-		newStatus: AnimeStatus,
-		animeId: string
+		animeId: string,
+		newStatus: AnimeStatus
 	): Promise<Averlist.Anime> {
 		const response = await axios.patch<Averlist.Anime>(`/anime/${animeId}`, {
 			newStatus

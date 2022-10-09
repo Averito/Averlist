@@ -1,0 +1,45 @@
+.ag-theme-alpine {
+  --ag-header-cell-hover-background-color: #291f4a;
+  --ag-row-hover-color: #2b204d;
+  --ag-selected-row-background-color: #261d45;
+
+  .ag-root-wrapper {
+    border: none;
+  }
+
+  .ag-header-viewport {
+    border-bottom: 1px solid #795dcc;
+  }
+
+  .ag-header {
+    border: none;
+  }
+
+  .ag-center-cols-viewport {
+    background-color: var(--primary-color);
+  }
+
+  .ag-row {
+    background-color: #302456;
+    border-top: none;
+    border-bottom: 1px solid #4c3a7f;
+    color: white;
+  }
+
+  .ag-row-hover {
+    background-color: #302456;
+  }
+
+  .ag-body-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ag-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    --ag-internal-padded-row-height: 0;
+
+    border: none !important;
+  }
+}

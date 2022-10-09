@@ -44,18 +44,19 @@ model UserFriendList {
 }
 
 model Anime {
-  id           String      @id @default(uuid())
-  name         String
-  poster       String?
-  status       String
-  aniuId       String?
-  anilibriaId  Int?
-  user         User        @relation(fields: [userId], references: [id])
-  userId       String
-  collection   Collection? @relation(fields: [collectionId], references: [id])
-  collectionId String?
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
+  id            String      @id @default(uuid())
+  name          String
+  poster        String?
+  status        String
+  aniuId        String?
+  anilibriaId   Int?
+  anilibriaCode String?
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  collection    Collection? @relation(fields: [collectionId], references: [id])
+  collectionId  String?
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
 
   @@map("anime")
 }

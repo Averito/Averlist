@@ -1,0 +1,32 @@
+.container {
+  gap: 10px;
+}
+
+.item {
+  min-width: 120px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #302456;
+
+  > p {
+    margin-bottom: 5px;
+
+    &:last-of-type {
+      margin-bottom: 10px;
+    }
+  }
+
+  > a {
+    display: flex;
+    align-items: center;
+    transition: filter 0.3s ease;
+
+    > svg {
+      margin: 0 8px 0 0;
+    }
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+}

@@ -30,6 +30,12 @@ export class AnimeDto implements Anime {
 	anilibriaId: number
 
 	@ApiProperty({
+		name: 'anilibriaCode',
+		description: 'code that this anime has in the anilibria database'
+	})
+	anilibriaCode: string
+
+	@ApiProperty({
 		name: 'user',
 		description: 'user who has this anime in the anime list'
 	})

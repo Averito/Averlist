@@ -7,6 +7,7 @@ import { Flex } from '@components/Flex'
 import { Select, SelectMenu } from '@components/Select'
 import { anilibria } from '@anilibriaApi/anilibria'
 import { Quality, SeriesInfo } from '@pages/AnimePage/components/Player/types'
+import { useCache } from '@hooks/useCache'
 
 const initialQualities = [
 	{
@@ -21,112 +22,78 @@ const initialQualities = [
 	}
 ]
 
+const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
+
 interface PlayerProps {
 	title: Title
 	margin?: string
 }
 
 const Player: FC<PlayerProps> = ({ title, margin }) => {
-	const [seriesInfo, setSeriesInfo] = useState<SeriesInfo>({} as SeriesInfo)
-	const [titlePlayer, setTitlePlayer] = useState<Title>(title)
+	// Series
 	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
-	const [currentSeries, setCurrentSeries] = useState<SelectMenu<SeriesUsually>>(
-		{
-			id: 0,
-			label: `${titlePlayer.player.playlist[1].serie} серия`,
-			value: titlePlayer.player.playlist[1]
-		}
-	)
-	const [qualities, setQualities] =
-		useState<SelectMenu<Quality>[]>(initialQualities)
-	const [currentQuality, setCurrentQuality] = useState<SelectMenu<Quality>>(
-		qualities[1]
-	)
-
-	const updateSeriesInfo = useCallback(
-		(time: number = 0) => {
-			localStorage.setItem(
-				title.code,
-				JSON.stringify({
-					series: currentSeries.value.serie,
-					quality: currentQuality.value,
-					time
-				})
-			)
-		},
-		[currentQuality.value, currentSeries.value.serie, title.code]
-	)
-
 	const onChangeSeriesSelect = (series: SelectMenu<SeriesUsually>) => {
 		return () => {
-			setCurrentSeries(series)
-			updateSeriesInfo()
+			setSeriesInfo(prevSeriesInfo => ({
+				...prevSeriesInfo,
+				series
+			}))
 		}
 	}
+	// Series
+
+	// Quality
+	const [qualities, setQualities] =
+		useState<SelectMenu<Quality>[]>(initialQualities)
 	const onChangeQualitySelect = (quality: SelectMenu<Quality>) => {
 		return () => {
-			setCurrentQuality(quality)
+			setSeriesInfo(prevSeriesInfo => ({
+				...prevSeriesInfo,
+				quality: quality
+			}))
 		}
 	}
+	// Quality
 
-	const selectCurrentSeries = useCallback(
-		(allSeries: SelectMenu<SeriesUsually>[]) => {
-			const newSeriesInfo = JSON.parse(
-				localStorage.getItem(title.code) as string
-			) as SeriesInfo | null
-			if (!newSeriesInfo) {
-				updateSeriesInfo()
-				return
-			}
-
-			const foundCurrentSeries = allSeries.find(
-				series => series.value.serie === newSeriesInfo.series
-			)
-			const foundCurrentQuality = qualities.find(
-				quality => quality.value === newSeriesInfo.quality
-			)
-			if ((!foundCurrentSeries && !currentQuality) || !foundCurrentSeries)
-				return updateSeriesInfo()
-
-			setCurrentSeries(foundCurrentSeries)
-			if (foundCurrentQuality) setCurrentQuality(foundCurrentQuality)
-
-			setSeriesInfo(newSeriesInfo)
+	const firstSeriesNum = +Object.keys(title.player.playlist)[0]
+	const [seriesInfo, setSeriesInfo] = useState<SeriesInfo>({
+		series: {
+			id: 0,
+			label: `${title.player.playlist[firstSeriesNum].serie} серия`,
+			value: title.player.playlist[firstSeriesNum]
 		},
-		[currentQuality, qualities, title.code, updateSeriesInfo]
-	)
+		quality: qualities[0],
+		time: 0
+	})
+
+	const onExtractCache = (cache: SeriesInfo, isCacheEmpty: boolean) => {
+		if (isCacheEmpty) return
+
+		setSeriesInfo(cache)
+	}
+	useCache<SeriesInfo>(seriesInfo, title.code, onExtractCache)
 
 	useEffect(() => {
-		const allSeriesForSelect: SelectMenu<SeriesUsually>[] = []
+		const playlistMap = new Map<string, SeriesUsually>(
+			Object.entries(title.player.playlist)
+		)
 
-		for (const series of Object.entries(title.player.playlist)) {
-			const idx = +series[0]
-			allSeriesForSelect.push({
-				id: idx,
-				label: `${series[1].serie} серия`,
-				value: series[1] as SeriesUsually
+		let normalizeAllSeries: SelectMenu<SeriesUsually>[] = []
+
+		for (const series of playlistMap.values()) {
+			normalizeAllSeries.push({
+				id: series.serie,
+				label: `${series.serie} серия`,
+				value: series
 			})
 		}
-
-		setAllSeries(allSeriesForSelect)
-		selectCurrentSeries(allSeriesForSelect)
-	}, [title.player.playlist, selectCurrentSeries])
-
-	useEffect(() => {
-		const asyncWrapper = async () => {
-			const title = await anilibria.getTitle({
-				filter: ['player', 'id'],
-				id: titlePlayer.id
-			})
-			setTitlePlayer(title)
-		}
-		asyncWrapper()
-	}, [titlePlayer.id])
+		setAllSeries(normalizeAllSeries)
+	}, [])
 
 	useEffect(() => {
 		const hasFhdQuality =
 			qualities.findIndex(quality => quality.value === 'fhd') !== -1
-		const seriesHasFhdQuality = !!currentSeries.value?.hls?.fhd
+		const seriesHasFhdQuality = !!seriesInfo.series.value.hls?.fhd
 
 		if (!hasFhdQuality && !seriesHasFhdQuality) return
 		if (hasFhdQuality && !seriesHasFhdQuality) {
@@ -142,10 +109,15 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 				value: 'fhd'
 			}
 		])
-	}, [currentSeries.value?.hls?.fhd, qualities])
+	}, [seriesInfo.series.value.hls?.fhd])
 
 	const onProgressPlayer = (progress: OnProgressProps) => {
-		updateSeriesInfo(progress.playedSeconds)
+		if (progress.playedSeconds === 0) return
+
+		setSeriesInfo(prevSeriesInfo => ({
+			...prevSeriesInfo,
+			time: progress.playedSeconds
+		}))
 	}
 
 	const player = useRef<ReactPlayer>(null)
@@ -155,7 +127,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 
 	const host = title.player.host
 	const videoUrl = `https://${host}${
-		(currentSeries.value as SeriesUsually)?.hls[currentQuality.value]
+		(seriesInfo.series.value as SeriesUsually)?.hls[seriesInfo.quality.value]
 	}`
 
 	return (
@@ -163,13 +135,13 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 			<Flex>
 				<Select
 					options={qualities}
-					currentOption={currentQuality}
+					currentOption={seriesInfo.quality}
 					onChange={onChangeQualitySelect}
 					margin='0 4px 0 0'
 				/>
 				<Select
 					options={allSeries}
-					currentOption={currentSeries}
+					currentOption={seriesInfo.series}
 					onChange={onChangeSeriesSelect}
 				/>
 			</Flex>

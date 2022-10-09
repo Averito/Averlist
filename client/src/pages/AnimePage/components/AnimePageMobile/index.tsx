@@ -10,6 +10,8 @@ import { Description } from './components/Description'
 import { Dropdown, DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
+import { useWindowSize } from '@hooks/useWindowSize'
+import { TorrentDownloads } from '@pages/AnimePage/components/TorrentDownloads'
 
 const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
 	ssr: false
@@ -23,11 +25,15 @@ interface AnimePageMobileProps {
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimePageMobile: FC<AnimePageMobileProps> = ({
+const AnimePageMobile: FC<AnimePageMobileProps> = ({
 	title,
 	dropdownOptions,
 	animeList
 }) => {
+	const { isMobile } = useWindowSize()
+
+	if (!isMobile) return <></>
+
 	return (
 		<div className={styles.mobile}>
 			<div className={styles.posterWrapper}>
@@ -46,8 +52,7 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 					year={title.season.year}
 					type={title.type.string}
 				/>
-				<Button>Смотреть онлайн</Button>
-				<Dropdown options={dropdownOptions} margin='15px 0 0 0' onClick>
+				<Dropdown options={dropdownOptions} margin='15px 0 0 0' clickMod>
 					<Button>Добавить в список</Button>
 				</Dropdown>
 			</div>
@@ -57,7 +62,9 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 				<p>{title.description}</p>
 			</div>
 			<Player title={title} margin='0 0 20px 0' />
-			<h2 className={styles.rating}>Популярность среди пользователей:</h2>
+			<h2 className={styles.title}>Торренты:</h2>
+			<TorrentDownloads title={title} />
+			<h2 className={styles.title}>Популярность среди пользователей:</h2>
 			<AnimeListStats
 				backgroundColor='transparent'
 				padding='0'
@@ -66,3 +73,5 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 		</div>
 	)
 }
+
+export default AnimePageMobile

@@ -40,6 +40,7 @@ export class AnimeService {
 				name: anime.name,
 				poster: anime.poster,
 				anilibriaId: anime.anilibriaId,
+				anilibriaCode: anime.anilibriaCode,
 				aniuId: anime.aniuId,
 				status: anime.status,
 				userId

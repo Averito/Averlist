@@ -10,6 +10,7 @@ import classnames from 'classnames'
 
 import styles from './Dropdown.module.scss'
 import { useOutside } from '@hooks/useOutside'
+import { defineEmits } from '@helpers/defineEmits'
 
 export interface DropdownMenu {
 	id: number
@@ -20,41 +21,61 @@ export interface DropdownMenu {
 
 interface DropdownProps {
 	options: DropdownMenu[]
-	onClick?: boolean
+	clickMod?: boolean
 	margin?: string
+	onOpen?: () => unknown
+	onClose?: () => unknown
 }
 
 export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 	options,
-	onClick,
+	clickMod,
+	onOpen,
+	onClose,
 	margin,
 	children
 }) => {
 	const [active, setActive] = useState<boolean>(false)
 
+	const emit = defineEmits<'open' | 'close'>({
+		open: onOpen ?? (() => {}),
+		close: onClose ?? (() => {})
+	})
+
 	let timeout: ReturnType<typeof setTimeout>
 	const onMouseEnter: MouseEventHandler<HTMLDivElement> = () => {
 		clearTimeout(timeout)
 		setActive(true)
+		emit('open')
 	}
 	const onMouseLeave: MouseEventHandler<HTMLDivElement> = () => {
-		timeout = setTimeout(() => setActive(false), 200)
+		timeout = setTimeout(() => {
+			setActive(false)
+			emit('close')
+		}, 200)
 	}
 
 	const open: MouseEventHandler<HTMLDivElement> = event => {
 		event.stopPropagation()
-		if (active) return setActive(false)
+		if (active) {
+			setActive(false)
+			emit('close')
+			return
+		}
+
 		setActive(true)
+		emit('open')
 	}
 
 	const dropdownChildren = useRef<HTMLDivElement>(null)
 	useOutside(dropdownChildren, () => {
-		if (!onClick) return
+		if (!clickMod) return
 		setActive(false)
+		emit('close')
 	})
 
 	const dropdownMenuActive = active
-		? onClick
+		? clickMod
 			? styles.dropdownMenuOnClickMod
 			: styles.dropdownMenuOn
 		: styles.dropdownMenuOff
@@ -63,13 +84,13 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 
 	return (
 		<div
-			onMouseEnter={!onClick ? onMouseEnter : undefined}
-			onMouseLeave={!onClick ? onMouseLeave : undefined}
+			onMouseEnter={!clickMod ? onMouseEnter : undefined}
+			onMouseLeave={!clickMod ? onMouseLeave : undefined}
 		>
 			<div
 				ref={dropdownChildren}
 				style={marginStyle}
-				onClick={onClick ? open : undefined}
+				onClick={clickMod ? open : undefined}
 			>
 				{children}
 			</div>

@@ -9,8 +9,13 @@
   min-width: 100%;
   background-color: #302457;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: hidden auto;
   transition: max-height 0.3s ease, padding 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .dropdownMenuOn {

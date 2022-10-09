@@ -1,17 +1,25 @@
-import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { NextPage } from 'next'
 
 import styles from './AnimePage.module.scss'
 import { Series, Title } from '@anilibriaApi/types'
 import { Meta } from '@utils/Meta'
-import { AnimePageDesktop } from '@pages/AnimePage/components/AnimePageDesktop'
-import { AnimePageMobile } from '@pages/AnimePage/components/AnimePageMobile'
 import { DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import { errorToast, successToast } from '@helpers/toasts'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
+
+const AnimePageMobile = dynamic(
+	() => import('@pages/AnimePage/components/AnimePageMobile'),
+	{ ssr: false }
+)
+const AnimePageDesktop = dynamic(
+	() => import('@pages/AnimePage/components/AnimePageDesktop'),
+	{ ssr: false }
+)
 
 interface AnimePageProps {
 	title: Title
@@ -33,6 +41,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			const newAnime: Averlist.NewAnime = {
 				name: title.names.ru,
 				anilibriaId: title.id,
+				anilibriaCode: title.code,
 				status,
 				poster: `${ANILIBRIA_URI}${title.posters?.original?.url}`
 			}

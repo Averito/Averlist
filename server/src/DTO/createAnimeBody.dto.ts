@@ -22,4 +22,10 @@ export class CreateAnimeBodyDto {
 		description: 'id that this anime has in the anilibria database'
 	})
 	anilibriaId?: number
+
+	@ApiProperty({
+		name: 'anilibriaCode',
+		description: 'code that this anime has in the anilibria database'
+	})
+	anilibriaCode?: string
 }

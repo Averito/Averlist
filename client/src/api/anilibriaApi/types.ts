@@ -8,9 +8,13 @@ export interface Torrent {
 	leechers: number
 	seeders: number
 	completed: number
-	quality: string
-	series: string
-	size: number
+	quality: {
+		string: string
+	}
+	series: {
+		string: string
+	}
+	total_size: number
 	url: string
 }
 
@@ -104,7 +108,9 @@ export interface Title {
 			string: string
 		}
 	}
-	torrents?: Torrent[]
+	torrents?: {
+		list: Torrent[]
+	}
 }
 
 export interface Schedule {
