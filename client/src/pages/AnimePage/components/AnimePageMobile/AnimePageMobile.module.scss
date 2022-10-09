@@ -1,12 +1,8 @@
 .mobile {
-  display: none;
+  display: block;
   min-height: 100vh;
   background-color: var(--primary-color);
   padding: 15px;
-
-  @media all and (max-width: 768px) {
-    display: block;
-  }
 }
 
 .posterWrapper {
@@ -35,7 +31,7 @@
   margin-bottom: 8px;
 }
 
-.rating {
+.title {
   font-size: 20px;
   margin: 0 0 15px 0;
 }

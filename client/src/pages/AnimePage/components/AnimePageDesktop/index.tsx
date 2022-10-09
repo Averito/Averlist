@@ -12,6 +12,8 @@ import { Title } from '@anilibriaApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
 import { Averlist } from '@averlistApi/types'
 import userStore from '@stores/user.store'
+import { useWindowSize } from '@hooks/useWindowSize'
+import { TorrentDownloads } from '@pages/AnimePage/components/TorrentDownloads'
 
 const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
 	ssr: false
@@ -25,11 +27,15 @@ interface AnimePageDesktopProps {
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
+const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 	title,
 	dropdownOptions,
 	animeList
 }) => {
+	const { isMobile } = useWindowSize()
+
+	if (isMobile) return <></>
+
 	return (
 		<div className={styles.desktop}>
 			<div className={styles.flexTwoColumn}>
@@ -41,7 +47,6 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 						width={270}
 						height={380}
 					/>
-					<Button className={styles.watchOnlineButton}>Смотреть онлайн</Button>
 					<Observer>
 						{() => (
 							<>
@@ -49,7 +54,7 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 									<Dropdown
 										options={dropdownOptions}
 										margin='15px 0 0 0'
-										onClick
+										clickMod
 									>
 										<Button>Добавить в список</Button>
 									</Dropdown>
@@ -74,7 +79,9 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 						<div className={styles.description}>{title.description}</div>
 					</div>
 					<Player title={title} margin='0 0 20px 0' />
-					<h2 className={styles.rating}>Популярность среди пользователей:</h2>
+					<h2 className={styles.title}>Торренты:</h2>
+					<TorrentDownloads title={title} />
+					<h2 className={styles.title}>Популярность среди пользователей:</h2>
 					<AnimeListStats
 						backgroundColor='transparent'
 						padding='0'
@@ -85,3 +92,5 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 		</div>
 	)
 }
+
+export default AnimePageDesktop

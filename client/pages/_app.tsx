@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import 'react-toastify/dist/ReactToastify.css'
+import 'ag-grid-community/styles/ag-grid.css'
+import 'ag-grid-community/styles/ag-theme-alpine.css'
+import '../styles/agGridTheme.scss'
 import '../styles/globals.css'
 import 'swiper/css'
 
@@ -20,7 +23,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 		<QueryClientProvider client={queryClient}>
 			<Head>
 				<meta charSet='utf-8' />
-				<link rel='icon' href='./favicon.ico' />
+				<link rel='icon' href='/favicon.ico' />
 				<meta httpEquiv='X-Frame-Options' />
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<meta name='theme-color' content='#000000' />
@@ -28,9 +31,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 				<meta property='og:locale' content='ru_RU' />
 				<meta property='og:type' content='article' />
 				<meta property='og:url' content='https://averlist.xyz' />
-				<meta property='og:image' content='./favicon.ico' />
-				<link rel='apple-touch-icon' href='./favicon.ico' />
-				<link rel='manifest' href='./manifest.json' />
+				<meta property='og:image' content='/favicon.ico' />
+				<link rel='apple-touch-icon' href='/favicon.ico' />
+				<link rel='manifest' href='/manifest.json' />
 				<title>Averlist</title>
 			</Head>
 			<Layout>

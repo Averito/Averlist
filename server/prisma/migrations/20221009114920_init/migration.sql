@@ -32,6 +32,7 @@ CREATE TABLE "anime" (
     "status" TEXT NOT NULL,
     "aniuId" TEXT,
     "anilibriaId" INTEGER,
+    "anilibriaCode" TEXT,
     "userId" TEXT NOT NULL,
     "collectionId" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

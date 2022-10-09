@@ -17,6 +17,7 @@ export interface Anime {
 	status: AnimeStatus
 	aniuId?: string
 	anilibriaId?: number
+	anilibriaCode?: string
 	user: User
 	userId: string
 	collection?: Collection
@@ -31,4 +32,5 @@ export interface NewAnime {
 	status: AnimeStatus
 	aniuId?: string
 	anilibriaId?: number
+	anilibriaCode?: string
 }
