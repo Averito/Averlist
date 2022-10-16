@@ -11,12 +11,11 @@ export const NameCellRenderer: FC<
 	ICellRendererParams<Averlist.Anime, string>
 > = ({ value, data }) => {
 	const poster = data?.poster && (
-		<Flex margin='0 8px 0 0'>
+		<Flex margin='0 8px 0 0' customClassName={styles.posterWrapper}>
 			<Image
 				className={styles.poster}
 				src={data.poster}
-				height={30}
-				width={20}
+				layout='fill'
 				alt='Постер'
 			/>
 		</Flex>

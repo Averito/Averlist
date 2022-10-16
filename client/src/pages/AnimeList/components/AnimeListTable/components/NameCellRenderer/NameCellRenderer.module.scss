@@ -14,6 +14,12 @@
   text-overflow: ellipsis;
 }
 
+.posterWrapper {
+  position: relative;
+  min-width: 20px;
+  min-height: 30px;
+}
+
 .poster {
   border-radius: 4px;
 }
