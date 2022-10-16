@@ -21,3 +21,11 @@
     align-items: center;
   }
 }
+
+.linkBlock {
+  padding: 8px 12px;
+  background-color: #2b214f;
+  border-radius: 10px;
+  width: min(100%, 500px);
+  cursor: pointer;
+}

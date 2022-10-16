@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Property } from 'csstype'
 
 import styles from './Flex.module.scss'
+import Gap = Property.Gap
 
 type JustifyContent = Property.JustifyContent
 type AlignItems = Property.AlignItems
@@ -23,6 +24,7 @@ interface FlexProps {
 	customClassName?: string
 	width?: Width
 	flexWrap?: FlexWrap
+	gap?: Gap
 	onClick?: MouseEventHandler<HTMLDivElement>
 }
 
@@ -39,6 +41,7 @@ export const Flex = forwardRef<HTMLDivElement, PropsWithChildren<FlexProps>>(
 			onClick,
 			width,
 			flexWrap,
+			gap,
 			children
 		},
 		ref
@@ -51,7 +54,8 @@ export const Flex = forwardRef<HTMLDivElement, PropsWithChildren<FlexProps>>(
 			margin,
 			width,
 			flexWrap,
-			padding
+			padding,
+			gap
 		}
 
 		return (

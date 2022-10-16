@@ -51,7 +51,6 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 				return errorToast('Данное аниме уже есть в вашем списке')
 
 			const anime = await averlist.anime.create(newAnime)
-			userStore.addToAnimeList(anime)
 			animeListStore.addToAnimeList(anime)
 			successToast('Аниме успешно добавлено в ваш список!')
 		}

@@ -17,8 +17,8 @@ export const AnimeList: NextPage<AnimeListProps> = ({ animeList }) => {
 	const pageSize = 30
 
 	return (
-		<div>
+		<>
 			<AnimeListTable pageSize={pageSize} />
-		</div>
+		</>
 	)
 }

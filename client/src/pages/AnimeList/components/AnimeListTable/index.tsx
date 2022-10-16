@@ -16,6 +16,7 @@ import animeListStore from '@stores/animeList.store'
 import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/components/NameTooltip'
 import { averlist } from '@averlistApi/averlist'
 import { EditStatusModal } from '@pages/AnimeList/components/AnimeListTable/components/EditStatusModal'
+import { successToast } from '@helpers/toasts'
 
 const Table = dynamic(() => import('@components/Table'), { ssr: false })
 
@@ -43,6 +44,12 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 			animeListStore.editStatus(animeId, status)
 			gridApi?.setRowData(animeListStore.animeList)
 		}
+		const removeAnime = async (animeId: string, animeName: string) => {
+			await averlist.anime.remove(animeId)
+			animeListStore.removeFromAnimeList(animeId)
+			gridApi?.setRowData(animeListStore.animeList)
+			successToast(`Аниме "${animeName}" успешно удалено`)
+		}
 
 		const defaultColDefs: ColDef<Averlist.Anime> = {
 			tooltipComponent: NameTooltip,
@@ -55,7 +62,8 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 				headerName: 'Название',
 				cellRenderer: NameCellRenderer,
 				tooltipField: 'name',
-				maxWidth: 350
+				maxWidth: 350,
+				minWidth: 150
 			},
 			{
 				field: 'status',
@@ -63,9 +71,16 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 				cellRenderer: StatusCellRenderer,
 				cellRendererParams: {
 					openEditStatusModal
-				}
+				},
+				minWidth: 150
 			},
-			{ field: '', headerName: '', cellRenderer: ActionCellRenderer }
+			{
+				field: '',
+				headerName: '',
+				cellRenderer: ActionCellRenderer,
+				cellRendererParams: { removeAnime },
+				minWidth: 150
+			}
 		]
 
 		const onGridReady = (event: GridReadyEvent<Averlist.Anime>) => {

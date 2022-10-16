@@ -1,8 +1,25 @@
 import { ICellRendererParams } from 'ag-grid-community'
-import { FC } from 'react'
+import { FC, MouseEventHandler } from 'react'
 
-type ActionCellRendererProps = ICellRendererParams
+import styles from './ActionCellRenderer.module.scss'
+import { Averlist } from '@averlistApi/types'
 
-export const ActionCellRenderer: FC<ActionCellRendererProps> = () => {
-	return <p>Удалить</p>
+type ActionCellRendererProps = ICellRendererParams<Averlist.Anime> & {
+	removeAnime: (animeId: string, animeName: string) => unknown
+}
+
+export const ActionCellRenderer: FC<ActionCellRendererProps> = ({
+	removeAnime,
+	data
+}) => {
+	const onClickRemoveAnime: MouseEventHandler<HTMLDivElement> = () => {
+		if (!data) return
+		removeAnime(data.id, data.name)
+	}
+
+	return (
+		<div className={styles.remove} onClick={onClickRemoveAnime}>
+			Удалить
+		</div>
+	)
 }
