@@ -36,7 +36,7 @@ export const Registration: NextPage = () => {
 			password
 		})
 
-		successToast('Регистрация прошла успешно')
+		successToast('Регистрация прошла успешно, проверьте свою почту')
 		await router.push('/lk')
 	}
 

@@ -11,6 +11,7 @@ import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import { errorToast, successToast } from '@helpers/toasts'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
+import animeListStore from '@stores/animeList.store'
 
 const AnimePageMobile = dynamic(
 	() => import('@pages/AnimePage/components/AnimePageMobile'),
@@ -51,6 +52,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 
 			const anime = await averlist.anime.create(newAnime)
 			userStore.addToAnimeList(anime)
+			animeListStore.addToAnimeList(anime)
 			successToast('Аниме успешно добавлено в ваш список!')
 		}
 	}

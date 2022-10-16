@@ -1,10 +1,9 @@
-import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 import { NextPage } from 'next'
 
 import { Averlist } from '@averlistApi/types'
-import { Table } from '@pages/AnimeList/components/Table'
-import { useEffect } from 'react'
 import animeListStore from '@stores/animeList.store'
+import { AnimeListTable } from '@pages/AnimeList/components/AnimeListTable'
 
 interface AnimeListProps {
 	animeList: Averlist.Anime[]
@@ -15,10 +14,11 @@ export const AnimeList: NextPage<AnimeListProps> = ({ animeList }) => {
 		animeListStore.setAnimeList(animeList)
 	}, [])
 
+	const pageSize = 30
+
 	return (
 		<div>
-			<Table />
-			<p>Данная страница в разработке, сейчас можно только статусы глянуть и поменять, за работоспособность на телефоне пока не ебу, не проверял))</p>
+			<AnimeListTable pageSize={pageSize} />
 		</div>
 	)
 }

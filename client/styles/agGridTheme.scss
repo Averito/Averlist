@@ -42,4 +42,10 @@
 
     border: none !important;
   }
+
+  .ag-paging-panel {
+    border-top: 1px solid #795dcc;
+    background-color: #291f4a;
+    color: var(--primary-text-color);
+  }
 }
