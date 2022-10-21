@@ -17,15 +17,19 @@ import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/componen
 import { averlist } from '@averlistApi/averlist'
 import { EditStatusModal } from '@pages/AnimeList/components/AnimeListTable/components/EditStatusModal'
 import { successToast } from '@helpers/toasts'
+import { SelectMenu } from '@components/Select'
 
 const Table = dynamic(() => import('@components/Table'), { ssr: false })
 
 interface AnimeListTableProps {
 	pageSize: number
+	searchValue: string
+	selectedStatus: SelectMenu<Averlist.AnimeStatus | null>
+	showOnlyAnilibria: boolean
 }
 
 export const AnimeListTable: FC<AnimeListTableProps> = observer(
-	({ pageSize }) => {
+	({ pageSize, showOnlyAnilibria, searchValue, selectedStatus }) => {
 		const [gridApi, setGridApi] = useState<GridApi<Averlist.Anime> | null>(null)
 
 		const [editStatusModalOpened, setEditStatusModalOpened] =
@@ -95,13 +99,20 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 			setCurrentAnime(props.data)
 		}
 
+		const animeList = animeListStore.animeList
+			.filter(anime => (showOnlyAnilibria ? !!anime?.anilibriaId : true))
+			.filter(anime => anime.name.includes(searchValue))
+			.filter(anime =>
+				selectedStatus.value ? anime.status === selectedStatus.value : true
+			)
+
 		return (
 			<>
 				<Table
-					height='calc(100vh - 59px)'
+					height='calc(100vh - 183px)'
 					defaultColDef={defaultColDefs}
 					columnDefs={colDefs}
-					rowData={animeListStore.animeList}
+					rowData={animeList}
 					onGridReady={onGridReady}
 					onCellClicked={onCellClicked}
 					headerHeight={35}

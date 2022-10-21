@@ -42,4 +42,13 @@ export namespace Averlist {
 		LOOK = 'Смотрю',
 		RECONSIDERING = 'Пересматриваю'
 	}
+	export enum AnimeStatusQuery {
+		ALL = 'all',
+		VIEWED = 'viewed',
+		PLANNED = 'planned',
+		ABANDONED = 'abandoned',
+		COMING_OUT = 'coming_out',
+		LOOK = 'look',
+		RECONSIDERING = 'reconsidering'
+	}
 }

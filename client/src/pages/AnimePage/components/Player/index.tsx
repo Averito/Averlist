@@ -36,6 +36,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 		return () => {
 			setSeriesInfo(prevSeriesInfo => ({
 				...prevSeriesInfo,
+				time: 0,
 				series
 			}))
 		}

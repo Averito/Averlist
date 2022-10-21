@@ -11,7 +11,7 @@ import classnames from 'classnames'
 import styles from './Autocomplete.module.scss'
 
 export interface AutocompleteMenu {
-	id: number
+	id: number | string
 	name: string
 }
 
@@ -22,10 +22,19 @@ interface AutocompleteProps {
 	name: string
 	width?: string
 	menuList: AutocompleteMenu[]
+	maxMenuListLength?: number
 }
 
 export const Autocomplete: FC<AutocompleteProps> = memo(
-	({ value, onChange, placeholder, name, width, menuList }) => {
+	({
+		value,
+		onChange,
+		placeholder,
+		name,
+		width,
+		menuList,
+		maxMenuListLength = 15
+	}) => {
 		const widthStyle = { width: width ?? '240px' }
 
 		const [currentMenuIdx, setCurrentMenuIdx] = useState<number | null>(null)
@@ -49,6 +58,8 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 				onChange(menu.name)
 			}
 		}
+
+		const slicedMenuList = menuList.slice(0, maxMenuListLength)
 
 		useEffect(() => {
 			const keyDownHandler = (event: KeyboardEvent) => {
@@ -100,7 +111,7 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 					placeholder={placeholder}
 				/>
 				<ul className={classnames(styles.menuList, menuListActiveClass)}>
-					{menuList.map(menu => {
+					{slicedMenuList.map(menu => {
 						const menuFocused =
 							currentMenuIdx !== null
 								? menuList[currentMenuIdx].id === menu.id

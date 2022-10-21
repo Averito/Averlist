@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import styles from './Login.module.scss'
 import { Input } from '@components/Input'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { AuthLayout } from '@layouts/AuthLayout'
 import { averlist } from '@averlistApi/averlist'

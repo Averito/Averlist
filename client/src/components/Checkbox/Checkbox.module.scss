@@ -1,0 +1,14 @@
+.checkbox {
+  color: var(--primary-color);
+  margin-right: 8px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--primary-text-color);
+}
+
+.checkbox, .label {
+  cursor: pointer;
+}

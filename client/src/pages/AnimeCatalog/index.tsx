@@ -5,7 +5,7 @@ import { NextPage } from 'next'
 import dayjs from 'dayjs'
 
 import styles from './AnimeCatalog.module.scss'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { Title } from '@anilibriaApi/types'
 import { AnimeCard } from '@components/AnimeCard'
 import { Autocomplete } from '@components/Autocomplete'

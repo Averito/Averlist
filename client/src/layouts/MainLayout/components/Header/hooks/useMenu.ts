@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import userStore from '@stores/user.store'
+import { Averlist } from '@averlistApi/types'
 
 export interface MenuItem {
 	id: number
@@ -40,7 +41,7 @@ const menuWithAuth: MenuItem[] = [
 	{
 		id: 2,
 		name: 'Аниме список',
-		to: '/lk/anime-list'
+		to: `/lk/anime-list?status=${Averlist.AnimeStatusQuery.ALL}`
 	},
 	{
 		id: 4,

@@ -9,6 +9,7 @@ import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import { successToast } from '@helpers/toasts'
+import { Meta } from '@components/Meta'
 
 export const SetPassword: NextPage = () => {
 	const router = useRouter()
@@ -54,21 +55,24 @@ export const SetPassword: NextPage = () => {
 	}
 
 	return (
-		<AuthLayout
-			buttonText='Войти'
-			onSubmit={onSubmit}
-			services={false}
-			title='Вход'
-		>
-			<Input
-				margin='0 0 15px 0'
-				width='100%'
-				type='password'
-				label='Пароль'
-				value={password}
-				onChange={setPassword}
-				placeholder='Ваш замечательный пароль'
-			></Input>
-		</AuthLayout>
+		<>
+			<Meta title='Averlist |Установка пароля' description='Установка пароля' />
+			<AuthLayout
+				buttonText='Войти'
+				onSubmit={onSubmit}
+				services={false}
+				title='Вход'
+			>
+				<Input
+					margin='0 0 15px 0'
+					width='100%'
+					type='password'
+					label='Пароль'
+					value={password}
+					onChange={setPassword}
+					placeholder='Ваш замечательный пароль'
+				></Input>
+			</AuthLayout>
+		</>
 	)
 }

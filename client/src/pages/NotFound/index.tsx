@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { NextPage } from 'next'
 
 import styles from './NotFound.module.scss'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 
 const NotFound: NextPage = () => {
 	const router = useRouter()

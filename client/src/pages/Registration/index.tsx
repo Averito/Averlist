@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 import styles from './Registration.module.scss'
 import { Input } from '@components/Input'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { AuthLayout } from '@layouts/AuthLayout'

@@ -7,10 +7,11 @@ import classnames from 'classnames'
 
 import styles from './Header.module.scss'
 import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
-import { IgnorePaths } from '@utils/IgnorePaths'
+import { IgnorePaths } from '@components/IgnorePaths'
 import { Dropdown } from '@components/Dropdown'
 import userStore from '@stores/user.store'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
+import { Averlist } from '@averlistApi/types'
 
 const NEXT_PUBLIC_DISCORD_INVITE_LINK =
 	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
@@ -50,7 +51,7 @@ export const Header: FC = observer(() => {
 		{
 			id: 2,
 			label: 'Аниме список',
-			href: '/lk/anime-list'
+			href: `/lk/anime-list?status=${Averlist.AnimeStatusQuery.ALL}`
 		},
 		{
 			id: 3,

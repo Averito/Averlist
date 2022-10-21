@@ -4,7 +4,7 @@ import { MainAnimeSlider } from './components/MainAnimeSlider'
 import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
 import { reverseArray } from '@helpers/reverseArray'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 
 interface HomeProps {
 	updatesTitleList: Title[]
