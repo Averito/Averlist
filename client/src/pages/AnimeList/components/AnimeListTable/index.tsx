@@ -23,13 +23,11 @@ const Table = dynamic(() => import('@components/Table'), { ssr: false })
 
 interface AnimeListTableProps {
 	pageSize: number
-	searchValue: string
-	selectedStatus: SelectMenu<Averlist.AnimeStatus | null>
-	showOnlyAnilibria: boolean
+	filteredAnimeList: Averlist.Anime[]
 }
 
 export const AnimeListTable: FC<AnimeListTableProps> = observer(
-	({ pageSize, showOnlyAnilibria, searchValue, selectedStatus }) => {
+	({ pageSize, filteredAnimeList }) => {
 		const [gridApi, setGridApi] = useState<GridApi<Averlist.Anime> | null>(null)
 
 		const [editStatusModalOpened, setEditStatusModalOpened] =
@@ -99,20 +97,13 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 			setCurrentAnime(props.data)
 		}
 
-		const animeList = animeListStore.animeList
-			.filter(anime => (showOnlyAnilibria ? !!anime?.anilibriaId : true))
-			.filter(anime => anime.name.includes(searchValue))
-			.filter(anime =>
-				selectedStatus.value ? anime.status === selectedStatus.value : true
-			)
-
 		return (
 			<>
 				<Table
-					height='calc(100vh - 183px)'
+					height='calc(100vh - 159px)'
 					defaultColDef={defaultColDefs}
 					columnDefs={colDefs}
-					rowData={animeList}
+					rowData={filteredAnimeList}
 					onGridReady={onGridReady}
 					onCellClicked={onCellClicked}
 					headerHeight={35}

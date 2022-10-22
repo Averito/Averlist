@@ -7,7 +7,8 @@ import { Autocomplete, AutocompleteMenu } from '@components/Autocomplete'
 import { Checkbox } from '@components/Checkbox'
 import { Averlist } from '@averlistApi/types'
 import { statusFilterOptions } from '@pages/AnimeList/statusFilterOptions'
-import animeListStore from '@stores/animeList.store'
+import { Flex } from '@components/Flex'
+import { Button } from '@components/Button'
 
 interface AnimeListFiltersProps {
 	searchValue: string
@@ -18,6 +19,8 @@ interface AnimeListFiltersProps {
 	) => MouseEventHandler<HTMLDivElement>
 	showOnlyAnilibria: boolean
 	onChangeShowOnlyAnilibria: (show: boolean) => unknown
+	autocompleteMenus: AutocompleteMenu[]
+	openCreateAnimeModal: MouseEventHandler<HTMLButtonElement>
 }
 
 export const AnimeListFilters: FC<AnimeListFiltersProps> = observer(
@@ -27,41 +30,46 @@ export const AnimeListFilters: FC<AnimeListFiltersProps> = observer(
 		onChangeSelect,
 		selectOption,
 		onChangeShowOnlyAnilibria,
-		showOnlyAnilibria
+		showOnlyAnilibria,
+		autocompleteMenus,
+		openCreateAnimeModal
 	}) => {
-		const autocompleteMenus: AutocompleteMenu[] = animeListStore.animeList
-			.filter(anime => (showOnlyAnilibria ? !!anime?.anilibriaId : true))
-			.filter(anime => anime.name.includes(searchValue))
-			.filter(anime =>
-				selectOption.value ? anime.status === selectOption.value : true
-			)
-
 		return (
 			<div className={styles.wrapper}>
-				<div className={styles.block}>
-					<Checkbox
-						id='showAnilibria'
-						checked={showOnlyAnilibria}
-						onChange={onChangeShowOnlyAnilibria}
-						label='Показывать только аниме анилибрии'
-					/>
-				</div>
-				<div className={styles.block}>
-					<Select
-						currentOption={selectOption}
-						options={statusFilterOptions}
-						onChange={onChangeSelect}
-						width='100%'
-					/>
-				</div>
-				<Autocomplete
-					value={searchValue}
-					menuList={autocompleteMenus}
-					onChange={onChangeSearch}
-					placeholder='Поиск'
-					name='animeNameSearch'
-					width='100%'
+				<Checkbox
+					id='showAnilibria'
+					checked={showOnlyAnilibria}
+					onChange={onChangeShowOnlyAnilibria}
+					label='Показывать только аниме анилибрии'
 				/>
+				<Flex
+					justifyContent='space-between'
+					gap='15px'
+					alignItems='center'
+					flexWrap='wrap-reverse'
+					margin='15px 0 0 0'
+				>
+					<Flex alignItems='center' flexWrap='wrap' gap='10px'>
+						<Autocomplete
+							value={searchValue}
+							menuList={autocompleteMenus}
+							onChange={onChangeSearch}
+							placeholder='Поиск'
+							name='animeNameSearch'
+							width='min(100%, 200px)'
+							margin='0 15px 0 0'
+						/>
+						<Select
+							currentOption={selectOption}
+							options={statusFilterOptions}
+							onChange={onChangeSelect}
+							width='150px'
+						/>
+					</Flex>
+					<Button width='120px' onClick={openCreateAnimeModal}>
+						Добавить
+					</Button>
+				</Flex>
 			</div>
 		)
 	}
