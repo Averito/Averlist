@@ -1,4 +1,5 @@
 import { MouseEventHandler, useEffect, useMemo, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import { NextPage } from 'next'
 
@@ -18,7 +19,7 @@ interface AnimeListProps {
 	animeList: Averlist.Anime[]
 }
 
-export const AnimeList: NextPage<AnimeListProps> = ({ animeList }) => {
+export const AnimeList: NextPage<AnimeListProps> = observer(({ animeList }) => {
 	const [searchValue, setSearchValue] = useState<string>('')
 	const [showOnlyAnilibria, setShowOnlyAnilibria] = useState<boolean>(false)
 
@@ -74,4 +75,4 @@ export const AnimeList: NextPage<AnimeListProps> = ({ animeList }) => {
 			/>
 		</>
 	)
-}
+})

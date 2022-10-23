@@ -10,7 +10,7 @@ interface MetaProps {
 export const Meta: FC<MetaProps> = ({
 	title,
 	description,
-	image = '/favicon.icon'
+	image = '/favicon.ico'
 }) => {
 	return (
 		<Head>

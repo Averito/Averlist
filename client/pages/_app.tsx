@@ -31,7 +31,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 				<meta property='og:locale' content='ru_RU' />
 				<meta property='og:type' content='article' />
 				<meta property='og:url' content='https://averlist.xyz' />
-				<meta property='og:image' content='/favicon.ico' />
 				<link rel='apple-touch-icon' href='/favicon.ico' />
 				<link rel='manifest' href='/manifest.json' />
 				<title>Averlist</title>
