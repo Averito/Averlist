@@ -41,10 +41,10 @@ export const AnimeList: NextPage<AnimeListProps> = observer(({ animeList }) => {
 
 	const filtered = animeListStore.animeList
 		.filter(anime => (showOnlyAnilibria ? !!anime?.anilibriaId : true))
-		.filter(anime => anime.name.includes(searchValue))
 		.filter(anime =>
 			selectedOption.value ? anime.status === selectedOption.value : true
 		)
+		.filter(anime => anime.name.includes(searchValue))
 	const filteredAnimeList = filtered.length ? filtered : animeList
 
 	const pageSize = 30

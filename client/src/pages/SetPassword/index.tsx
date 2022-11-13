@@ -56,7 +56,7 @@ export const SetPassword: NextPage = () => {
 
 	return (
 		<>
-			<Meta title='Averlist |Установка пароля' description='Установка пароля' />
+			<Meta title='Averlist | Установка пароля' description='Установка пароля' />
 			<AuthLayout
 				buttonText='Войти'
 				onSubmit={onSubmit}
