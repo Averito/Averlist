@@ -23,7 +23,8 @@ export const useCache = <T>(
 	}, [])
 
 	useEffect(() => {
-		const isNewCache = JSON.stringify(observable) === localStorage.getItem(cacheName)
+		const isNewCache =
+			JSON.stringify(observable) === localStorage.getItem(cacheName)
 		if (isNewCache) return
 
 		localStorage.setItem(cacheName, JSON.stringify(observable))
