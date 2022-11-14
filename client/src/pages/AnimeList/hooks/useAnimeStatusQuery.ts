@@ -16,12 +16,14 @@ export const useAnimeStatusQuery = () => {
 
 	const routerPushModify = async (status: AnimeStatusQuery) => {
 		await router.push(
-			`/lk/anime-list`,
 			{
+				pathname: '/lk/anime-list',
 				query: {
+					...router.query,
 					status
 				}
 			},
+			undefined,
 			{ shallow: true }
 		)
 	}

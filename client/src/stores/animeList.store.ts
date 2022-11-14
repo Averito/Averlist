@@ -7,6 +7,15 @@ class AnimeListStore {
 		return this._animeList
 	}
 
+	private _searchValue: string = ''
+	public set searchValue(value: string) {
+		if (this._searchValue === value) return
+		this._searchValue = value
+	}
+	public get searchValue() {
+		return this._searchValue
+	}
+
 	constructor() {
 		makeAutoObservable(this)
 	}

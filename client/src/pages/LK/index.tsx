@@ -38,7 +38,7 @@ export const LK: NextPage = () => {
 						>
 							<p className={styles.linkBlock}>Аниме список</p>
 						</Link>
-						<Link href='/lk/my-collections'>
+						<Link href='/lk/collections'>
 							<p className={styles.linkBlock}>Мои коллекции</p>
 						</Link>
 					</Flex>

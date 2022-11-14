@@ -74,7 +74,7 @@ export const SetPassword: NextPage = () => {
 					value={password}
 					onChange={setPassword}
 					placeholder='Ваш замечательный пароль'
-				></Input>
+				/>
 			</AuthLayout>
 		</>
 	)
