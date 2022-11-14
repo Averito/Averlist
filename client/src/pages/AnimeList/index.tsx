@@ -62,7 +62,7 @@ export const AnimeList: NextPage<AnimeListProps> = observer(({ animeList }) => {
 		.filter(anime => anime.name.includes(searchValue))
 	const filteredAnimeList = filtered.length ? filtered : animeList
 
-	const pageSize = 10
+	const pageSize = 30
 
 	return (
 		<>
