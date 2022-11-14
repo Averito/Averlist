@@ -8,6 +8,7 @@
   }
 
   .ag-header-viewport {
+    background-color: #291f4a;
     border-bottom: 1px solid #795dcc;
   }
 
@@ -41,5 +42,11 @@
     --ag-internal-padded-row-height: 0;
 
     border: none !important;
+  }
+
+  .ag-paging-panel {
+    border-top: 1px solid #795dcc;
+    background-color: #291f4a;
+    color: var(--primary-text-color);
   }
 }

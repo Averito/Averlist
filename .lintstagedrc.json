@@ -1,0 +1,11 @@
+{
+  "client/{pages,src}/**/*.{ts,tsx}": [
+    "npm run client:eslint:fix"
+  ],
+  "client/{styles,src}/**/*.scss": [
+    "npm run client:stylelint:fix"
+  ],
+  "server/{src,apps,libs,test}/**/*.ts": [
+    "npm run server:eslint:fix"
+  ]
+}

@@ -4,13 +4,14 @@ import { NextPage } from 'next'
 
 import styles from './AnimePage.module.scss'
 import { Series, Title } from '@anilibriaApi/types'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import { errorToast, successToast } from '@helpers/toasts'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
+import animeListStore from '@stores/animeList.store'
 
 const AnimePageMobile = dynamic(
 	() => import('@pages/AnimePage/components/AnimePageMobile'),
@@ -32,7 +33,9 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 
 	const wrapperBackground = {
 		background: `url("${ANILIBRIA_URI}${
-			(title.player.playlist as Series)[1]?.preview
+			(title.player.playlist as Series)[
+				Object.entries(title.player.playlist)[0][0]
+			]?.preview
 		}") 0 0/100% 100%`
 	}
 
@@ -50,7 +53,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 				return errorToast('Данное аниме уже есть в вашем списке')
 
 			const anime = await averlist.anime.create(newAnime)
-			userStore.addToAnimeList(anime)
+			animeListStore.addToAnimeList(anime)
 			successToast('Аниме успешно добавлено в ваш список!')
 		}
 	}
@@ -101,6 +104,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			<Meta
 				title={`Averlist | ${title.names.ru}`}
 				description={title.description}
+				image={`${ANILIBRIA_URI}${title.posters.original.url}`}
 			/>
 			<div className={styles.wrapper} style={wrapperBackground}>
 				<div className={styles.wrapperBackgroundFilter}>

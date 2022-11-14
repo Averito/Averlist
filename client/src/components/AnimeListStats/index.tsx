@@ -7,7 +7,9 @@ import { Flex } from '@components/Flex'
 import { Averlist } from '@averlistApi/types'
 import { ProgressBarItem } from '@components/AnimeListStats/components/ProgressBarItem'
 import { ProgressItemCounter } from '@components/AnimeListStats/components/ProgressItemCounter'
+
 import AnimeStatus = Averlist.AnimeStatus
+import AnimeStatusQuery = Averlist.AnimeStatusQuery
 
 interface AnimeListStatsProps {
 	backgroundColor: string
@@ -81,26 +83,32 @@ export const AnimeListStats: FC<AnimeListStatsProps> = observer(
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.VIEWED}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.VIEWED}`}
 						/>
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.LOOK}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.LOOK}`}
 						/>
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.PLANNED}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.PLANNED}`}
 						/>
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.RECONSIDERING}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.RECONSIDERING}`}
 						/>
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.COMING_OUT}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.COMING_OUT}`}
 						/>
 						<ProgressItemCounter
 							animeStatus={AnimeStatus.ABANDONED}
 							animeList={animeList}
+							href={`/lk/anime-list?status=${AnimeStatusQuery.ABANDONED}`}
 						/>
 					</Flex>
 				</Flex>

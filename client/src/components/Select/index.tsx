@@ -56,8 +56,9 @@ export const Select: FC<SelectProps> = ({
 					customClassName={styles.mainLabel}
 					onClick={open}
 					ref={select}
+					justifyContent='space-between'
 					alignItems='center'
-					padding='5px 10px'
+					padding='7px 10px'
 				>
 					{currentOption.label || placeholder}
 					<IoIosArrowDown

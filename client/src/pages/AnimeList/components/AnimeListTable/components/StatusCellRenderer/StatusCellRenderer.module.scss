@@ -1,0 +1,19 @@
+.status {
+  width: min(100%, 150px);
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #6c5dd4;
+  cursor: pointer;
+  border: none;
+  color: var(--primary-text-color);
+  font-size: 13px;
+  transition: background-color .3s ease;
+
+  &:hover {
+    background-color: #5d51bb;
+  }
+
+  &:active {
+    background-color: #584cb0;
+  }
+}

@@ -1,4 +1,6 @@
 import { observer } from 'mobx-react-lite'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { FC } from 'react'
 
 import styles from './ProgressItemCounter.module.scss'
@@ -9,10 +11,13 @@ import { getCssVarByAnimeStatus } from '@helpers/getCssVarByAnimeStatus'
 interface ProgressItemCounterProps {
 	animeStatus: Averlist.AnimeStatus
 	animeList: Averlist.Anime[]
+	href: string
 }
 
 export const ProgressItemCounter: FC<ProgressItemCounterProps> = observer(
-	({ animeStatus, animeList }) => {
+	({ animeStatus, animeList, href }) => {
+		const router = useRouter()
+
 		const animeStatusCount = animeList.filter(
 			anime => anime.status === animeStatus
 		).length
@@ -25,10 +30,19 @@ export const ProgressItemCounter: FC<ProgressItemCounterProps> = observer(
 					customClassName={styles.animeStatusColor}
 					backgroundColor={`var(--${backgroundColorVar})`}
 				/>
-				<p className={styles.animeStatus}>
-					{animeStatus}{' '}
-					<span className={styles.counter}>{animeStatusCount}</span>
-				</p>
+				{router.asPath.includes('/lk') ? (
+					<Link href={href}>
+						<p>
+							<span className={styles.animeStatus}>{animeStatus}</span>
+							<span className={styles.counter}>{animeStatusCount}</span>
+						</p>
+					</Link>
+				) : (
+					<p>
+						<span className={styles.animeStatus}>{animeStatus}</span>
+						<span className={styles.counter}>{animeStatusCount}</span>
+					</p>
+				)}
 			</Flex>
 		)
 	}

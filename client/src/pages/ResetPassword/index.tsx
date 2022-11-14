@@ -7,7 +7,7 @@ import { AuthLayout } from '@layouts/AuthLayout'
 import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { Input } from '@components/Input'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { errorToast, successToast } from '@helpers/toasts'
 
 export const ResetPassword: NextPage = () => {

@@ -41,7 +41,9 @@
     "react/display-name": 0,
     "react-hooks/exhaustive-deps": 0,
     "no-console": "warn",
-    "complexity": "error",
+    "complexity": [
+      "error", 25
+    ],
     "no-unused-vars": 0
   }
 }

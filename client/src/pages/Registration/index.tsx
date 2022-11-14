@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 import styles from './Registration.module.scss'
 import { Input } from '@components/Input'
-import { Meta } from '@utils/Meta'
+import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { AuthLayout } from '@layouts/AuthLayout'
@@ -36,7 +36,9 @@ export const Registration: NextPage = () => {
 			password
 		})
 
-		successToast('Регистрация прошла успешно')
+		successToast(
+			'Регистрация прошла успешно, проверьте свою почту, сообщение для активации должно придти в течении 10и минут'
+		)
 		await router.push('/lk')
 	}
 

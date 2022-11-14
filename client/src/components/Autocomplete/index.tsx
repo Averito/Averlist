@@ -7,29 +7,50 @@ import {
 	useState
 } from 'react'
 import classnames from 'classnames'
+import { Property } from 'csstype'
 
 import styles from './Autocomplete.module.scss'
+import Margin = Property.Margin
+import { defineEmits } from '@helpers/defineEmits'
 
 export interface AutocompleteMenu {
-	id: number
+	id: number | string
 	name: string
 }
 
 interface AutocompleteProps {
 	value: string
 	onChange: (value: string) => unknown
+	onSelect?: (autocompleteMenu: AutocompleteMenu) => unknown
 	placeholder: string
 	name: string
 	width?: string
 	menuList: AutocompleteMenu[]
+	maxMenuListLength?: number
+	margin?: Margin
 }
 
 export const Autocomplete: FC<AutocompleteProps> = memo(
-	({ value, onChange, placeholder, name, width, menuList }) => {
-		const widthStyle = { width: width ?? '240px' }
+	({
+		value,
+		onChange,
+		onSelect,
+		placeholder,
+		name,
+		width,
+		menuList,
+		maxMenuListLength = 15,
+		margin = '0'
+	}) => {
+		const containerStyle = { width: width ?? '240px', margin }
 
 		const [currentMenuIdx, setCurrentMenuIdx] = useState<number | null>(null)
 		const [inputFocus, setInputFocus] = useState<boolean>(false)
+
+		const emit = defineEmits<'change' | 'select'>({
+			change: onChange,
+			select: onSelect ?? (() => {})
+		})
 
 		const onFocus: FocusEventHandler<HTMLInputElement> = () => {
 			setInputFocus(true)
@@ -41,14 +62,17 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 
 		const onChangeInput: ChangeEventHandler<HTMLInputElement> = event => {
 			if (!inputFocus) setInputFocus(true)
-			onChange(event.currentTarget.value)
+			emit('change', event.currentTarget.value)
 		}
 
 		const onClickMenu = (menu: AutocompleteMenu) => {
 			return () => {
-				onChange(menu.name)
+				emit('change', menu.name)
+				emit('select', menu)
 			}
 		}
+
+		const slicedMenuList = menuList.slice(0, maxMenuListLength)
 
 		useEffect(() => {
 			const keyDownHandler = (event: KeyboardEvent) => {
@@ -73,7 +97,8 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 
 				if (event.code === 'Enter') {
 					if (!currentMenuIdx && currentMenuIdx !== 0) return
-					onChange(menuList[currentMenuIdx].name)
+					emit('change', menuList[currentMenuIdx].name)
+					emit('select', menuList[currentMenuIdx])
 					setInputFocus(false)
 					setCurrentMenuIdx(null)
 				}
@@ -88,7 +113,7 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 			: styles.menuListOff
 
 		return (
-			<div className={styles.container} style={widthStyle}>
+			<div className={styles.container} style={containerStyle}>
 				<input
 					className={styles.autocomplete}
 					name={name}
@@ -100,10 +125,10 @@ export const Autocomplete: FC<AutocompleteProps> = memo(
 					placeholder={placeholder}
 				/>
 				<ul className={classnames(styles.menuList, menuListActiveClass)}>
-					{menuList.map(menu => {
+					{slicedMenuList.map(menu => {
 						const menuFocused =
 							currentMenuIdx !== null
-								? menuList[currentMenuIdx].id === menu.id
+								? menuList[currentMenuIdx]?.id === menu.id
 									? styles.selectedMenu
 									: undefined
 								: undefined

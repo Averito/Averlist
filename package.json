@@ -17,6 +17,8 @@
     "client:start": "cd client && npm run start",
     "client:start:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
+    "client:eslint:fix": "cd client && npm run eslint:fix",
+    "client:stylelint:fix": "cd client && npm run stylelint:fix",
     "client:lint": "cd client && npm run lint",
     "client:install": "cd client && npm install"
   },
@@ -41,9 +43,16 @@
   "bugs": {
     "url": "https://github.com/Averito/AnimeList/issues"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "homepage": "https://github.com/Averito/AnimeList#readme",
   "devDependencies": {
-    "concurrently": "^7.1.0"
+    "concurrently": "^7.1.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3"
   },
   "dependencies": {
     "cookie": "^0.5.0"

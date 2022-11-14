@@ -15,7 +15,7 @@ export const TorrentDownloads: FC<TorrentDownloadsProps> = ({ title }) => {
 	return (
 		<Flex customClassName={styles.container} margin='0 0 20px 0'>
 			{title.torrents?.list.map(torrentItem => (
-				<div className={styles.item} key={torrentItem.id}>
+				<div className={styles.item} key={torrentItem.url}>
 					<p>{torrentItem.quality.string}</p>
 					<p>Серия {torrentItem.series.string}</p>
 					<a href={`${ANILIBRIA_URI}${torrentItem.url}`}>

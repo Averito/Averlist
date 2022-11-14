@@ -12,6 +12,7 @@ import { IoMdClose } from 'react-icons/io'
 import styles from './Modal.module.scss'
 import { Button } from '@components/Button'
 import { useOutside } from '@hooks/useOutside'
+import { defineEmits } from '@helpers/defineEmits'
 
 interface ModalProps {
 	opened: boolean
@@ -33,19 +34,22 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
 	width = '100%',
 	closeOutside
 }) => {
+	const emit = defineEmits<'ok' | 'cancel'>({
+		ok: onOk ?? (() => {}),
+		cancel: onCancel ?? (() => {})
+	})
+
 	const onClickClose: MouseEventHandler<SVGAElement> = () => {
-		if (!onCancel) return
-		onCancel()
+		emit('cancel')
 	}
 	const onClickOk: MouseEventHandler<HTMLButtonElement> = () => {
-		if (!onOk) return
-		onOk()
+		emit('ok')
 	}
 
 	const modal = useRef(null)
 	useOutside(modal, () => {
-		if (!closeOutside) return
-		if (onCancel) onCancel()
+		if (!closeOutside || !opened) return
+		emit('cancel')
 	})
 
 	useEffect(() => {

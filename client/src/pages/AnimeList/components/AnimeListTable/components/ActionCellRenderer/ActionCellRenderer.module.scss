@@ -1,0 +1,16 @@
+.remove {
+  padding: 5px 10px;
+  background-color: #c5183a;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+
+  &:hover {
+    background-color: #b91c3a;
+  }
+
+  &:active {
+    background-color: #a41e37;
+  }
+}

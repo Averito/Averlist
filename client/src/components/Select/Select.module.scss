@@ -10,7 +10,6 @@
 .mainLabel {
   background-color: #594795;
   border-radius: 3px;
-  padding: 5px 12px;
   cursor: pointer;
 }
 
@@ -24,13 +23,12 @@
 }
 
 .optionsContainer {
-  margin-top: 4px;
   position: relative;
 }
 
 .options {
   position: absolute;
-  top: 0;
+  top: 4px;
   left: 0;
   z-index: 1000;
   width: 100%;
