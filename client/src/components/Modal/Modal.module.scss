@@ -40,6 +40,7 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(63, 47, 114, 0.52);
+  padding: 20px 24px;
 }
 
 .title {
@@ -62,13 +63,6 @@
 .modalBottom {
   justify-content: flex-end;
   border-top: 1px solid rgba(63, 47, 114, 0.52);
-}
-
-.modalHeader {
-  padding: 20px 24px;
-}
-
-.modalBottom {
   padding: 15px 20px;
 }
 

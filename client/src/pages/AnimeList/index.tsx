@@ -9,7 +9,6 @@ import { Meta } from '@components/Meta'
 import { AnimeListTable } from '@pages/AnimeList/components/AnimeListTable'
 import { AnimeListFilters } from '@pages/AnimeList/components/AnimeListFilters'
 import { useAnimeStatusQuery } from '@pages/AnimeList/hooks/useAnimeStatusQuery'
-import { useUrlQueryParams } from '@hooks/useUrlQueryParams'
 
 const AnimeListCreateAnimeModal = dynamic(
 	() => import('./components/AnimeListCreateAnimeModal'),
@@ -22,23 +21,9 @@ interface AnimeListProps {
 
 export const AnimeList: NextPage<AnimeListProps> = observer(({ animeList }) => {
 	const [showOnlyAnilibria, setShowOnlyAnilibria] = useState<boolean>(false)
+	const [searchValue, setSearchValue] = useState<string>('')
 
 	const { selectedOption, onChangeSelect } = useAnimeStatusQuery()
-
-	const [searchValue, updateSearchValue] = useUrlQueryParams(
-		'search',
-		'',
-		async initialValue => {
-			if (animeListStore.searchValue)
-				return await updateSearchValue(animeListStore.searchValue)
-			animeListStore.searchValue = initialValue
-		}
-	)
-
-	const setSearchValue = async (value: string) => {
-		await updateSearchValue(value)
-		animeListStore.searchValue = value
-	}
 
 	const [createAnimeModalOpened, setCreateAnimeModalOpened] =
 		useState<boolean>(false)

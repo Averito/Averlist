@@ -32,9 +32,17 @@ export const collections = {
 	async create(
 		newCollection: Averlist.NewCollection
 	): Promise<Averlist.Collection> {
+		const formData = new FormData()
+
+		for (const key in newCollection) {
+			// @ts-ignore
+			formData.set(key, newCollection[key])
+		}
+		console.log(formData)
+
 		const response = await axios.post<Averlist.Collection>(
 			'/collection',
-			newCollection
+			formData
 		)
 		return response.data
 	},

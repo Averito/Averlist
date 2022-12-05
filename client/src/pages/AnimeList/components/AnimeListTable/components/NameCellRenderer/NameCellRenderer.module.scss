@@ -1,3 +1,10 @@
+.link, .text {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .link {
   color: #00ff9a;
   cursor: pointer;
@@ -5,13 +12,6 @@
   &:hover {
     text-decoration: underline;
   }
-}
-
-.link, .text {
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .posterWrapper {

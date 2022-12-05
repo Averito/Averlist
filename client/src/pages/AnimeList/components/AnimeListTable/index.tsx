@@ -18,8 +18,6 @@ import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/componen
 import { averlist } from '@averlistApi/averlist'
 import { EditStatusModal } from '@pages/AnimeList/components/AnimeListTable/components/EditStatusModal'
 import { successToast } from '@helpers/toasts'
-import { SelectMenu } from '@components/Select'
-import { useUrlQueryParams } from '@hooks/useUrlQueryParams'
 
 const Table = dynamic(() => import('@components/Table'), { ssr: false })
 
@@ -87,17 +85,8 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 			}
 		]
 
-		const [page, setPage] = useUrlQueryParams('page', '0')
-		const onPaginationChanged = async (
-			event: PaginationChangedEvent<Averlist.Anime>
-		) => {
-			if (!gridApi || !event.newPage) return
-			await setPage(gridApi.paginationGetCurrentPage().toString())
-		}
-
 		const onGridReady = (event: GridReadyEvent<Averlist.Anime>) => {
 			setGridApi(event.api)
-			event.api.paginationGoToPage(parseInt(page))
 		}
 
 		const [currentAnime, setCurrentAnime] = useState<Averlist.Anime>(
@@ -122,7 +111,6 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 					tooltipShowDelay={0}
 					tooltipHideDelay={3000}
 					paginationPageSize={pageSize}
-					onPaginationChanged={onPaginationChanged}
 					suppressRowTransform
 					animateRows
 					pagination
