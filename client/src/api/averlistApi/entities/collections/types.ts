@@ -1,7 +1,10 @@
 import { User } from '@averlistApi/entities/users/types'
 import { Anime } from '@averlistApi/entities/anime/types'
 
-export type CollectionType = 'private' | 'public'
+export enum CollectionType {
+	PRIVATE = 'Приватно',
+	PUBLIC = 'Публично'
+}
 
 export interface Collection {
 	id: string
@@ -17,6 +20,7 @@ export interface Collection {
 }
 
 export interface NewCollection {
+	poster: File
 	name: string
 	type: CollectionType
 	anime_list: string
