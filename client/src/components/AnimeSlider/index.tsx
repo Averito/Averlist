@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 
 import styles from './AnimeSlider.module.scss'
 import { Title } from '@anilibriaApi/types'
-import { AnimeCard } from '@components/AnimeCard'
+import { TitleCard } from '@components/TitleCard'
 
 interface AnimeSliderProps {
 	titleList: Title[]
@@ -20,7 +20,7 @@ export const AnimeSlider: FC<AnimeSliderProps> = memo(
 				</h3>
 				<div className={styles.slider}>
 					{titleList.map(title => (
-						<AnimeCard key={title.id} title={title} />
+						<TitleCard key={title.id} title={title} />
 					))}
 				</div>
 			</div>

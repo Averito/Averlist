@@ -44,21 +44,29 @@ model UserFriendList {
 }
 
 model Anime {
-  id            String      @id @default(uuid())
+  id            String              @id @default(uuid())
   name          String
   poster        String?
   status        String
   aniuId        String?
   anilibriaId   Int?
   anilibriaCode String?
-  user          User        @relation(fields: [userId], references: [id])
+  user          User                @relation(fields: [userId], references: [id])
   userId        String
-  collection    Collection? @relation(fields: [collectionId], references: [id])
-  collectionId  String?
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
+  collection    AnimeOnCollection[]
+  created_at    DateTime            @default(now())
+  updated_at    DateTime            @updatedAt
 
   @@map("anime")
+}
+
+model AnimeOnCollection {
+  anime        Anime      @relation(fields: [animeId], references: [id])
+  animeId      String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String
+
+  @@id([animeId, collectionId])
 }
 
 model Collection {
@@ -66,7 +74,7 @@ model Collection {
   name        String
   poster      String
   type        String
-  anime_list  Anime[]
+  anime_list  AnimeOnCollection[]
   createdBy   User                         @relation(fields: [createdById], references: [id])
   createdById String
   favoritesBy FavoriteCollectionsOnUsers[]

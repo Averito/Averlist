@@ -12,7 +12,6 @@ import { Title } from '@anilibriaApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
 import { Averlist } from '@averlistApi/types'
 import userStore from '@stores/user.store'
-import { useWindowSize } from '@hooks/useWindowSize'
 import { TorrentDownloads } from '@pages/AnimePage/components/TorrentDownloads'
 
 const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
@@ -27,15 +26,11 @@ interface AnimePageDesktopProps {
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
+export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 	title,
 	dropdownOptions,
 	animeList
 }) => {
-	const { isMobile } = useWindowSize()
-
-	if (isMobile) return <></>
-
 	return (
 		<div className={styles.desktop}>
 			<div className={styles.flexTwoColumn}>
@@ -92,5 +87,3 @@ const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 		</div>
 	)
 }
-
-export default AnimePageDesktop

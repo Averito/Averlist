@@ -1,18 +1,18 @@
-import Link from 'next/link'
-import Image from 'next/image'
 import { FC, memo } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import styles from './AnimeCard.module.scss'
+import styles from './TitleCard.module.scss'
 import { Title } from '@anilibriaApi/types'
 import { useRouter } from 'next/router'
 
-interface AnimeCardProps {
+interface TitleCardProps {
 	title: Title
 }
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimeCard: FC<AnimeCardProps> = memo(({ title }) => {
+export const TitleCard: FC<TitleCardProps> = memo(({ title }) => {
 	const router = useRouter()
 
 	const toAnime = `/anime/${title.code}`

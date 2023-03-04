@@ -38,7 +38,6 @@ export const collections = {
 			// @ts-ignore
 			formData.set(key, newCollection[key])
 		}
-		console.log(formData)
 
 		const response = await axios.post<Averlist.Collection>(
 			'/collection',

@@ -5,14 +5,15 @@ import {
 	GridReadyEvent,
 	ColDef,
 	GridApi,
-	CellClickedEvent,
-	PaginationChangedEvent
+	CellClickedEvent
 } from 'ag-grid-community'
 
 import { Averlist } from '@averlistApi/types'
-import { StatusCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/StatusCellRenderer'
-import { NameCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/NameCellRenderer'
-import { ActionCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/ActionCellRenderer'
+import {
+	StatusCellRenderer,
+	NameCellRenderer,
+	ActionCellRenderer
+} from '@components/Table/components/CellRenderers'
 import animeListStore from '@stores/animeList.store'
 import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/components/NameTooltip'
 import { averlist } from '@averlistApi/averlist'

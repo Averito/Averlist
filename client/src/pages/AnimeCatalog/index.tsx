@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import styles from './AnimeCatalog.module.scss'
 import { Meta } from '@components/Meta'
 import { Title } from '@anilibriaApi/types'
-import { AnimeCard } from '@components/AnimeCard'
+import { TitleCard } from '@components/TitleCard'
 import { Autocomplete } from '@components/Autocomplete'
 import { QueryObject } from '@helpers/queryParamsString'
 import { Tags } from '@pages/AnimeCatalog/components/Tags'
@@ -135,7 +135,7 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 					</div>
 					<div className={styles.recommendations}>
 						{endedTitleList.map(title => (
-							<AnimeCard title={title} key={title.id} />
+							<TitleCard title={title} key={title.id} />
 						))}
 					</div>
 				</section>

@@ -1,5 +1,9 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { Averlist } from '@averlistApi/types'
+import { averlist } from '@averlistApi/averlist'
+import { errorToast, successToast } from '@helpers/toasts'
+import { toast } from 'react-toastify'
+import success = toast.success
 
 class CollectionsStore {
 	private _collections: Averlist.Collection[] = []
@@ -9,6 +13,19 @@ class CollectionsStore {
 
 	constructor() {
 		makeAutoObservable(this)
+	}
+
+	public async createCollection(newCollection: Averlist.NewCollection) {
+		try {
+			const collection = await averlist.collections.create(newCollection)
+			successToast(`Коллекция ${collection.name} успешно создана!`)
+
+			runInAction(() => {
+				this.addCollection(collection)
+			})
+		} catch {
+			errorToast('Не удалось создать коллекцию')
+		}
 	}
 
 	public setCollections(collections: Averlist.Collection[]) {

@@ -7,6 +7,10 @@ class AnimeListStore {
 		return this._animeList
 	}
 
+	public get anilibriaAnimeList() {
+		return this._animeList.filter(anime => !!anime.anilibriaId)
+	}
+
 	constructor() {
 		makeAutoObservable(this)
 	}

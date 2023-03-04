@@ -48,7 +48,7 @@ const Table: FC<TableProps> = props => {
 		<div
 			ref={gridContainerRef}
 			className='ag-theme-alpine'
-			style={{ height: props.height }}
+			style={{ height: props.height, width: '100%' }}
 		>
 			<AgGridReact
 				{...props}

@@ -11,7 +11,9 @@ export interface Collection {
 	name: string
 	poster: string
 	type: CollectionType
-	anime_list: Anime[]
+	anime_list: {
+		anime: Anime
+	}[]
 	createdBy: User
 	createdById: string
 	favoritesBy?: User[]

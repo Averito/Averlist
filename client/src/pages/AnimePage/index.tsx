@@ -8,19 +8,13 @@ import { Meta } from '@components/Meta'
 import { DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
-import userStore from '@stores/user.store'
 import { errorToast, successToast } from '@helpers/toasts'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
+import { AnimePageMobile } from '@pages/AnimePage/components/AnimePageMobile'
+import { AnimePageDesktop } from '@pages/AnimePage/components/AnimePageDesktop'
 import animeListStore from '@stores/animeList.store'
 
-const AnimePageMobile = dynamic(
-	() => import('@pages/AnimePage/components/AnimePageMobile'),
-	{ ssr: false }
-)
-const AnimePageDesktop = dynamic(
-	() => import('@pages/AnimePage/components/AnimePageDesktop'),
-	{ ssr: false }
-)
+const Device = dynamic(() => import('@components/Device'), { ssr: false })
 
 interface AnimePageProps {
 	title: Title
@@ -109,16 +103,26 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			<div className={styles.wrapper} style={wrapperBackground}>
 				<div className={styles.wrapperBackgroundFilter}>
 					<div className={styles.container}>
-						<AnimePageDesktop
-							title={title}
-							dropdownOptions={dropdownOptions}
-							animeList={animeList}
-						/>
-						<AnimePageMobile
-							title={title}
-							dropdownOptions={dropdownOptions}
-							animeList={animeList}
-						/>
+						<Device>
+							{({ isMobile }) => {
+								if (isMobile) {
+									return (
+										<AnimePageMobile
+											title={title}
+											dropdownOptions={dropdownOptions}
+											animeList={animeList}
+										/>
+									)
+								}
+								return (
+									<AnimePageDesktop
+										title={title}
+										dropdownOptions={dropdownOptions}
+										animeList={animeList}
+									/>
+								)
+							}}
+						</Device>
 					</div>
 				</div>
 			</div>
