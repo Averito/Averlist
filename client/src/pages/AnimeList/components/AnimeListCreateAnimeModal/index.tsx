@@ -107,9 +107,8 @@ const AnimeListCreateAnimeModal: FC<AnimeListCreateAnimeModalProps> = ({
 		const animeDuplicate = isAnimeDuplicate(newAnime)
 		if (animeDuplicate) return errorToast('Такое аниме уже добавлено')
 
-		const anime = await averlist.anime.create(newAnime)
-		animeListStore.addToAnimeList(anime)
-		successToast(`Аниме "${anime.name}" успешно добавлено`)
+		await animeListStore.create(newAnime)
+
 		onClose()
 		return resetValues()
 	}

@@ -8,6 +8,10 @@
   transition: background-color .3s ease,outline .03s ease;
   font-size: 13px;
 
+  &:disabled {
+    filter: brightness(0.85);
+  }
+
   &:hover {
     background-color: #5d51bb;
   }

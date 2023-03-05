@@ -8,8 +8,8 @@ import { Input } from '@components/Input'
 import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { AuthLayout } from '@layouts/AuthLayout'
-import { averlist } from '@averlistApi/averlist'
-import { errorToast, successToast } from '@helpers/toasts'
+import { errorToast } from '@helpers/toasts'
+import userStore from '@stores/user.store'
 
 export const Login: NextPage = () => {
 	const router = useRouter()
@@ -19,18 +19,12 @@ export const Login: NextPage = () => {
 
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
+		await userStore.login({
+			email,
+			password
+		})
 
-		try {
-			await averlist.auth.login({
-				email,
-				password
-			})
-
-			successToast('Успешный вход')
-			await router.push('/lk')
-		} catch {
-			errorToast('Что-то пошло не так. Проверьте данные или попробуйте позже.')
-		}
+		await router.push('/lk')
 	}
 
 	const additionalText = (

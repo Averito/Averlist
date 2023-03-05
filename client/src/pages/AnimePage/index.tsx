@@ -34,7 +34,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 	}
 
 	const addToList = (title: Title, status: Averlist.AnimeStatus) => {
-		return async () => {
+		return () => {
 			const newAnime: Averlist.NewAnime = {
 				name: title.names.ru,
 				anilibriaId: title.id,
@@ -46,9 +46,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			if (animeDuplicate)
 				return errorToast('Данное аниме уже есть в вашем списке')
 
-			const anime = await averlist.anime.create(newAnime)
-			animeListStore.addToAnimeList(anime)
-			successToast('Аниме успешно добавлено в ваш список!')
+			void animeListStore.create(newAnime)
 		}
 	}
 

@@ -1,20 +1,17 @@
-import { makeAutoObservable, runInAction } from 'mobx'
+import { action, computed, observable, runInAction } from 'mobx'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
 import { errorToast, successToast } from '@helpers/toasts'
-import { toast } from 'react-toastify'
-import success = toast.success
 
 class CollectionsStore {
-	private _collections: Averlist.Collection[] = []
+	@observable private _collections: Averlist.Collection[] = []
+
+	@computed
 	public get collections() {
 		return this._collections
 	}
 
-	constructor() {
-		makeAutoObservable(this)
-	}
-
+	@action
 	public async createCollection(newCollection: Averlist.NewCollection) {
 		try {
 			const collection = await averlist.collections.create(newCollection)
@@ -28,26 +25,31 @@ class CollectionsStore {
 		}
 	}
 
+	@action
 	public setCollections(collections: Averlist.Collection[]) {
 		this._collections = collections
 	}
 
+	@action
 	public addCollection(collection: Averlist.Collection) {
 		this._collections.push(collection)
 	}
 
+	@action
 	public removeCollection(id: string) {
 		this._collections = this._collections.filter(
 			collection => collection.id !== id
 		)
 	}
 
+	@action
 	public changeType(id: string, type: Averlist.CollectionType) {
 		this._collections = this._collections.map(collection =>
 			collection.id === id ? { ...collection, type } : collection
 		)
 	}
 
+	@action
 	public changeName(id: string, name: string) {
 		this._collections = this._collections.map(collection =>
 			collection.id === id ? { ...collection, name } : collection

@@ -11,6 +11,7 @@ import { useInput } from '@hooks/useInput'
 import { averlist } from '@averlistApi/averlist'
 import { AuthLayout } from '@layouts/AuthLayout'
 import { errorToast, successToast } from '@helpers/toasts'
+import userStore from '@stores/user.store'
 
 export const Registration: NextPage = () => {
 	const router = useRouter()
@@ -29,16 +30,13 @@ export const Registration: NextPage = () => {
 		if (!email.includes('@'))
 			return errorToast('Электронная почта введена не в верном формате')
 
-		await averlist.auth.registration({
+		await userStore.registration({
 			login,
 			name,
 			email,
 			password
 		})
 
-		successToast(
-			'Регистрация прошла успешно, проверьте свою почту, сообщение для активации должно придти в течении 10и минут'
-		)
 		await router.push('/lk')
 	}
 
