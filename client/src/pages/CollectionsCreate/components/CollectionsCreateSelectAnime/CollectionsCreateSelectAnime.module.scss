@@ -1,6 +1,7 @@
 .wrapper {
   transition: height 0.3s ease;
   height: 0;
+  overflow: hidden;
 
   &.active {
     height: 500px;

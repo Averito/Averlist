@@ -7,6 +7,9 @@ module.exports = withPWA({
 	pwa: {
 		dest: 'public'
 	},
+	env: {
+		GOOGLE_RECAPTCHA_SITE_KEY: process.env.GOOGLE_RECAPTCHA_SITE_KEY
+	},
 	images: {
 		domains: [
 			'dl-20211030-963.anilib.top',

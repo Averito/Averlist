@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
@@ -10,6 +10,8 @@ import { NameCellRenderer } from '@components/Table/components/CellRenderers'
 import animeListStore from '@stores/animeList.store'
 import { defineEmits } from '@helpers/defineEmits'
 import { Flex } from '@components/Flex'
+import { Input } from '@components/Input'
+import { useInput } from '@hooks/useInput'
 
 const Table = dynamic(() => import('@components/Table'), { ssr: false })
 
@@ -49,18 +51,36 @@ export const CollectionsCreateSelectAnime: FC<CollectionsCreateSelectAnimeProps>
 			)
 		}
 
+		const [searchValue, setSearchValue] = useInput()
+
+		const filteredAnimeList = useMemo(
+			() =>
+				animeListStore.anilibriaAnimeList.filter(anime =>
+					anime.name.toLowerCase().includes(searchValue.toLowerCase())
+				),
+			[searchValue, animeListStore.anilibriaAnimeList]
+		)
+
 		return (
 			<Flex
 				customClassName={classNames(styles.wrapper, {
 					[styles.active]: active
 				})}
+				flexDirection='column'
 				margin='20px 0'
 				width='100%'
 			>
+				<Input
+					type='text'
+					width='100%'
+					placeholder='Поиск'
+					value={searchValue}
+					onChange={setSearchValue}
+				/>
 				<Table
 					height='100%'
 					columnDefs={colDefs}
-					rowData={animeListStore.anilibriaAnimeList}
+					rowData={filteredAnimeList}
 					rowSelection='multiple'
 					onGridReady={onGridReady}
 					onSelectionChanged={onSelectionChange}

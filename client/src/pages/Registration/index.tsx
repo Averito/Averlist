@@ -1,17 +1,19 @@
-import { FormEventHandler } from 'react'
+import React, { FormEventHandler, useState } from 'react'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { toast } from 'react-toastify'
+import Recaptcha from 'react-google-recaptcha'
 
 import styles from './Registration.module.scss'
 import { Input } from '@components/Input'
 import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
-import { averlist } from '@averlistApi/averlist'
 import { AuthLayout } from '@layouts/AuthLayout'
-import { errorToast, successToast } from '@helpers/toasts'
+import { errorToast } from '@helpers/toasts'
 import userStore from '@stores/user.store'
+
+const SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY
 
 export const Registration: NextPage = () => {
 	const router = useRouter()
@@ -22,6 +24,12 @@ export const Registration: NextPage = () => {
 	const [password, setPassword] = useInput()
 	const [passwordAgain, setPasswordAgain] = useInput()
 
+	const [isCompleteCaptcha, setIsCompleteCaptcha] = useState<boolean>(false)
+	const onChangeCaptcha = (token: string | null) => {
+		if (!token) return
+		setIsCompleteCaptcha(true)
+	}
+
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
 		event.preventDefault()
 		if (!login || !name || !email)
@@ -29,6 +37,7 @@ export const Registration: NextPage = () => {
 		if (password !== passwordAgain) return toast.error('Пароли не совпадают')
 		if (!email.includes('@'))
 			return errorToast('Электронная почта введена не в верном формате')
+		if (!isCompleteCaptcha) return errorToast('Капча не пройдена')
 
 		await userStore.registration({
 			login,
@@ -103,6 +112,9 @@ export const Registration: NextPage = () => {
 						width='100%'
 						label='Повторите пароль'
 					/>
+				</div>
+				<div className={styles.block}>
+					<Recaptcha sitekey={SITE_KEY ?? 'some key'} onChange={onChangeCaptcha} />
 				</div>
 			</AuthLayout>
 		</>
