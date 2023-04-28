@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { NextPage } from 'next'
 
 import styles from './AnimePage.module.scss'
@@ -8,27 +7,21 @@ import { Meta } from '@components/Meta'
 import { DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
-import userStore from '@stores/user.store'
-import { errorToast, successToast } from '@helpers/toasts'
+import { errorToast } from '@helpers/toasts'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
+import { AnimePageMobile } from '@pages/AnimePage/components/AnimePageMobile'
+import { AnimePageDesktop } from '@pages/AnimePage/components/AnimePageDesktop'
 import animeListStore from '@stores/animeList.store'
-
-const AnimePageMobile = dynamic(
-	() => import('@pages/AnimePage/components/AnimePageMobile'),
-	{ ssr: false }
-)
-const AnimePageDesktop = dynamic(
-	() => import('@pages/AnimePage/components/AnimePageDesktop'),
-	{ ssr: false }
-)
+import { DetectDeviceReturn } from '@helpers/detectDevice'
 
 interface AnimePageProps {
 	title: Title
+	devices: DetectDeviceReturn
 }
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
+export const AnimePage: NextPage<AnimePageProps> = ({ title, devices }) => {
 	const [animeList, setAnimeList] = useState<Averlist.Anime[]>([])
 
 	const wrapperBackground = {
@@ -40,7 +33,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 	}
 
 	const addToList = (title: Title, status: Averlist.AnimeStatus) => {
-		return async () => {
+		return () => {
 			const newAnime: Averlist.NewAnime = {
 				name: title.names.ru,
 				anilibriaId: title.id,
@@ -52,9 +45,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			if (animeDuplicate)
 				return errorToast('Данное аниме уже есть в вашем списке')
 
-			const anime = await averlist.anime.create(newAnime)
-			animeListStore.addToAnimeList(anime)
-			successToast('Аниме успешно добавлено в ваш список!')
+			void animeListStore.create(newAnime)
 		}
 	}
 
@@ -109,16 +100,19 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title }) => {
 			<div className={styles.wrapper} style={wrapperBackground}>
 				<div className={styles.wrapperBackgroundFilter}>
 					<div className={styles.container}>
-						<AnimePageDesktop
-							title={title}
-							dropdownOptions={dropdownOptions}
-							animeList={animeList}
-						/>
-						<AnimePageMobile
-							title={title}
-							dropdownOptions={dropdownOptions}
-							animeList={animeList}
-						/>
+						{devices.isMobile ? (
+							<AnimePageMobile
+								title={title}
+								dropdownOptions={dropdownOptions}
+								animeList={animeList}
+							/>
+						) : (
+							<AnimePageDesktop
+								title={title}
+								dropdownOptions={dropdownOptions}
+								animeList={animeList}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

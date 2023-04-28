@@ -1,0 +1,38 @@
+.wrapper {
+  position: relative;
+  margin-right: 15px;
+}
+
+.menu {
+  position: absolute;
+  padding: 4px 0;
+  width: 115px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(31, 31, 31, 0.75);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.open {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+.menuItem {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 6px;
+  transition: background-color 0.3s ease;
+  background-color: transparent;
+
+  &.selected, &:hover {
+    background-color: rgba(68, 68, 68, 0.75);
+  }
+
+  > p {
+    margin-left: 5px;
+    font-size: 13px;
+  }
+}

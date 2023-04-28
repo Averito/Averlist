@@ -48,7 +48,21 @@ export class UserService {
 			},
 			include: {
 				anime_list: true,
-				collections: true,
+				collections: {
+					include: {
+						favoritesBy: {
+							select: {
+								user: true
+							}
+						},
+						createdBy: true,
+						anime_list: {
+							select: {
+								anime: true
+							}
+						}
+					}
+				},
 				friend_with: true,
 				friend_by: true,
 				invitedBy: true,

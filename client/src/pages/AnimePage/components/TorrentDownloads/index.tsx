@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC } from 'react'
 import { BsDownload } from 'react-icons/bs'
 
 import styles from './TorrentDownloads.module.scss'
@@ -13,7 +13,7 @@ const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
 export const TorrentDownloads: FC<TorrentDownloadsProps> = ({ title }) => {
 	return (
-		<Flex customClassName={styles.container} margin='0 0 20px 0'>
+		<Flex className={styles.container} margin='0 0 20px 0'>
 			{title.torrents?.list.map(torrentItem => (
 				<div className={styles.item} key={torrentItem.url}>
 					<p>{torrentItem.quality.string}</p>

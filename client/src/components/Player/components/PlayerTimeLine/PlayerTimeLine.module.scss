@@ -1,0 +1,54 @@
+.timelinePlayedLine {
+  position: absolute;
+  width: 0;
+  height: 5px;
+  transition: height 0.1s ease;
+  background: #463580;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover > .timelinePlayedLine {
+    height: 7px;
+  }
+}
+
+.timeline {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 5px;
+  cursor: pointer;
+  margin: 0;
+  transition: height 0.1s ease;
+  background-color: rgba(65, 65, 65, 0.75);
+  background-image: linear-gradient(#626262, #626262);
+  background-repeat: no-repeat;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #463580;
+    transition: height 0.1s ease, width 0.1s ease;
+  }
+
+  &:hover {
+    height: 7px;
+
+    &::-webkit-slider-thumb {
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

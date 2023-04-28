@@ -9,7 +9,7 @@ import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import { errorToast, successToast } from '@helpers/toasts'
 
-const Modal = dynamic(() => import('@components/Modal'), { ssr: false })
+const Modal = dynamic(() => import('@components/Modal/Modal'), { ssr: false })
 
 interface AvatarCutterProps {
 	newAvatar: string

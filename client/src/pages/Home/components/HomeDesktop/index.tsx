@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import styles from './HomeDesktop.module.scss'
-import { AnimeSlider } from '@components/AnimeSlider'
+import { AnimeSlider } from '@components/AnimeSlider/AnimeSlider'
 import { Schedule, Title } from '@anilibriaApi/types'
 
 interface HomeDesktopProps {

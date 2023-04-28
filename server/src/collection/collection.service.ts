@@ -12,7 +12,8 @@ import {
 
 @Injectable()
 export class CollectionService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {
+	}
 
 	public async myCollections(userId: string): Promise<Collection[]> {
 		return this.prisma.collection.findMany({
@@ -20,16 +21,30 @@ export class CollectionService {
 				createdById: userId
 			},
 			include: {
-				anime_list: true,
-				favoritesBy: true
+				anime_list: {
+					select: {
+						anime: true
+					}
+				},
+				favoritesBy: {
+					select: {
+						user: true
+					}
+				},
+				createdBy: true
 			}
 		})
 	}
+
 	public async allCollections(): Promise<Collection[]> {
 		return this.prisma.collection.findMany({
 			include: {
 				createdBy: true,
-				anime_list: true,
+				anime_list: {
+					select: {
+						anime: true
+					}
+				},
 				favoritesBy: {
 					select: {
 						user: true
@@ -44,11 +59,16 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async myFavorites(userId: string): Promise<Collection[]> {
 		return this.prisma.collection.findMany({
 			include: {
 				createdBy: true,
-				anime_list: true
+				anime_list: {
+					select: {
+						anime: true
+					}
+				}
 			},
 			where: {
 				favoritesBy: {
@@ -59,30 +79,48 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async createCollection(
 		collection: CreateCollectionBodyDto,
 		poster: Express.Multer.File,
 		userId: string
 	): Promise<Collection> {
-		const animeListIds = collection.anime_list
-			.split(',')
-			.map(animeId => ({ id: animeId }))
-
-		return this.prisma.collection.create({
+		const createdCollection = await this.prisma.collection.create({
 			data: {
 				name: collection.name,
 				poster: poster.filename,
 				type: collection.type,
-				createdById: userId,
-				anime_list: {
-					connect: animeListIds
+				createdById: userId
+			},
+			select: {
+				id: true
+			}
+		})
+
+		for (const animeId of collection.anime_list.split(',')) {
+			await this.prisma.animeOnCollection.create({
+				data: {
+					animeId,
+					collectionId: createdCollection.id
 				}
+			})
+		}
+
+		return this.prisma.collection.findUnique({
+			where: {
+				id: createdCollection.id
 			},
 			include: {
-				anime_list: true
+				anime_list: {
+					select: {
+						anime: true
+					}
+				},
+				createdBy: true
 			}
 		})
 	}
+
 	public async addPoster(
 		poster: Express.Multer.File,
 		collectionId: string,
@@ -109,6 +147,7 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async editCollection(
 		editCollection: EditCollectionBodyDto,
 		collectionId: string,
@@ -135,6 +174,7 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async removeCollection(
 		collectionId: string,
 		userId: string
@@ -156,6 +196,7 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async addFavorite(
 		collectionId: string,
 		userId: string
@@ -181,6 +222,7 @@ export class CollectionService {
 			}
 		})
 	}
+
 	public async removeFavorite(
 		collectionId: string,
 		userId: string

@@ -1,0 +1,25 @@
+.link, .text {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link {
+  color: #00ff9a;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.posterWrapper {
+  position: relative;
+  min-width: 20px;
+  min-height: 30px;
+}
+
+.poster {
+  border-radius: 4px;
+}

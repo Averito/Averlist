@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react'
 
 import styles from './HomeMobile.module.scss'
-import { AnimeCard } from '@components/AnimeCard'
+import { TitleCard } from '@components/TitleCard'
 import { Title } from '@anilibriaApi/types'
 import { anilibria, queryObjectByDefault } from '@anilibriaApi/anilibria'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
@@ -38,7 +38,7 @@ export const HomeMobile: FC<HomeMobileProps> = ({ titleList }) => {
 	return (
 		<div className={styles.mobileContent}>
 			{titleListCopy.map(title => (
-				<AnimeCard title={title} key={title.id} />
+				<TitleCard title={title} key={title.id} />
 			))}
 		</div>
 	)

@@ -12,6 +12,7 @@ import { Dropdown } from '@components/Dropdown'
 import userStore from '@stores/user.store'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
 import { Averlist } from '@averlistApi/types'
+import { averlist } from '@averlistApi/averlist'
 
 const NEXT_PUBLIC_DISCORD_INVITE_LINK =
 	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
@@ -57,6 +58,15 @@ export const Header: FC = observer(() => {
 			id: 3,
 			label: 'Мои коллекции',
 			href: '/lk/collections'
+		},
+		{
+			id: 4,
+			label: 'Выход',
+			onClick: async () => {
+				await averlist.auth.logout()
+				userStore.logout()
+				await router.push('/')
+			}
 		}
 	]
 
