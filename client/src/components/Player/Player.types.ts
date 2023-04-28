@@ -2,7 +2,6 @@ import ReactPlayer, { ReactPlayerProps } from 'react-player'
 
 import { SeriesUsually } from '@anilibriaApi/types'
 import { SelectMenu } from '@components/Select'
-import { MouseEventHandler } from 'react'
 
 type ReactPlayerPropsWithoutPlayerInfo = Omit<
 	ReactPlayerProps,
@@ -12,13 +11,13 @@ type ReactPlayerPropsWithoutPlayerInfo = Omit<
 export interface PlayerProps extends ReactPlayerPropsWithoutPlayerInfo {
 	margin?: string
 	id?: string
-	onPrevVideo?: MouseEventHandler<SVGElement>
-	onNextVideo?: MouseEventHandler<SVGElement>
+	onPrevVideo?: () => void
+	onNextVideo?: () => void
 	qualities: SelectMenu<Quality>[]
 	currentQuality: SelectMenu<Quality>
 	onChangeQuality?: (quality: SelectMenu<Quality>) => void
 	currentSeries: SelectMenu<SeriesUsually>
-	series: SelectMenu<SeriesUsually>[]
+	allSeries: SelectMenu<SeriesUsually>[]
 	onChangeSeries?: (series: SelectMenu<SeriesUsually>) => void
 }
 

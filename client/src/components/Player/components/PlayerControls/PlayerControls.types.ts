@@ -1,4 +1,4 @@
-import { MouseEventHandler, RefObject } from 'react'
+import { RefObject } from 'react'
 import ReactPlayer from 'react-player'
 
 import { PlayerInfo, Quality } from '@components/Player'
@@ -11,8 +11,8 @@ export interface PlayerControlsProps {
 	playerStart: () => void
 	playerStop: () => void
 	id: string
-	onNextVideo?: MouseEventHandler<SVGElement>
-	onPrevVideo?: MouseEventHandler<SVGElement>
+	onPrevVideo?: () => void
+	onNextVideo?: () => void
 	setVolume: (volume: number) => void
 	qualities: SelectMenu<Quality>[]
 	currentQuality: SelectMenu<Quality>

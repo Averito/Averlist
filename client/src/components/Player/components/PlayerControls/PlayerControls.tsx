@@ -54,7 +54,8 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 }) => {
 	const [optionsMenuOpen, setOptionsMenuOpen] = useState<boolean>(false)
 	const [volumeMenuOpen, setVolumeMenuOpen] = useState<boolean>(false)
-	const [selectSeriesMenuOpen, setSelectSeriesMenuOpen] = useState<boolean>(false)
+	const [selectSeriesMenuOpen, setSelectSeriesMenuOpen] =
+		useState<boolean>(false)
 	const closeMenus = () => {
 		setOptionsMenuOpen(false)
 		setVolumeMenuOpen(false)
@@ -128,13 +129,13 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 	const onClickNextVideo: MouseEventHandler<SVGElement> = event => {
 		event.stopPropagation()
 		closeMenus()
-		onNextVideo?.(event)
+		onNextVideo?.()
 	}
 
 	const onClickPrevVideo: MouseEventHandler<SVGElement> = event => {
 		event.stopPropagation()
 		closeMenus()
-		onPrevVideo?.(event)
+		onPrevVideo?.()
 	}
 
 	const [show, setShow] = useState(false)
@@ -172,7 +173,7 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 			playerInfo.playedInSeconds + FAST_FORWARD_TIME
 		)
 	}
-	const fastBackForward = () => {
+	const backFastForward = () => {
 		reactPlayerRef.current?.seekTo?.(
 			playerInfo.playedInSeconds - BACK_FAST_FORWARD_TIME
 		)
@@ -185,7 +186,7 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 			if (event.code === 'KeyF') requestFullscreen()
 			if (event.code === 'Space') onClickPlayerToggle()
 			if (event.code === 'ArrowRight') fastForward()
-			if (event.code === 'ArrowLeft') fastBackForward()
+			if (event.code === 'ArrowLeft') backFastForward()
 		},
 		[playerFocus, requestFullscreen, onClickPlayerToggle]
 	)

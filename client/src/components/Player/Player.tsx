@@ -22,7 +22,7 @@ export const Player = forwardRef<PlayerRef, PlayerProps>(
 			onPrevVideo,
 			onNextVideo,
 			onProgress,
-			series,
+			allSeries,
 			currentSeries,
 			onChangeSeries,
 			...props
@@ -72,6 +72,7 @@ export const Player = forwardRef<PlayerRef, PlayerProps>(
 				playedInSeconds: state.playedSeconds,
 				loaded: state.loaded
 			}))
+
 			onProgress(state)
 		}
 
@@ -108,7 +109,7 @@ export const Player = forwardRef<PlayerRef, PlayerProps>(
 					qualities={qualities}
 					currentQuality={currentQuality}
 					onChangeQuality={onChangeQuality}
-					series={series}
+					series={allSeries}
 					currentSeries={currentSeries}
 					onChangeSeries={onChangeSeries}
 					reactPlayerRef={reactPlayerRef}

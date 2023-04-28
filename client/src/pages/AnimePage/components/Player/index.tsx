@@ -27,6 +27,8 @@ interface PlayerProps {
 }
 
 const Player: FC<PlayerProps> = ({ title, margin }) => {
+	const player = useRef<PlayerRef>(null)
+
 	// Series
 	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
 
@@ -149,8 +151,6 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 		}))
 	}
 
-	const player = useRef<PlayerRef>(null)
-
 	const onStartPlayer = () => {
 		player.current?.seekTo?.(seriesInfo.time || 0)
 	}
@@ -171,7 +171,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 				qualities={qualities}
 				currentQuality={seriesInfo.quality}
 				onChangeQuality={changeQuality}
-				series={allSeries}
+				allSeries={allSeries}
 				currentSeries={seriesInfo.series}
 				onChangeSeries={changeSeries}
 				onProgress={onProgressPlayer}
