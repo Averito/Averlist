@@ -1,10 +1,4 @@
-import {
-	FC,
-	FormEventHandler,
-	MouseEventHandler,
-	PropsWithChildren,
-	ReactNode
-} from 'react'
+import { FC, FormEventHandler, MouseEventHandler, PropsWithChildren, ReactNode } from 'react'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 

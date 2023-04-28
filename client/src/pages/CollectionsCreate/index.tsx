@@ -23,7 +23,7 @@ export const CollectionsCreate: FC = () => {
 	const onChangeImage: ChangeEventHandler<HTMLInputElement> = event => {
 		const file = event.currentTarget.files?.item(0)
 		if (!file) return
-		
+
 		setSourceImageFile(file)
 
 		const fileReader = new FileReader()
@@ -54,24 +54,26 @@ export const CollectionsCreate: FC = () => {
 
 	const [selectedAnime, setSelectedAnime] = useState<string[]>([])
 
-	const onCreateCollection: MouseEventHandler<HTMLButtonElement> = () => {
+	const onCreateCollection: MouseEventHandler<HTMLButtonElement> = async () => {
 		if (!sourceImageFile) {
 			return errorToast('Необходимо выбрать картинку')
 		}
 
-		void collectionsStore.createCollection({
-			poster: sourceImageFile,
-			name,
-			type: collectionType.value,
-			anime_list: selectedAnime.join(',')
-		})
+		await collectionsStore
+			.createCollection({
+				poster: sourceImageFile,
+				name,
+				type: collectionType.value,
+				anime_list: selectedAnime.join(',')
+			})
+			.then(() => router.push('/lk/collections'))
 	}
 
 	return (
 		<Flex justifyContent='center'>
 			<div className={styles.mainContainer}>
 				<Flex
-					customClassName={styles.imageContainer}
+					className={styles.imageContainer}
 					alignItems='center'
 					justifyContent='center'
 				>

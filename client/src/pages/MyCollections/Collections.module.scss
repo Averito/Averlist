@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  padding: 15px;
+  width: min(100%, 1920px);
+}
+
+.collections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 15px;
+
+  @media all and (max-width: 1350px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media all and (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,16 +1,16 @@
 import { FC, useState } from 'react'
 
-import Modal from '@components/Modal'
-import { Autocomplete, AutocompleteMenu } from '@components/Autocomplete'
+import Modal from '@components/Modal/Modal'
+import { AutocompleteMenu } from '@components/Autocomplete'
+import { Autocomplete } from '@components'
 import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
 import { Title } from '@anilibriaApi/types'
 import { anilibria } from '@anilibriaApi/anilibria'
-import { errorToast, successToast } from '@helpers/toasts'
+import { errorToast } from '@helpers/toasts'
 import { Averlist } from '@averlistApi/types'
 import { Select, SelectMenu } from '@components/Select'
 import { statusFilterOptions } from '@pages/AnimeList/statusFilterOptions'
 import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
-import { averlist } from '@averlistApi/averlist'
 import animeListStore from '@stores/animeList.store'
 
 interface AnimeListCreateAnimeModalProps {

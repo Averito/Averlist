@@ -16,6 +16,7 @@ module.exports = withPWA({
 			'averlist.xyz',
 			'cdn.discordapp.com',
 			'sun2-4.userapi.com',
+			'sun2-11.userapi.com',
 			'localhost'
 		]
 	}

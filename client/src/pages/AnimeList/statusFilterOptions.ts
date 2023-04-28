@@ -1,6 +1,5 @@
 import { SelectMenu } from '@components/Select'
 import { Averlist } from '@averlistApi/types'
-
 import AnimeStatus = Averlist.AnimeStatus
 
 export const statusFilterOptions: SelectMenu<Averlist.AnimeStatus | null>[] = [

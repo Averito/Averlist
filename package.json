@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "cookie": "^0.5.0",
+    "react-device-detect": "^2.2.3",
     "react-google-recaptcha": "^2.1.0",
     "react-recaptcha": "^2.3.10"
   }

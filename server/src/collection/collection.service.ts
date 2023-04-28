@@ -21,8 +21,17 @@ export class CollectionService {
 				createdById: userId
 			},
 			include: {
-				anime_list: true,
-				favoritesBy: true
+				anime_list: {
+					select: {
+						anime: true
+					}
+				},
+				favoritesBy: {
+					select: {
+						user: true
+					}
+				},
+				createdBy: true
 			}
 		})
 	}
@@ -31,7 +40,11 @@ export class CollectionService {
 		return this.prisma.collection.findMany({
 			include: {
 				createdBy: true,
-				anime_list: true,
+				anime_list: {
+					select: {
+						anime: true
+					}
+				},
 				favoritesBy: {
 					select: {
 						user: true
@@ -51,7 +64,11 @@ export class CollectionService {
 		return this.prisma.collection.findMany({
 			include: {
 				createdBy: true,
-				anime_list: true
+				anime_list: {
+					select: {
+						anime: true
+					}
+				}
 			},
 			where: {
 				favoritesBy: {
@@ -98,7 +115,8 @@ export class CollectionService {
 					select: {
 						anime: true
 					}
-				}
+				},
+				createdBy: true
 			}
 		})
 	}

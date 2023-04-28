@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useMemo, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import { NextPage } from 'next'

@@ -1,26 +1,17 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react'
+import { FC, MouseEventHandler, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
-import {
-	GridReadyEvent,
-	ColDef,
-	GridApi,
-	CellClickedEvent
-} from 'ag-grid-community'
+import { CellClickedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community'
 
 import { Averlist } from '@averlistApi/types'
-import {
-	StatusCellRenderer,
-	NameCellRenderer,
-	ActionCellRenderer
-} from '@components/Table/components/CellRenderers'
+import { ActionCellRenderer, NameCellRenderer, StatusCellRenderer } from '@components/Table/components/CellRenderers'
 import animeListStore from '@stores/animeList.store'
 import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/components/NameTooltip'
 import { averlist } from '@averlistApi/averlist'
 import { EditStatusModal } from '@pages/AnimeList/components/AnimeListTable/components/EditStatusModal'
 import { successToast } from '@helpers/toasts'
 
-const Table = dynamic(() => import('@components/Table'), { ssr: false })
+const Table = dynamic(() => import('@components/Table/Table'), { ssr: false })
 
 interface AnimeListTableProps {
 	pageSize: number

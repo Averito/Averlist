@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction } from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { Averlist } from '@averlistApi/types'
 import { errorToast, successToast } from '@helpers/toasts'
 import { averlist } from '@averlistApi/averlist'
@@ -14,6 +14,10 @@ class AnimeListStore {
 	@computed
 	public get anilibriaAnimeList() {
 		return this._animeList.filter(anime => !!anime.anilibriaId)
+	}
+
+	constructor() {
+		makeObservable(this)
 	}
 
 	@action

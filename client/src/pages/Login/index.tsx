@@ -8,7 +8,6 @@ import { Input } from '@components/Input'
 import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { AuthLayout } from '@layouts/AuthLayout'
-import { errorToast } from '@helpers/toasts'
 import userStore from '@stores/user.store'
 
 export const Login: NextPage = () => {

@@ -1,8 +1,4 @@
-import {
-	BadRequestException,
-	Injectable,
-	UnauthorizedException
-} from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { User } from '@prisma/client'
 import { JwtService, JwtSignOptions } from '@nestjs/jwt'
 import { MailerService } from '@nestjs-modules/mailer'

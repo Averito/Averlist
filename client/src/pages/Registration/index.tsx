@@ -114,7 +114,10 @@ export const Registration: NextPage = () => {
 					/>
 				</div>
 				<div className={styles.block}>
-					<Recaptcha sitekey={SITE_KEY ?? 'some key'} onChange={onChangeCaptcha} />
+					<Recaptcha
+						sitekey={SITE_KEY ?? 'some key'}
+						onChange={onChangeCaptcha}
+					/>
 				</div>
 			</AuthLayout>
 		</>

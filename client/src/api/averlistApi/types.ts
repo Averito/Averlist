@@ -4,10 +4,7 @@ import {
 	EditCollection as EditCollectionInterface,
 	NewCollection as NewCollectionInterface
 } from '@averlistApi/entities/collections/types'
-import {
-	Anime as AnimeInterface,
-	NewAnime as NewAnimeInterface
-} from '@averlistApi/entities/anime/types'
+import { Anime as AnimeInterface, NewAnime as NewAnimeInterface } from '@averlistApi/entities/anime/types'
 import { Invitation as InvitationInterface } from '@averlistApi/entities/invitations/types'
 import { News as NewsInterface } from '@averlistApi/entities/news/types'
 import {

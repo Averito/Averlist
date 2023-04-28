@@ -1,5 +1,5 @@
-import { ActionCellRenderer } from '@components/Table/components/CellRenderers/ActionCellRenderer'
-import { NameCellRenderer } from '@components/Table/components/CellRenderers/NameCellRenderer'
-import { StatusCellRenderer } from '@components/Table/components/CellRenderers/StatusCellRenderer'
+import { ActionCellRenderer } from './ActionCellRenderer'
+import { NameCellRenderer } from './NameCellRenderer'
+import { StatusCellRenderer } from './StatusCellRenderer'
 
 export { ActionCellRenderer, NameCellRenderer, StatusCellRenderer }

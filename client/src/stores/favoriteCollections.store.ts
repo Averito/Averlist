@@ -1,11 +1,47 @@
-import { action, computed, observable } from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { Averlist } from '@averlistApi/types'
+import { errorToast } from '@helpers/toasts'
+import { averlist } from '@averlistApi/averlist'
+import { toast } from 'react-toastify'
+import success = toast.success
 
 class FavoriteCollectionsStore {
 	@observable private _collections: Averlist.Collection[] = []
 	@computed
 	public get collections() {
 		return this._collections
+	}
+
+	constructor() {
+		makeObservable(this)
+	}
+
+	@action
+	public async unFavoriteCollection(collectionId: string) {
+		try {
+			await averlist.collections.removeFavorite(collectionId)
+			success('Коллекция удалена из избранного')
+
+			runInAction(() => {
+				this.removeCollection(collectionId)
+			})
+		} catch {
+			errorToast('Что-то пошло не так, попробуйте позже')
+		}
+	}
+
+	@action
+	public async favoriteCollection(collectionId: string) {
+		try {
+			const newCollection = await averlist.collections.addFavorite(collectionId)
+			success('Коллекция добавлена в избранное')
+
+			runInAction(() => {
+				this.addCollection(newCollection)
+			})
+		} catch {
+			errorToast('Что-то пошло не так, попробуйте позже')
+		}
 	}
 
 	@action

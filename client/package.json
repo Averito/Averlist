@@ -25,7 +25,6 @@
 		"next-auth": "^4.10.3",
 		"next-pwa": "^5.5.2",
 		"react": "18.1.0",
-		"react-device-detect": "^2.2.3",
 		"react-dom": "18.1.0",
 		"react-icons": "^4.4.0",
 		"react-image-crop": "^10.0.6",

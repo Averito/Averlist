@@ -13,7 +13,7 @@ import { Flex } from '@components/Flex'
 import { Input } from '@components/Input'
 import { useInput } from '@hooks/useInput'
 
-const Table = dynamic(() => import('@components/Table'), { ssr: false })
+const Table = dynamic(() => import('@components/Table/Table'), { ssr: false })
 
 interface CollectionsCreateSelectAnimeProps {
 	active?: boolean
@@ -63,7 +63,7 @@ export const CollectionsCreateSelectAnime: FC<CollectionsCreateSelectAnimeProps>
 
 		return (
 			<Flex
-				customClassName={classNames(styles.wrapper, {
+				className={classNames(styles.wrapper, {
 					[styles.active]: active
 				})}
 				flexDirection='column'

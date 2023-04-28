@@ -1,13 +1,11 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-
-import { DropdownMenu } from '@components/Dropdown'
 import { Select, SelectMenu } from '@components/Select'
 import { Averlist } from '@averlistApi/types'
-import AnimeStatus = Averlist.AnimeStatus
 import { successToast } from '@helpers/toasts'
+import AnimeStatus = Averlist.AnimeStatus
 
-const Modal = dynamic(() => import('@components/Modal'), { ssr: false })
+const Modal = dynamic(() => import('@components/Modal/Modal'), { ssr: false })
 
 interface EditStatusModalProps {
 	editStatusModalOpened: boolean

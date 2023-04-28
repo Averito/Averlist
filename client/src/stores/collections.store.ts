@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction } from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
 import { errorToast, successToast } from '@helpers/toasts'
@@ -9,6 +9,10 @@ class CollectionsStore {
 	@computed
 	public get collections() {
 		return this._collections
+	}
+
+	constructor() {
+		makeObservable(this)
 	}
 
 	@action
@@ -22,6 +26,7 @@ class CollectionsStore {
 			})
 		} catch {
 			errorToast('Не удалось создать коллекцию')
+			throw new Error('Не удалось создать коллекцию')
 		}
 	}
 
@@ -43,10 +48,31 @@ class CollectionsStore {
 	}
 
 	@action
-	public changeType(id: string, type: Averlist.CollectionType) {
-		this._collections = this._collections.map(collection =>
-			collection.id === id ? { ...collection, type } : collection
-		)
+	public async changeType(id: string, type: Averlist.CollectionType) {
+		try {
+			const collection = this._collections.find(
+				collection => collection.id === id
+			)
+			if (!collection) return errorToast('Такой коллекции не существует')
+
+			const editCollection = {
+				...collection,
+				type
+			}
+
+			const { type: newType } = await averlist.collections.editCollection(
+				editCollection,
+				id
+			)
+
+			runInAction(() => {
+				this._collections = this._collections.map(collection =>
+					collection.id === id ? { ...collection, type: newType } : collection
+				)
+			})
+		} catch {
+			errorToast('Что-то пошло не так, попробуйте позже')
+		}
 	}
 
 	@action

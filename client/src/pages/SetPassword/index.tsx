@@ -6,9 +6,7 @@ import { AuthLayout } from '@layouts/AuthLayout'
 import { Input } from '@components/Input'
 import { useInput } from '@hooks/useInput'
 import { Averlist } from '@averlistApi/types'
-import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
-import { successToast } from '@helpers/toasts'
 import { Meta } from '@components/Meta'
 
 export const SetPassword: NextPage = () => {
@@ -32,7 +30,6 @@ export const SetPassword: NextPage = () => {
 
 			await userStore.registration(registrationBody, false)
 			await router.push('/lk')
-
 		} catch {
 			const loginBody: Averlist.Login = {
 				email: email as string,

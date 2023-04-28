@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx'
+import { action, computed, makeObservable, observable } from 'mobx'
 
 import { Title } from '@anilibriaApi/types'
 import { uniqueIds } from '@helpers/uniqueIds'
@@ -20,6 +20,10 @@ class AnimeCatalogStore {
 	@computed
 	get searchTitleList() {
 		return this._searchTitleList
+	}
+
+	constructor() {
+		makeObservable(this)
 	}
 
 	@action

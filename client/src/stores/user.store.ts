@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction } from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 
 import { Averlist } from '@averlistApi/types'
 import defaultAvatar from '@assets/images/defaultAvatar.png'
@@ -21,6 +21,10 @@ class UserStore {
 	@computed
 	public get currentName(): string {
 		return this._currentName
+	}
+
+	constructor() {
+		makeObservable(this)
 	}
 
 	@action
