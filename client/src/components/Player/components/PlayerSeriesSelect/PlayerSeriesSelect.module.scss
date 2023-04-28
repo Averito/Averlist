@@ -41,12 +41,14 @@
   background: rgba(47, 47, 47, 0.75);
   padding: 4px 0;
   border-radius: 4px;
+  pointer-events: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
   &.open {
+    pointer-events: auto;
     opacity: 1;
   }
 }
