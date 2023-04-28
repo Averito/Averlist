@@ -209,7 +209,10 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 	)
 
 	const showControls =
-		!playerInfo.playing || show || controlsHover || optionsMenuOpen
+		!playerInfo.playing ||
+		show ||
+		(controlsHover && !rdd.isMobile) ||
+		optionsMenuOpen
 
 	return (
 		<div
