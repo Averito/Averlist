@@ -1,0 +1,52 @@
+.wrapper {
+  position: relative;
+  margin-right: 10px;
+}
+
+.volumeMenu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  padding: 8px 0;
+  width: 20px;
+  height: 100px;
+  top: -120px;
+  left: 50%;
+  border-radius: 8px;
+  transform: translateX(-50%);
+  background: rgba(31, 31, 31, 0.75);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.open {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+.volumeRange {
+  -webkit-appearance: none;
+  width: 84px;
+  height: 3px;
+  transform: rotate(-90deg);
+  border-radius: 4px;
+  background-color: rgba(65, 65, 65, 0.75);
+  background-image: linear-gradient(#5d42bd, #5d42bd);
+  background-repeat: no-repeat;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #463580;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

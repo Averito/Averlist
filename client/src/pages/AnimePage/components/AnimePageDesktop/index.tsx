@@ -14,7 +14,7 @@ import { Averlist } from '@averlistApi/types'
 import userStore from '@stores/user.store'
 import { TorrentDownloads } from '@pages/AnimePage/components/TorrentDownloads'
 
-const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
+const Player = dynamic(() => import('../Player'), {
 	ssr: false
 })
 

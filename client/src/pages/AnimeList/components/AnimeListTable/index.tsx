@@ -1,10 +1,19 @@
 import { FC, MouseEventHandler, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
-import { CellClickedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community'
+import {
+	CellClickedEvent,
+	ColDef,
+	GridApi,
+	GridReadyEvent
+} from 'ag-grid-community'
 
 import { Averlist } from '@averlistApi/types'
-import { ActionCellRenderer, NameCellRenderer, StatusCellRenderer } from '@components/Table/components/CellRenderers'
+import {
+	ActionCellRenderer,
+	NameCellRenderer,
+	StatusCellRenderer
+} from '@components/Table/components/CellRenderers'
 import animeListStore from '@stores/animeList.store'
 import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/components/NameTooltip'
 import { averlist } from '@averlistApi/averlist'

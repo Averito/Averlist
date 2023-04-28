@@ -1,0 +1,71 @@
+.wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, black 1%, transparent 99%);
+  transition: background 0.3s ease;
+
+  &.show {
+    background: transparent;
+  }
+}
+
+.topLayer {
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  padding: 10px 16px;
+
+  &.show {
+    transform: translateY(0);
+  }
+}
+
+.bottomLayerWrapper {
+  transform: translateY(110%);
+  transition: transform 0.3s ease;
+
+  &.show {
+    transform: translateY(0);
+  }
+}
+
+.bottomLayerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.bottomLayerControls {
+  display: flex;
+  align-items: center;
+
+  > svg:not(:last-of-type) {
+    margin-right: 10px;
+  }
+}
+
+.bottomLayerOther {
+  display: flex;
+  align-items: center;
+
+  > svg:not(:last-of-type) {
+    margin-right: 15px;
+  }
+}
+
+.time {
+  font-size: 14px;
+  margin-left: 15px;
+}
+
+.timeSlash {
+  margin: 0 5px;
+}

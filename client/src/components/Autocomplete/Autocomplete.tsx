@@ -1,9 +1,19 @@
-import { ChangeEventHandler, FC, FocusEventHandler, memo, useEffect, useState } from 'react'
+import {
+	ChangeEventHandler,
+	FC,
+	FocusEventHandler,
+	memo,
+	useEffect,
+	useState
+} from 'react'
 import classnames from 'classnames'
 
 import styles from './Autocomplete.module.scss'
 import { defineEmits } from '@helpers/defineEmits'
-import { AutocompleteMenu, AutocompleteProps } from '@components/Autocomplete/Autocomplete.types'
+import {
+	AutocompleteMenu,
+	AutocompleteProps
+} from '@components/Autocomplete/Autocomplete.types'
 
 export const Autocomplete: FC<AutocompleteProps> = memo(
 	({

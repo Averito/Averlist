@@ -6,7 +6,10 @@ import styles from './AnimeListStats.module.scss'
 import { Flex } from '@components/Flex'
 import { Averlist } from '@averlistApi/types'
 import { AnimeListStatsProps } from './AnimeListStats.types'
-import { ProgressBarItem, ProgressItemCounter } from '@components/AnimeListStats/components'
+import {
+	ProgressBarItem,
+	ProgressItemCounter
+} from '@components/AnimeListStats/components'
 import AnimeStatus = Averlist.AnimeStatus
 import AnimeStatusQuery = Averlist.AnimeStatusQuery
 
