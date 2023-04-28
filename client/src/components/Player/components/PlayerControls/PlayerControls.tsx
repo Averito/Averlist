@@ -22,10 +22,13 @@ import { PlayerControlsProps } from './PlayerControls.types'
 import {
 	PlayerIcon,
 	PlayerOptions,
+	PlayerSeriesSelect,
 	PlayerTimeLine,
 	PlayerVolume
 } from '@components/Player/components'
 import {
+	BACK_FAST_FORWARD_TIME,
+	FAST_FORWARD_TIME,
 	HIDE_CONTROLS_ON_LEAVE_MOUSE_TIME,
 	HIDE_CONTROLS_ON_MOVE_MOUSE_TIME
 } from '@components/Player/components/PlayerControls/PlayerControls.config'
@@ -44,13 +47,18 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 	qualities,
 	currentQuality,
 	setVolume,
+	series,
+	currentSeries,
+	onChangeSeries,
 	playerFocus
 }) => {
 	const [optionsMenuOpen, setOptionsMenuOpen] = useState<boolean>(false)
 	const [volumeMenuOpen, setVolumeMenuOpen] = useState<boolean>(false)
+	const [selectSeriesMenuOpen, setSelectSeriesMenuOpen] = useState<boolean>(false)
 	const closeMenus = () => {
 		setOptionsMenuOpen(false)
 		setVolumeMenuOpen(false)
+		setSelectSeriesMenuOpen(false)
 	}
 
 	const onClickWrapper = () => {
@@ -160,10 +168,14 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 	}
 
 	const fastForward = () => {
-		reactPlayerRef.current?.seekTo?.(playerInfo.playedInSeconds + 10)
+		reactPlayerRef.current?.seekTo?.(
+			playerInfo.playedInSeconds + FAST_FORWARD_TIME
+		)
 	}
 	const fastBackForward = () => {
-		reactPlayerRef.current?.seekTo?.(playerInfo.playedInSeconds - 5)
+		reactPlayerRef.current?.seekTo?.(
+			playerInfo.playedInSeconds - BACK_FAST_FORWARD_TIME
+		)
 	}
 
 	const handleHotKeys = useCallback(
@@ -215,7 +227,13 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 					[styles.show]: showControls
 				})}
 			>
-				Выбор серии
+				<PlayerSeriesSelect
+					allSeries={series}
+					currentSeries={currentSeries}
+					onChangeSeries={onChangeSeries}
+					open={selectSeriesMenuOpen}
+					setOpen={setSelectSeriesMenuOpen}
+				/>
 			</div>
 			<div
 				onMouseMove={onMouseEnterOrMoveControls}

@@ -17,6 +17,9 @@ export interface PlayerProps extends ReactPlayerPropsWithoutPlayerInfo {
 	qualities: SelectMenu<Quality>[]
 	currentQuality: SelectMenu<Quality>
 	onChangeQuality?: (quality: SelectMenu<Quality>) => void
+	currentSeries: SelectMenu<SeriesUsually>
+	series: SelectMenu<SeriesUsually>[]
+	onChangeSeries?: (series: SelectMenu<SeriesUsually>) => void
 }
 
 export interface PlayerRef extends Partial<ReactPlayer> {

@@ -3,7 +3,7 @@ import { OnProgressProps } from 'react-player/base'
 
 import { SeriesUsually, Title } from '@anilibriaApi/types'
 import { Flex } from '@components/Flex'
-import { Select, SelectMenu } from '@components/Select'
+import { SelectMenu } from '@components/Select'
 import { PlayerRef, Quality, SeriesInfo } from '@components/Player'
 import { useCache } from '@hooks/useCache'
 import { Player as MyPlayer } from '@components'
@@ -29,14 +29,13 @@ interface PlayerProps {
 const Player: FC<PlayerProps> = ({ title, margin }) => {
 	// Series
 	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
-	const onChangeSeriesSelect = (series: SelectMenu<SeriesUsually>) => {
-		return () => {
-			setSeriesInfo(prevSeriesInfo => ({
-				...prevSeriesInfo,
-				time: 0,
-				series
-			}))
-		}
+
+	const changeSeries = (series: SelectMenu<SeriesUsually>) => {
+		setSeriesInfo(prevSeriesInfo => ({
+			...prevSeriesInfo,
+			time: 0,
+			series
+		}))
 	}
 
 	const onClickNextSeries = () => {
@@ -162,14 +161,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	}`
 
 	return (
-		<Flex margin={margin} flexDirection='column'>
-			<Flex>
-				<Select
-					options={allSeries}
-					currentOption={seriesInfo.series}
-					onChange={onChangeSeriesSelect}
-				/>
-			</Flex>
+		<Flex margin={margin}>
 			<MyPlayer
 				ref={player}
 				url={videoUrl}
@@ -179,6 +171,9 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 				qualities={qualities}
 				currentQuality={seriesInfo.quality}
 				onChangeQuality={changeQuality}
+				series={allSeries}
+				currentSeries={seriesInfo.series}
+				onChangeSeries={changeSeries}
 				onProgress={onProgressPlayer}
 				onStart={onStartPlayer}
 				onNextVideo={onClickNextSeries}
