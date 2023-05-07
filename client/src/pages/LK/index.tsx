@@ -10,8 +10,11 @@ import { FavoriteCollections } from '@pages/LK/components/FavoriteCollections'
 import userStore from '@stores/user.store'
 import { Flex } from '@components/Flex'
 import { Averlist } from '@averlistApi/types'
+import { useProtectedRoute } from '@hooks/useProtectedRoute'
 
 export const LK: NextPage = () => {
+	useProtectedRoute('/', userStore.isAuth)
+
 	return (
 		<>
 			<Meta
