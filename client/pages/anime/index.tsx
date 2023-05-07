@@ -1,27 +1,33 @@
 import { GetStaticProps } from 'next'
+import dayjs from 'dayjs'
+import {
+	getAnilibriaGenres,
+	getAnilibriaUpdates,
+	GetAnilibriaUpdatesQueryParams,
+	getAnilibriaYears
+} from 'anilibria-api-wrapper'
 
 import { AnimeCatalog } from '@pages/AnimeCatalog'
-import { anilibria, queryObjectByDefault } from '@anilibriaApi/anilibria'
-import dayjs from 'dayjs'
+import { queryObjectByDefault } from '@anilibriaApi/anilibria'
 
 export default AnimeCatalog
 
 export const getStaticProps: GetStaticProps = async () => {
-	const years = await anilibria.getYears()
-	const genres = await anilibria.getGenres()
+	const { data: years } = await getAnilibriaYears()
+	const { data: genres } = await getAnilibriaGenres()
 
-	const queryObject = {
-		filter: queryObjectByDefault.filter,
+	const queryObject: GetAnilibriaUpdatesQueryParams = {
+		filter: queryObjectByDefault.filter as string[],
 		limit: 44,
 		since: new Date(`01-01-${dayjs().year()}`).getDate()
 	}
-	const updatesTitleList = await anilibria.getUpdates(queryObject)
+	const updatesTitleList = await getAnilibriaUpdates(queryObject)
 
 	return {
 		props: {
 			years,
 			genres,
-			titleList: updatesTitleList
+			titleList: updatesTitleList.data
 		},
 		revalidate: 60
 	}

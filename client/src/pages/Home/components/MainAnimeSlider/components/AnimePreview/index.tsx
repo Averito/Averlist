@@ -1,12 +1,12 @@
 import { FC } from 'react'
 import Link from 'next/link'
+import { Series, Title } from 'anilibria-api-wrapper'
 
 import styles from './AnimePreview.module.scss'
-import { SeriesUsually, Title } from '@anilibriaApi/types'
 import { DescriptionTag } from '@components/DescriptionTag'
 
 interface AnimePreviewProps {
-	series: SeriesUsually
+	series: Series
 	title: Title
 }
 

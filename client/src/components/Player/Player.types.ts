@@ -1,6 +1,6 @@
 import ReactPlayer, { ReactPlayerProps } from 'react-player'
+import { Series } from 'anilibria-api-wrapper'
 
-import { SeriesUsually } from '@anilibriaApi/types'
 import { SelectMenu } from '@components/Select'
 
 type ReactPlayerPropsWithoutPlayerInfo = Omit<
@@ -16,9 +16,9 @@ export interface PlayerProps extends ReactPlayerPropsWithoutPlayerInfo {
 	qualities: SelectMenu<Quality>[]
 	currentQuality: SelectMenu<Quality>
 	onChangeQuality?: (quality: SelectMenu<Quality>) => void
-	currentSeries: SelectMenu<SeriesUsually>
-	allSeries: SelectMenu<SeriesUsually>[]
-	onChangeSeries?: (series: SelectMenu<SeriesUsually>) => void
+	currentSeries: SelectMenu<Series>
+	allSeries: SelectMenu<Series>[]
+	onChangeSeries?: (series: SelectMenu<Series>) => void
 }
 
 export interface PlayerRef extends Partial<ReactPlayer> {
@@ -38,7 +38,7 @@ export interface PlayerInfo {
 export type Quality = 'sd' | 'hd' | 'fhd'
 
 export interface SeriesInfo {
-	series: SelectMenu<SeriesUsually>
+	series: SelectMenu<Series>
 	quality: SelectMenu<Quality>
 	time: number
 }

@@ -1,12 +1,12 @@
 import { FC, MouseEventHandler, useRef } from 'react'
 import cs from 'classnames'
+import { Series } from 'anilibria-api-wrapper'
 import { IoIosArrowDown } from 'react-icons/io'
 
 import styles from './PlayerSeriesSelect.module.scss'
 import { PlayerSeriesSelectProps } from './PlayerSeriesSelect.types'
 import { useOutside } from '@hooks/useOutside'
 import { SelectMenu } from '@components/Select'
-import { SeriesUsually } from '@anilibriaApi/types'
 
 export const PlayerSeriesSelect: FC<PlayerSeriesSelectProps> = ({
 	currentSeries,
@@ -27,7 +27,7 @@ export const PlayerSeriesSelect: FC<PlayerSeriesSelectProps> = ({
 	}
 
 	const onClickChangeSeries = (
-		series: SelectMenu<SeriesUsually>
+		series: SelectMenu<Series>
 	): MouseEventHandler<HTMLParagraphElement> => {
 		return event => {
 			event.stopPropagation()

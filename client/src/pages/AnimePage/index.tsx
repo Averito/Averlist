@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NextPage } from 'next'
+import { Title, Series } from 'anilibria-api-wrapper'
 
 import styles from './AnimePage.module.scss'
-import { Series, Title } from '@anilibriaApi/types'
 import { Meta } from '@components/Meta'
 import { DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
@@ -25,11 +25,7 @@ export const AnimePage: NextPage<AnimePageProps> = ({ title, devices }) => {
 	const [animeList, setAnimeList] = useState<Averlist.Anime[]>([])
 
 	const wrapperBackground = {
-		background: `url("${ANILIBRIA_URI}${
-			(title.player.playlist as Series)[
-				Object.entries(title.player.playlist)[0][0]
-			]?.preview
-		}") 0 0/100% 100%`
+		background: `url("${ANILIBRIA_URI}${title?.player?.playlist[0]?.preview}") 0 0/100% 100%`
 	}
 
 	const addToList = (title: Title, status: Averlist.AnimeStatus) => {

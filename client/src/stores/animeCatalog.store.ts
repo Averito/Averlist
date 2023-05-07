@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx'
+import { Title } from 'anilibria-api-wrapper'
 
-import { Title } from '@anilibriaApi/types'
 import { uniqueIds } from '@helpers/uniqueIds'
 
 class AnimeCatalogStore {

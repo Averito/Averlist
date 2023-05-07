@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from 'react'
+import { Series } from 'anilibria-api-wrapper'
 
 import { SelectMenu } from '@components/Select'
-import { SeriesUsually } from '@anilibriaApi/types'
 
 export interface PlayerSeriesSelectProps {
-	currentSeries: SelectMenu<SeriesUsually>
-	allSeries: SelectMenu<SeriesUsually>[]
-	onChangeSeries?: (series: SelectMenu<SeriesUsually>) => void
+	currentSeries: SelectMenu<Series>
+	allSeries: SelectMenu<Series>[]
+	onChangeSeries?: (series: SelectMenu<Series>) => void
 	open: boolean
 	setOpen: Dispatch<SetStateAction<boolean>>
 }

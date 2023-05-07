@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import { OnProgressProps } from 'react-player/base'
+import { Series, Title } from 'anilibria-api-wrapper'
 
-import { SeriesUsually, Title } from '@anilibriaApi/types'
 import { Flex } from '@components/Flex'
 import { SelectMenu } from '@components/Select'
 import { PlayerRef, Quality, SeriesInfo } from '@components/Player'
@@ -30,9 +30,9 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	const player = useRef<PlayerRef>(null)
 
 	// Series
-	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
+	const [allSeries, setAllSeries] = useState<SelectMenu<Series>[]>([])
 
-	const changeSeries = (series: SelectMenu<SeriesUsually>) => {
+	const changeSeries = (series: SelectMenu<Series>) => {
 		setSeriesInfo(prevSeriesInfo => ({
 			...prevSeriesInfo,
 			time: 0,
@@ -63,7 +63,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 				series => series.id === prevSeriesInfo.series.id - 1
 			)
 			if (!prevSeries) {
-				prevSeries = allSeries.at(-1) as SelectMenu<SeriesUsually>
+				prevSeries = allSeries.at(-1) as SelectMenu<Series>
 			}
 
 			return {
@@ -105,11 +105,11 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	useCache<SeriesInfo>(seriesInfo, title.code, onExtractCache)
 
 	useEffect(() => {
-		const playlistMap = new Map<string, SeriesUsually>(
+		const playlistMap = new Map<string, Series>(
 			Object.entries(title.player.playlist)
 		)
 
-		let normalizeAllSeries: SelectMenu<SeriesUsually>[] = []
+		let normalizeAllSeries: SelectMenu<Series>[] = []
 
 		for (const series of playlistMap.values()) {
 			normalizeAllSeries.push({
@@ -157,7 +157,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 
 	const host = title.player.host
 	const videoUrl = `https://${host}${
-		(seriesInfo.series.value as SeriesUsually)?.hls[seriesInfo.quality.value]
+		(seriesInfo.series.value as Series)?.hls[seriesInfo.quality.value]
 	}`
 
 	return (

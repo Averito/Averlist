@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
-import { Schedule, Title } from '@anilibriaApi/types'
+import { Title, Schedule } from 'anilibria-api-wrapper'
+
 import { MainAnimeSlider } from './components/MainAnimeSlider'
 import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'

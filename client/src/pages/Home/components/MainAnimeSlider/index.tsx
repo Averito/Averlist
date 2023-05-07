@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper'
+import { Title, Series } from 'anilibria-api-wrapper'
 
 import styles from './MainAnimeSlider.module.scss'
 import { AnimePreview } from './components/AnimePreview'
-import { SeriesUsually, Title } from '@anilibriaApi/types'
 
 interface MainAnimeSliderProps {
 	titleList: Title[]
@@ -24,7 +24,7 @@ export const MainAnimeSlider: FC<MainAnimeSliderProps> = ({ titleList }) => {
 			{titleList.map(title => (
 				<SwiperSlide key={title.id}>
 					<AnimePreview
-						series={(title.player.playlist as SeriesUsually[])[0]}
+						series={(title.player.playlist as Series[])[0]}
 						title={title}
 					/>
 				</SwiperSlide>
