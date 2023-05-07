@@ -6,9 +6,7 @@ import { AuthLayout } from '@layouts/AuthLayout'
 import { Input } from '@components/Input'
 import { useInput } from '@hooks/useInput'
 import { Averlist } from '@averlistApi/types'
-import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
-import { successToast } from '@helpers/toasts'
 import { Meta } from '@components/Meta'
 
 export const SetPassword: NextPage = () => {
@@ -30,27 +28,16 @@ export const SetPassword: NextPage = () => {
 				password
 			}
 
-			const registrationResponse = await averlist.auth.registration(
-				registrationBody
-			)
-
-			userStore.userAuth()
-			userStore.setUser(registrationResponse.user)
+			await userStore.registration(registrationBody, false)
 			await router.push('/lk')
-			successToast('Регистрация прошла успешно')
 		} catch {
 			const loginBody: Averlist.Login = {
 				email: email as string,
 				password
 			}
 
-			await averlist.auth.login(loginBody)
-			const me = await averlist.users.me()
-
-			userStore.userAuth()
-			userStore.setUser(me)
+			await userStore.login(loginBody)
 			await router.push('/lk')
-			successToast('Вход успешно совершён')
 		}
 	}
 

@@ -5,7 +5,8 @@ import { useEffect } from 'react'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import animeListStore from '@stores/animeList.store'
-import { errorToast } from '@helpers/toasts'
+import collectionsStore from '@stores/collections.store'
+import favoriteCollectionsStore from '@stores/favoriteCollections.store'
 
 export const useAuth = () => {
 	const router = useRouter()
@@ -18,6 +19,8 @@ export const useAuth = () => {
 				userStore.userAuth()
 				userStore.setUser(me)
 				animeListStore.setAnimeList(me.anime_list ?? [])
+				collectionsStore.setCollections(me.collections ?? [])
+				favoriteCollectionsStore.setCollections(me.favoriteCollections ?? [])
 
 				try {
 					if (!getCookie('refreshToken')) return

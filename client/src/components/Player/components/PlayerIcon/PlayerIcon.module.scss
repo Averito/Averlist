@@ -1,0 +1,9 @@
+.icon {
+  display: flex;
+  color: white;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #b9b9b9;
+  }
+}

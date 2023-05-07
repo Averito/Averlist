@@ -1,27 +1,26 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react'
+import { FC, MouseEventHandler, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import {
-	GridReadyEvent,
+	CellClickedEvent,
 	ColDef,
 	GridApi,
-	CellClickedEvent,
-	PaginationChangedEvent
+	GridReadyEvent
 } from 'ag-grid-community'
 
 import { Averlist } from '@averlistApi/types'
-import { StatusCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/StatusCellRenderer'
-import { NameCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/NameCellRenderer'
-import { ActionCellRenderer } from '@pages/AnimeList/components/AnimeListTable/components/ActionCellRenderer'
+import {
+	ActionCellRenderer,
+	NameCellRenderer,
+	StatusCellRenderer
+} from '@components/Table/components/CellRenderers'
 import animeListStore from '@stores/animeList.store'
 import { NameTooltip } from '@pages/AnimeList/components/AnimeListTable/components/NameTooltip'
 import { averlist } from '@averlistApi/averlist'
 import { EditStatusModal } from '@pages/AnimeList/components/AnimeListTable/components/EditStatusModal'
 import { successToast } from '@helpers/toasts'
-import { SelectMenu } from '@components/Select'
-import { useUrlQueryParams } from '@hooks/useUrlQueryParams'
 
-const Table = dynamic(() => import('@components/Table'), { ssr: false })
+const Table = dynamic(() => import('@components/Table/Table'), { ssr: false })
 
 interface AnimeListTableProps {
 	pageSize: number
@@ -87,17 +86,8 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 			}
 		]
 
-		const [page, setPage] = useUrlQueryParams('page', '0')
-		const onPaginationChanged = async (
-			event: PaginationChangedEvent<Averlist.Anime>
-		) => {
-			if (!gridApi || !event.newPage) return
-			await setPage(gridApi.paginationGetCurrentPage().toString())
-		}
-
 		const onGridReady = (event: GridReadyEvent<Averlist.Anime>) => {
 			setGridApi(event.api)
-			event.api.paginationGoToPage(parseInt(page))
 		}
 
 		const [currentAnime, setCurrentAnime] = useState<Averlist.Anime>(
@@ -122,7 +112,6 @@ export const AnimeListTable: FC<AnimeListTableProps> = observer(
 					tooltipShowDelay={0}
 					tooltipHideDelay={3000}
 					paginationPageSize={pageSize}
-					onPaginationChanged={onPaginationChanged}
 					suppressRowTransform
 					animateRows
 					pagination

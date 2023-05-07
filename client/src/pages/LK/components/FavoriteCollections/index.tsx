@@ -6,7 +6,7 @@ import { Flex } from '@components/Flex'
 export const FavoriteCollections: FC = () => {
 	return (
 		<Flex
-			customClassName={styles.favoriteCollections}
+			className={styles.favoriteCollections}
 			backgroundColor='#2b214f'
 			width='100%'
 			padding='15px'

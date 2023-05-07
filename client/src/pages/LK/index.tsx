@@ -5,7 +5,7 @@ import Link from 'next/link'
 import styles from './LK.module.scss'
 import { Meta } from '@components/Meta'
 import { Avatar } from '@pages/LK/components/Avatar'
-import { AnimeListStats } from '@components/AnimeListStats'
+import { AnimeListStats } from '@components'
 import { FavoriteCollections } from '@pages/LK/components/FavoriteCollections'
 import userStore from '@stores/user.store'
 import { Flex } from '@components/Flex'
@@ -24,7 +24,7 @@ export const LK: NextPage = () => {
 						<Observer>
 							{() => (
 								<AnimeListStats
-									backgroundColor={'#2b214f'}
+									backgroundColor='#2b214f'
 									padding='15px'
 									animeList={userStore.user.anime_list || []}
 								/>

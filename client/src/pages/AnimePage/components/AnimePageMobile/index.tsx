@@ -10,10 +10,9 @@ import { Description } from './components/Description'
 import { Dropdown, DropdownMenu } from '@components/Dropdown'
 import { Averlist } from '@averlistApi/types'
 import { AnimeListStats } from '@components/AnimeListStats'
-import { useWindowSize } from '@hooks/useWindowSize'
 import { TorrentDownloads } from '@pages/AnimePage/components/TorrentDownloads'
 
-const Player = dynamic(() => import('@pages/AnimePage/components/Player'), {
+const Player = dynamic(() => import('../Player'), {
 	ssr: false
 })
 
@@ -25,15 +24,11 @@ interface AnimePageMobileProps {
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 
-const AnimePageMobile: FC<AnimePageMobileProps> = ({
+export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 	title,
 	dropdownOptions,
 	animeList
 }) => {
-	const { isMobile } = useWindowSize()
-
-	if (!isMobile) return <></>
-
 	return (
 		<div className={styles.mobile}>
 			<div className={styles.posterWrapper}>
@@ -73,5 +68,3 @@ const AnimePageMobile: FC<AnimePageMobileProps> = ({
 		</div>
 	)
 }
-
-export default AnimePageMobile

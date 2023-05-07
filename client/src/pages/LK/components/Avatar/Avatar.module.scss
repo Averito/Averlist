@@ -12,15 +12,6 @@
   }
 }
 
-.avatarWrapper {
-  position: relative;
-  max-height: 200px;
-
-  &:hover > .avatarSelector {
-    opacity: 1;
-  }
-}
-
 .avatarSelector {
   position: absolute;
   top: 0;
@@ -35,4 +26,13 @@
   opacity: 0;
   cursor: pointer;
   transition: opacity 0.3s ease;
+}
+
+.avatarWrapper {
+  position: relative;
+  max-height: 200px;
+
+  &:hover > .avatarSelector {
+    opacity: 1;
+  }
 }

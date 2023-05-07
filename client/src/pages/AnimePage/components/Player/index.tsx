@@ -1,13 +1,12 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { OnProgressProps } from 'react-player/base'
-import ReactPlayer from 'react-player'
 
 import { SeriesUsually, Title } from '@anilibriaApi/types'
 import { Flex } from '@components/Flex'
-import { Select, SelectMenu } from '@components/Select'
-import { anilibria } from '@anilibriaApi/anilibria'
-import { Quality, SeriesInfo } from '@pages/AnimePage/components/Player/types'
+import { SelectMenu } from '@components/Select'
+import { PlayerRef, Quality, SeriesInfo } from '@components/Player'
 import { useCache } from '@hooks/useCache'
+import { Player as MyPlayer } from '@components'
 
 const initialQualities = [
 	{
@@ -22,37 +21,68 @@ const initialQualities = [
 	}
 ]
 
-const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
-
 interface PlayerProps {
 	title: Title
 	margin?: string
 }
 
 const Player: FC<PlayerProps> = ({ title, margin }) => {
+	const player = useRef<PlayerRef>(null)
+
 	// Series
 	const [allSeries, setAllSeries] = useState<SelectMenu<SeriesUsually>[]>([])
-	const onChangeSeriesSelect = (series: SelectMenu<SeriesUsually>) => {
-		return () => {
-			setSeriesInfo(prevSeriesInfo => ({
+
+	const changeSeries = (series: SelectMenu<SeriesUsually>) => {
+		setSeriesInfo(prevSeriesInfo => ({
+			...prevSeriesInfo,
+			time: 0,
+			series
+		}))
+	}
+
+	const onClickNextSeries = () => {
+		setSeriesInfo(prevSeriesInfo => {
+			let nextSeries = allSeries.find(
+				series => series.id === prevSeriesInfo.series.id + 1
+			)
+			if (!nextSeries) {
+				nextSeries = allSeries[0]
+			}
+
+			return {
 				...prevSeriesInfo,
 				time: 0,
-				series
-			}))
-		}
+				series: nextSeries
+			}
+		})
+	}
+
+	const onClickPrevSeries = () => {
+		setSeriesInfo(prevSeriesInfo => {
+			let prevSeries = allSeries.find(
+				series => series.id === prevSeriesInfo.series.id - 1
+			)
+			if (!prevSeries) {
+				prevSeries = allSeries.at(-1) as SelectMenu<SeriesUsually>
+			}
+
+			return {
+				...prevSeriesInfo,
+				time: 0,
+				series: prevSeries
+			}
+		})
 	}
 	// Series
 
 	// Quality
 	const [qualities, setQualities] =
 		useState<SelectMenu<Quality>[]>(initialQualities)
-	const onChangeQualitySelect = (quality: SelectMenu<Quality>) => {
-		return () => {
-			setSeriesInfo(prevSeriesInfo => ({
-				...prevSeriesInfo,
-				quality: quality
-			}))
-		}
+	const changeQuality = (quality: SelectMenu<Quality>) => {
+		setSeriesInfo(prevSeriesInfo => ({
+			...prevSeriesInfo,
+			quality: quality
+		}))
 	}
 	// Quality
 
@@ -121,9 +151,8 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 		}))
 	}
 
-	const player = useRef<ReactPlayer>(null)
 	const onStartPlayer = () => {
-		player.current?.seekTo(seriesInfo.time || 0)
+		player.current?.seekTo?.(seriesInfo.time || 0)
 	}
 
 	const host = title.player.host
@@ -132,28 +161,23 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	}`
 
 	return (
-		<Flex margin={margin} flexDirection='column'>
-			<Flex>
-				<Select
-					options={qualities}
-					currentOption={seriesInfo.quality}
-					onChange={onChangeQualitySelect}
-					margin='0 4px 0 0'
-				/>
-				<Select
-					options={allSeries}
-					currentOption={seriesInfo.series}
-					onChange={onChangeSeriesSelect}
-				/>
-			</Flex>
-			<ReactPlayer
+		<Flex margin={margin}>
+			<MyPlayer
 				ref={player}
 				url={videoUrl}
 				width='100%'
 				height='auto'
 				controls
+				qualities={qualities}
+				currentQuality={seriesInfo.quality}
+				onChangeQuality={changeQuality}
+				allSeries={allSeries}
+				currentSeries={seriesInfo.series}
+				onChangeSeries={changeSeries}
 				onProgress={onProgressPlayer}
 				onStart={onStartPlayer}
+				onNextVideo={onClickNextSeries}
+				onPrevVideo={onClickPrevSeries}
 			/>
 		</Flex>
 	)
