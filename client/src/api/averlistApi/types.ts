@@ -8,8 +8,6 @@ import {
 	Anime as AnimeInterface,
 	NewAnime as NewAnimeInterface
 } from '@averlistApi/entities/anime/types'
-import { Invitation as InvitationInterface } from '@averlistApi/entities/invitations/types'
-import { News as NewsInterface } from '@averlistApi/entities/news/types'
 import {
 	ChangePassword as ChangePasswordInterface,
 	Login as LoginInterface,
@@ -24,8 +22,6 @@ export namespace Averlist {
 	export type EditCollection = EditCollectionInterface
 	export type Anime = AnimeInterface
 	export type NewAnime = NewAnimeInterface
-	export type Invitation = InvitationInterface
-	export type News = NewsInterface
 	export type Registration = RegistrationInterface
 	export type Login = LoginInterface
 	export type ChangePassword = ChangePasswordInterface

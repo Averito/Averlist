@@ -7,8 +7,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { getNodemailerConfig } from '@config/nodemailer.config'
 import { AnimeModule } from './anime/anime.module'
 import { CollectionModule } from './collection/collection.module'
-import { InvitationModule } from './invitation/invitation.module'
-import { NewsModule } from './news/news.module'
 
 @Module({
 	imports: [
@@ -23,9 +21,7 @@ import { NewsModule } from './news/news.module'
 			useFactory: getNodemailerConfig
 		}),
 		AnimeModule,
-		CollectionModule,
-		InvitationModule,
-		NewsModule
+		CollectionModule
 	],
 	controllers: [],
 	providers: []

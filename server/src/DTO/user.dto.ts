@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Role } from '@enums/role.enum'
-import { InvitationDto } from './invitation.dto'
 import { AnimeDto } from './anime.dto'
 import { CollectionDto } from './collection.dto'
 
@@ -45,27 +44,6 @@ export class UserDto {
 
 	@ApiProperty({ name: 'role', enum: Role, default: Role.USER })
 	role: Role
-
-	@ApiProperty({
-		name: 'friend_by',
-		description: 'Users who have this user as friends'
-	})
-	friend_by: UserDto[]
-
-	@ApiProperty({
-		name: 'friend_with',
-		description: 'Users with whom this user is friends'
-	})
-	friend_with: UserDto[]
-
-	@ApiProperty({
-		name: 'invitedBy',
-		description: 'Received friend invitations'
-	})
-	invitedBy: InvitationDto[]
-
-	@ApiProperty({ name: 'sender', description: 'Sent friend invitations' })
-	sender: InvitationDto[]
 
 	@ApiProperty({ name: 'anime_list' })
 	anime_list: AnimeDto[]

@@ -31,22 +31,28 @@ export const Registration: NextPage = () => {
 	}
 
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
-		event.preventDefault()
-		if (!login || !name || !email)
-			return errorToast('Поля не должны быть пустыми')
-		if (password !== passwordAgain) return toast.error('Пароли не совпадают')
-		if (!email.includes('@'))
-			return errorToast('Электронная почта введена не в верном формате')
-		if (!isCompleteCaptcha) return errorToast('Капча не пройдена')
+		try {
+			event.preventDefault()
+			if (!login || !name || !email)
+				return errorToast('Поля не должны быть пустыми')
+			if (password !== passwordAgain) return toast.error('Пароли не совпадают')
+			if (!email.includes('@'))
+				return errorToast('Электронная почта введена не в верном формате')
+			if (!isCompleteCaptcha) return errorToast('Капча не пройдена')
 
-		await userStore.registration({
-			login,
-			name,
-			email,
-			password
-		})
+			await userStore.registration({
+				login,
+				name,
+				email,
+				password
+			})
 
-		await router.push('/lk')
+			await router.push('/lk')
+		} catch {
+			errorToast(
+				'Регистрация не удалась, проверьте введённые данные или попробуйте позже'
+			)
+		}
 	}
 
 	const additionalText = (
