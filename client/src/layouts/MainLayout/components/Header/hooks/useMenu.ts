@@ -16,11 +16,6 @@ const menuWithoutAuth: MenuItem[] = [
 		to: '/'
 	},
 	{
-		id: 1,
-		name: 'Новости',
-		to: '/news'
-	},
-	{
 		id: 3,
 		name: 'Каталог',
 		to: '/anime'
@@ -47,11 +42,6 @@ const menuWithAuth: MenuItem[] = [
 		id: 4,
 		name: 'Коллекции',
 		to: '/lk/collections'
-	},
-	{
-		id: 5,
-		name: 'Новости',
-		to: '/news'
 	},
 	{
 		id: 3,

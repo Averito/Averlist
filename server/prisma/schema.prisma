@@ -21,10 +21,6 @@ model User {
   refreshTokenHash    String?
   activate_link       String                       @unique
   role                String                       @default("user")
-  friend_by           UserFriendList[]             @relation("invitedUser2")
-  friend_with         UserFriendList[]             @relation("senderUser2")
-  invitedBy           Invitation[]                 @relation("invitedUser")
-  senderTo            Invitation[]                 @relation("senderUser")
   anime_list          Anime[]
   collections         Collection[]
   favoriteCollections FavoriteCollectionsOnUsers[]
@@ -32,15 +28,6 @@ model User {
   updated_at          DateTime                     @updatedAt
 
   @@map("users")
-}
-
-model UserFriendList {
-  senderUser    User   @relation("senderUser2", fields: [senderUserId], references: [id])
-  senderUserId  String
-  invitedUser   User   @relation("invitedUser2", fields: [invitedUserId], references: [id])
-  invitedUserId String
-
-  @@id([senderUserId, invitedUserId])
 }
 
 model Anime {
@@ -91,25 +78,4 @@ model FavoriteCollectionsOnUsers {
   collectionId String
 
   @@id([userId, collectionId])
-}
-
-model Invitation {
-  id            String   @id @default(uuid())
-  senderUser    User     @relation("senderUser", fields: [senderUserId], references: [id])
-  senderUserId  String
-  invitedUser   User     @relation("invitedUser", fields: [invitedUserId], references: [id])
-  invitedUserId String
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  @@map("invitations")
-}
-
-model News {
-  id         String   @id @default(uuid())
-  title      String
-  text       String
-  image      String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
 }
