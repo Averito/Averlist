@@ -13,26 +13,21 @@ export const useAuth = () => {
 
 	useEffect(() => {
 		const asyncWrapper = async () => {
+			const me = await averlist.users.me()
+
+			userStore.userAuth()
+			userStore.setUser(me)
+			animeListStore.setAnimeList(me.anime_list ?? [])
+			collectionsStore.setCollections(me.collections ?? [])
+			favoriteCollectionsStore.setCollections(me.favoriteCollections ?? [])
+
 			try {
-				const me = await averlist.users.me()
-
-				userStore.userAuth()
-				userStore.setUser(me)
-				animeListStore.setAnimeList(me.anime_list ?? [])
-				collectionsStore.setCollections(me.collections ?? [])
-				favoriteCollectionsStore.setCollections(me.favoriteCollections ?? [])
-
-				try {
-					if (!getCookie('refreshToken')) return
-					await averlist.auth.getAccess(getCookie('refreshToken') as string)
-				} catch (e) {
-					return
-				}
-			} catch {
-				if (!router.asPath.includes('lk')) return
-				await router.push('/')
+				if (!getCookie('refreshToken')) return
+				await averlist.auth.getAccess(getCookie('refreshToken') as string)
+			} catch (e) {
+				return
 			}
 		}
-		asyncWrapper()
+		void asyncWrapper()
 	}, [router.pathname])
 }
