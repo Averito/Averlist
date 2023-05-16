@@ -1,22 +1,34 @@
-# AnimeList
-This site need for watching a anime and management your anime list.
+# Averlist
+Данный сайт позволяет смотреть аниме и управлять своим аниме-листом.
+Также позволяет добавлять аниме которых нет на сайте (Ограничено базой данных Anilibria).
 
-## How to start?
+## Как начать?
 
-Install main dependencies use command:
+Установите зависимости командой:
 
-### `npm install`
+```shell
+npm install
+```
+Затем:
 
-Install all dependencies use command:
 
-### `npm run install:project`
+```shell
+npm run install:project
+```
 
-Then in the project directory, you can run:
+Затем вам потребуется заполнить .env.local в client и .env в server.
 
-### `npm run start:prod`
+После этого можно запускать командой:
+```shell
+npm run dev
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Данная команда запустит отдельно frontend:
+```shell
+npm run client:dev
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Данная команда запустит отдельно backend:
+```shell
+npm run server:dev
+```
