@@ -1,30 +1,40 @@
 import { GetStaticProps } from 'next'
 
 import { Home } from '@pages/Home'
-import { QueryObject } from '@helpers/queryParamsString'
-import { anilibria, queryObjectByDefault } from '@anilibriaApi/anilibria'
-import { firstSeriesToSeriesUsually } from '@helpers/firstSeriesToSeriesUsually'
+import { queryObjectByDefault } from '@anilibriaApi/anilibria'
+import {
+	getAnilibriaChanges,
+	getAnilibriaSchedule,
+	GetAnilibriaScheduleQueryParams,
+	getAnilibriaUpdates,
+	GetAnilibriaUpdatesQueryParams
+} from 'anilibria-api-wrapper'
 
 export default Home
 
 export const getStaticProps: GetStaticProps = async () => {
-	const objectParamsForSlider: QueryObject = {
+	const objectParamsForSlider: GetAnilibriaUpdatesQueryParams = {
 		filter: ['id', 'names', 'description', 'player', 'status', 'type', 'code'],
-		limit: 5
+		limit: 5,
+		playlist_type: 'array'
 	}
-	const objectParamsForSchedule: QueryObject = {
-		filter: queryObjectByDefault.filter
+	const objectParamsForSchedule: GetAnilibriaScheduleQueryParams = {
+		filter: queryObjectByDefault.filter as string[],
+		days: [0, 1, 2, 3, 4, 5, 6]
 	}
-	const days = [0, 1, 2, 3, 4, 5, 6]
 
-	const updatesTitleList = await anilibria.getUpdates(queryObjectByDefault)
-	const changesTitleList = await anilibria.getChanges(queryObjectByDefault)
-	const scheduleOfWeek = await anilibria.getSchedule(
-		objectParamsForSchedule,
-		days
+	const { data: updatesTitleList } = await getAnilibriaUpdates(
+		queryObjectByDefault
 	)
-	let firstFiveTitles = await anilibria.getChanges(objectParamsForSlider)
-	firstFiveTitles = firstSeriesToSeriesUsually(firstFiveTitles, 5)
+	const { data: changesTitleList } = await getAnilibriaChanges(
+		queryObjectByDefault
+	)
+	const { data: scheduleOfWeek } = await getAnilibriaSchedule(
+		objectParamsForSchedule
+	)
+	const { data: firstFiveTitles } = await getAnilibriaUpdates(
+		objectParamsForSlider
+	)
 
 	return {
 		props: {

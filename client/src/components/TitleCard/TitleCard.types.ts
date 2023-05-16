@@ -1,4 +1,4 @@
-import { Title } from '@anilibriaApi/types'
+import { Title } from 'anilibria-api-wrapper'
 
 export interface TitleCardProps {
 	title: Title

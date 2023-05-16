@@ -4,8 +4,7 @@ import Modal from '@components/Modal/Modal'
 import { AutocompleteMenu } from '@components/Autocomplete'
 import { Autocomplete } from '@components'
 import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
-import { Title } from '@anilibriaApi/types'
-import { anilibria } from '@anilibriaApi/anilibria'
+import { getAnilibriaTitle, Title } from 'anilibria-api-wrapper'
 import { errorToast } from '@helpers/toasts'
 import { Averlist } from '@averlistApi/types'
 import { Select, SelectMenu } from '@components/Select'
@@ -40,10 +39,10 @@ const AnimeListCreateAnimeModal: FC<AnimeListCreateAnimeModalProps> = ({
 
 	const [selectedTitle, setSelectedTitle] = useState<Title | null>(null)
 	const onSelectAnimeName = async (animeName: AutocompleteMenu) => {
-		const title = await anilibria.getTitle({
-			id: animeName.id
+		const title = await getAnilibriaTitle({
+			id: animeName.id as number
 		})
-		setSelectedTitle(title)
+		setSelectedTitle(title.data)
 	}
 
 	const autocompleteMenus: AutocompleteMenu[] = data
@@ -86,9 +85,9 @@ const AnimeListCreateAnimeModal: FC<AnimeListCreateAnimeModalProps> = ({
 			title => title.name === animeName
 		)
 		if (autocompleteMenuIncludesAnimeName && !selectedTitle) {
-			titleIncludesAnimeName = await anilibria.getTitle({
-				id: autocompleteMenuIncludesAnimeName.id
-			})
+			titleIncludesAnimeName = await getAnilibriaTitle({
+				id: autocompleteMenuIncludesAnimeName.id as number
+			}).then(response => response.data)
 		}
 
 		const title = selectedTitle || titleIncludesAnimeName

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import styles from './Description.module.scss'
-import { Title } from '@anilibriaApi/types'
+import { Title } from 'anilibria-api-wrapper'
 
 interface DescriptionProps {
 	title: Title

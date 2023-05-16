@@ -1,8 +1,8 @@
 import { FC } from 'react'
+import { Schedule, Title } from 'anilibria-api-wrapper'
 
 import styles from './HomeDesktop.module.scss'
 import { AnimeSlider } from '@components/AnimeSlider/AnimeSlider'
-import { Schedule, Title } from '@anilibriaApi/types'
 
 interface HomeDesktopProps {
 	scheduleOfWeek: Schedule[]

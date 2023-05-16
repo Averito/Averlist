@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { BsDownload } from 'react-icons/bs'
+import { Title } from 'anilibria-api-wrapper'
 
 import styles from './TorrentDownloads.module.scss'
-import { Title } from '@anilibriaApi/types'
 import { Flex } from '@components/Flex'
 
 interface TorrentDownloadsProps {

@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { FC } from 'react'
+import { Title } from 'anilibria-api-wrapper'
 
 import styles from './AnimePageMobile.module.scss'
-import { Title } from '@anilibriaApi/types'
 import { StatusYearType } from '@pages/AnimePage/components/StatusYearType'
 import { Button } from '@components/Button'
 import { Description } from './components/Description'
