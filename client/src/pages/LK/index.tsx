@@ -1,4 +1,4 @@
-import { Observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { NextPage } from 'next'
 import Link from 'next/link'
 
@@ -12,7 +12,7 @@ import { Flex } from '@components/Flex'
 import { Averlist } from '@averlistApi/types'
 import { useProtectedRoute } from '@hooks/useProtectedRoute'
 
-export const LK: NextPage = () => {
+export const LK: NextPage = observer(() => {
 	useProtectedRoute('/', userStore.isAuth)
 
 	return (
@@ -24,15 +24,11 @@ export const LK: NextPage = () => {
 			<div className={styles.container}>
 				<div className={styles.wrapper}>
 					<div className={styles.mainBlock}>
-						<Observer>
-							{() => (
-								<AnimeListStats
-									backgroundColor='#2b214f'
-									padding='15px'
-									animeList={userStore.user.anime_list || []}
-								/>
-							)}
-						</Observer>
+						<AnimeListStats
+							backgroundColor='#2b214f'
+							padding='15px'
+							animeList={userStore.user.anime_list || []}
+						/>
 						<Avatar />
 					</div>
 					<Flex gap='15px' margin='15px 0 0 0'>
@@ -50,4 +46,4 @@ export const LK: NextPage = () => {
 			</div>
 		</>
 	)
-}
+})

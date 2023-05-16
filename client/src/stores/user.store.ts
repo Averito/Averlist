@@ -28,47 +28,34 @@ class UserStore {
 	}
 
 	@action
-	public async registration(body: Averlist.Registration, showError = true) {
-		try {
-			const registrationResponse = await averlist.auth.registration(body)
+	public async registration(body: Averlist.Registration) {
+		const registrationResponse = await averlist.auth.registration(body)
 
-			if (body.emailActive) {
-				successToast('Регистрация прошло успешно')
-			} else {
-				successToast(
-					'Регистрация прошла успешно, на почту отправлено письмо о подтверждении (В течении 2ух минут)'
-				)
-			}
-
-			runInAction(() => {
-				this.userAuth()
-				this.setUser(registrationResponse.user)
-			})
-		} catch {
-			if (!showError) return
-			errorToast(
-				'Регистрация не удалась, проверьте введённые данные или попробуйте позже'
+		if (body.emailActive) {
+			successToast('Регистрация прошла успешно')
+		} else {
+			successToast(
+				'Регистрация прошла успешно, на почту отправлено письмо о подтверждении (В течении 2ух минут)'
 			)
 		}
+
+		runInAction(() => {
+			this.userAuth()
+			this.setUser(registrationResponse.user)
+		})
 	}
 
 	@action
 	public async login(body: Averlist.Login) {
-		try {
-			await averlist.auth.login(body)
-			const me = await averlist.users.me()
+		await averlist.auth.login(body)
+		const me = await averlist.users.me()
 
-			successToast('Добро пожаловать, мой Господин')
+		successToast('Добро пожаловать, мой Господин')
 
-			runInAction(() => {
-				this.userAuth()
-				this.setUser(me)
-			})
-		} catch {
-			errorToast(
-				'Вход не удался, проверьте введённые данные или попробуйте позже'
-			)
-		}
+		runInAction(() => {
+			this.userAuth()
+			this.setUser(me)
+		})
 	}
 
 	@action
