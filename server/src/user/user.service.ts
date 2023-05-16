@@ -5,7 +5,7 @@ import path from 'path'
 import { PrismaService } from '../prisma.service'
 import { GetAllUsersType } from '../types/getAllUsers.type'
 import { removePrevFile } from '@utils/removePrevFile.util'
-import { FRIEND_NOT_FOUND, LARGE_LIMIT, maxLimit } from './user.constants'
+import { LARGE_LIMIT, maxLimit } from './user.constants'
 import { Crop } from '@interfaces/crop.interface'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -16,7 +16,6 @@ export class UserService {
 	public async getAllForAdmin(): Promise<User[]> {
 		return this.prisma.user.findMany({
 			include: {
-				friend_with: true,
 				anime_list: true,
 				collections: true
 			}
@@ -34,7 +33,6 @@ export class UserService {
 				name: true,
 				avatar: true,
 				anime_list: true,
-				friend_with: true,
 				collections: true
 			},
 			take: limit,
@@ -62,11 +60,7 @@ export class UserService {
 							}
 						}
 					}
-				},
-				friend_with: true,
-				friend_by: true,
-				invitedBy: true,
-				senderTo: true
+				}
 			}
 		})
 	}
@@ -124,31 +118,5 @@ export class UserService {
 	}
 	public async removeUserById(userId: string): Promise<User> {
 		return this.prisma.user.delete({ where: { id: userId } })
-	}
-	public async removeFriend(friendId: string, meId: string): Promise<User> {
-		const hasFriend = await this.prisma.userFriendList.findUnique({
-			where: {
-				senderUserId_invitedUserId: {
-					senderUserId: meId,
-					invitedUserId: friendId
-				}
-			}
-		})
-		if (!hasFriend) throw new BadRequestException(FRIEND_NOT_FOUND)
-
-		await this.prisma.userFriendList.delete({
-			where: {
-				senderUserId_invitedUserId: {
-					senderUserId: meId,
-					invitedUserId: friendId
-				}
-			}
-		})
-
-		return this.prisma.user.findUnique({
-			where: {
-				id: friendId
-			}
-		})
 	}
 }
