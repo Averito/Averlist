@@ -1,5 +1,5 @@
 interface AnyArray {
-	id: number
+	id: number | string
 	[key: string]: any
 }
 

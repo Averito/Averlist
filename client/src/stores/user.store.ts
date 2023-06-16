@@ -8,7 +8,7 @@ import { errorToast, successToast } from '@helpers/toasts'
 import { averlist } from '@averlistApi/averlist'
 
 class UserStore {
-	@observable public isAuth = false
+	@observable public isAuth = true
 	@observable public user: Averlist.User = {} as Averlist.User
 
 	@observable private _currentAvatar: string = defaultAvatar.src
@@ -21,6 +21,12 @@ class UserStore {
 	@computed
 	public get currentName(): string {
 		return this._currentName
+	}
+
+	@observable private _path = ''
+	@computed
+	public get path() {
+		return this._path
 	}
 
 	constructor() {
@@ -64,6 +70,11 @@ class UserStore {
 	}
 
 	@action
+	public userNotAuth() {
+		this.isAuth = false
+	}
+
+	@action
 	public setUser(user: Averlist.User) {
 		this.user = user
 
@@ -88,6 +99,11 @@ class UserStore {
 	public setCurrentName(name?: string) {
 		this._currentName = getCurrentName(name)
 		if (name) this.user.name = name
+	}
+
+	@action
+	public setPath(path: string) {
+		this._path = path
 	}
 }
 

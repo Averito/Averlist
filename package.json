@@ -4,8 +4,8 @@
   "description": "This site need for watching a anime and management your anime list.",
   "main": "server/src/main.ts",
   "scripts": {
-    "start": "concurrently \"npm run server:start\" \"npm run client:start\"",
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "start": "concurrently \"npm run docker && npm run server:start\" \"npm run client:start\"",
+    "dev": "concurrently \"npm run docker && npm run server:dev\" \"npm run client:dev\"",
     "build": "concurrently \"npm run server:build\" \"npm run client:build\"",
     "lint": "concurrently \"npm run server:lint\" \"npm run client:lint\"",
     "install:project": "concurrently \"npm run server:install\" \"npm run client:install\"",
@@ -20,7 +20,8 @@
     "client:eslint:fix": "cd client && npm run eslint:fix",
     "client:stylelint:fix": "cd client && npm run stylelint:fix",
     "client:lint": "cd client && npm run lint",
-    "client:install": "cd client && npm install"
+    "client:install": "cd client && npm install",
+    "docker": "docker-compose up -d"
   },
   "repository": {
     "type": "git",

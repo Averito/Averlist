@@ -1,9 +1,5 @@
 import { Averlist } from '@averlistApi/types'
-import {
-	AccessToken,
-	LoginResponse,
-	RegistrationResponse
-} from '@averlistApi/entities/auth/types'
+import { AccessToken, LoginResponse, RegistrationResponse } from '@averlistApi/entities/auth/types'
 import { axios } from '@averlistApi/averlist'
 
 export const auth = {

@@ -24,6 +24,8 @@ export const Login: NextPage = () => {
 				email,
 				password
 			})
+
+			if (userStore.path) return await router.push(userStore.path)
 			await router.push('/lk')
 		} catch {
 			errorToast(

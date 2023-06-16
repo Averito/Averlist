@@ -1,10 +1,25 @@
-import { FC, memo } from 'react'
+import { forwardRef } from 'react'
+import cs from 'classnames'
 
 import styles from './Input.module.scss'
 import { InputProps } from './Input.types'
 
-export const Input: FC<InputProps> = memo(
-	({ value, onChange, placeholder, name, width, label, type, margin }) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+	(
+		{
+			value,
+			onChange,
+			onKeyDown,
+			placeholder,
+			className,
+			name,
+			width,
+			label,
+			type,
+			margin
+		},
+		ref
+	) => {
 		const widthStyle = { width: width ?? '240px' }
 		const marginStyle = { margin }
 
@@ -12,12 +27,14 @@ export const Input: FC<InputProps> = memo(
 			<div style={marginStyle}>
 				{label && <p className={styles.label}>{label}</p>}
 				<input
+					ref={ref}
 					type={type}
-					className={styles.input}
+					className={cs(styles.input, className)}
 					style={widthStyle}
 					name={name}
 					value={value}
 					onChange={onChange}
+					onKeyDown={onKeyDown}
 					placeholder={placeholder}
 					autoComplete='off'
 				/>

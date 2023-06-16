@@ -6,13 +6,16 @@ import Image from 'next/image'
 import classnames from 'classnames'
 
 import styles from './Header.module.scss'
-import { Hamburger } from '@layouts/MainLayout/components/Header/components/Hamburger'
 import { IgnorePaths } from '@components/IgnorePaths'
 import { Dropdown } from '@components/Dropdown'
 import userStore from '@stores/user.store'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
 import { Averlist } from '@averlistApi/types'
 import { averlist } from '@averlistApi/averlist'
+import {
+	HeaderSearch,
+	Hamburger
+} from '@layouts/MainLayout/components/Header/components'
 
 const NEXT_PUBLIC_DISCORD_INVITE_LINK =
 	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
@@ -61,6 +64,11 @@ export const Header: FC = observer(() => {
 		},
 		{
 			id: 4,
+			label: 'Мои любимые коллекции',
+			href: '/lk/collections/favorites'
+		},
+		{
+			id: 5,
 			label: 'Выход',
 			onClick: async () => {
 				await averlist.auth.logout()
@@ -88,13 +96,16 @@ export const Header: FC = observer(() => {
 			<header className={classnames(styles.container, mainPage)}>
 				<Hamburger />
 				<div className={styles.containerBlock1}>
-					<h1
-						className={styles.title}
-						data-text='Averlist'
-						onClick={onClickOnTitle}
-					>
-						Averlist
-					</h1>
+					<div className={styles.containerBlock1WithSearch}>
+						<h1
+							className={styles.title}
+							data-text='Averlist'
+							onClick={onClickOnTitle}
+						>
+							Averlist
+						</h1>
+						<HeaderSearch />
+					</div>
 					<nav>
 						<ul className={styles.navList}>
 							{menuWithoutAuth.map(menuItem => (
@@ -128,7 +139,6 @@ export const Header: FC = observer(() => {
 							</a>
 						</Link>
 					</Dropdown>
-					<p className={styles.login}>{userStore.currentName}</p>
 				</div>
 			</header>
 		</IgnorePaths>

@@ -1,0 +1,11 @@
+.container {
+  display: grid;
+
+  @media all and (max-width: 768px) {
+    padding: 10px;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid rgba(63, 47, 114, 0.52);
+    }
+  }
+}

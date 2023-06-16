@@ -43,6 +43,6 @@ export const getStaticProps: GetStaticProps = async () => {
 			firstFiveTitles,
 			scheduleOfWeek
 		},
-		revalidate: 60
+		revalidate: 60 * 60 * 24
 	}
 }

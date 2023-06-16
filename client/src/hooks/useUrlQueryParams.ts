@@ -1,20 +1,21 @@
-import { useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 export const useUrlQueryParams = (
 	queryName: string,
 	initialValue: string,
 	onExtract?: (initialValue: string) => void
-): [string, (newValue: string) => Promise<void>] => {
+): [string, Dispatch<SetStateAction<string>>] => {
 	const router = useRouter()
+	const [value, setValue] = useState<string>(initialValue)
 
-	const setValue = async (newValue: string) => {
-		await router.push(
+	useEffect(() => {
+		void router.push(
 			{
 				pathname: router.pathname,
 				query: {
 					...router.query,
-					[queryName]: newValue
+					[queryName]: value
 				}
 			},
 			undefined,
@@ -22,18 +23,22 @@ export const useUrlQueryParams = (
 				shallow: true
 			}
 		)
-	}
+	}, [value])
 
 	useEffect(() => {
-		const baseValue = router.query[queryName]
-		if (baseValue) {
-			if (onExtract) onExtract(baseValue as string)
-			return
+		const asyncWrapper = async () => {
+			const baseValue = router.query[queryName]
+			if (baseValue) {
+				onExtract?.(baseValue as string)
+				setValue(baseValue as string)
+				return
+			}
+
+			await setValue(initialValue)
+			onExtract?.(initialValue)
 		}
+		void asyncWrapper()
+	}, [router.query])
 
-		setValue(initialValue)
-		if (onExtract) onExtract(initialValue)
-	}, [])
-
-	return [(router.query[queryName] as string) || initialValue, setValue]
+	return [value, setValue]
 }

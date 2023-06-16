@@ -1,0 +1,13 @@
+.authorContainer {
+  display: flex;
+  align-items: center;
+}
+
+.authorImg {
+  border-radius: 50%;
+}
+
+.authorName {
+  font-size: var(--medium-font-size);
+  margin-left: 8px;
+}

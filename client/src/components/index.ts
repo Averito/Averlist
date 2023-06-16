@@ -15,6 +15,8 @@ import { Select } from '@components/Select'
 import { Tabs } from '@components/Tabs'
 import { Tag } from '@components/Tag'
 import { TitleCard } from '@components/TitleCard'
+import { Description } from '@components/Description'
+import { AnimeCard } from '@components/AnimeCard'
 
 export {
 	AnimeListStats,
@@ -33,5 +35,7 @@ export {
 	Select,
 	Tabs,
 	Tag,
-	TitleCard
+	TitleCard,
+	Description,
+	AnimeCard
 }
