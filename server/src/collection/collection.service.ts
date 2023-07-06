@@ -43,7 +43,7 @@ export class CollectionService {
 	public async getCollectionById(collectionId: string, token: string) {
 		const jwtPayload = decode(token) as JwtPayload
 		const user = await this.prisma.user.findUnique({
-			where: { id: jwtPayload.userId }
+			where: { id: jwtPayload?.userId }
 		})
 
 		const collection = await this.prisma.collection.findUnique({

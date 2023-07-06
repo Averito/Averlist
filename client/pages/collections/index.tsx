@@ -1,10 +1,10 @@
 import { Collections } from '@pages/Collections'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import { averlist } from '@averlistApi/averlist'
 
 export default Collections
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	const collections = await averlist.collections.all({
 		page: 1,
 		pageSize: 10,
@@ -14,7 +14,6 @@ export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			collections
-		},
-		revalidate: 60 * 60 * 24
+		}
 	}
 }

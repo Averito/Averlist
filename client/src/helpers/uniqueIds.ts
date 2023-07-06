@@ -4,19 +4,15 @@ interface AnyArray {
 }
 
 export const uniqueIds = <T extends AnyArray>(array: T[]): T[] => {
-	const resultArray: T[] = []
+	const resultArray: T[] = [];
+	const values = new Map<AnyArray['id'], null>();
 
 	for (const key in array) {
-		let includes = false
+		if (values.has(array[key].id)) continue;
 
-		for (const nestedKey in resultArray) {
-			if (array[key].id === resultArray[nestedKey].id) {
-				includes = true
-			}
-		}
-
-		if (!includes) resultArray.push(array[key])
+		values.set(array[key].id, null);
+		resultArray.push(array[key]);
 	}
 
-	return resultArray
-}
+	return resultArray;
+};

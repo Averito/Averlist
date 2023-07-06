@@ -80,11 +80,7 @@ export const Collections: NextPage<CollectionsProps> = observer(
 					<div className={styles.collections}>
 						{collectionsForIterate.length ? (
 							collectionsForIterate.map(collection => (
-								<CollectionCard
-									key={collection.id}
-									collection={collection}
-									myPage
-								/>
+								<CollectionCard key={collection.id} collection={collection} />
 							))
 						) : (
 							<p>По вашему запросу ничего не найдено</p>
