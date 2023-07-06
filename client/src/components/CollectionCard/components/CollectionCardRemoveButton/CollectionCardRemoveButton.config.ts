@@ -1,0 +1,1 @@
+export const ANIMATION_REMOVE_TIME_IN_MS = 300

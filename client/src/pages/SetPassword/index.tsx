@@ -31,6 +31,8 @@ export const SetPassword: NextPage = () => {
 
 			try {
 				await userStore.registration(registrationBody)
+
+				if (userStore.path) return await router.push(userStore.path)
 				await router.push('/lk')
 			} catch {
 				errorToast(
@@ -45,6 +47,8 @@ export const SetPassword: NextPage = () => {
 
 			try {
 				await userStore.login(loginBody)
+
+				if (userStore.path) return await router.push(userStore.path)
 				await router.push('/lk')
 			} catch {
 				errorToast(

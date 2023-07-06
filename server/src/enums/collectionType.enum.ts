@@ -1,4 +1,4 @@
 export enum CollectionType {
-	PRIVATE = 'private',
-	PUBLIC = 'public'
+	PRIVATE = 'Приватно',
+	PUBLIC = 'Публично'
 }

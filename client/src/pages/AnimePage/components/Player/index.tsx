@@ -86,12 +86,11 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	}
 	// Quality
 
-	const firstSeriesNum = +Object.keys(title.player.playlist)[0]
 	const [seriesInfo, setSeriesInfo] = useState<SeriesInfo>({
 		series: {
 			id: 0,
-			label: `${title.player.playlist[firstSeriesNum].serie} серия`,
-			value: title.player.playlist[firstSeriesNum]
+			label: `${title.player.playlist[0]?.serie} серия`,
+			value: title.player.playlist[0]
 		},
 		quality: qualities[0],
 		time: 0
@@ -124,7 +123,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 	useEffect(() => {
 		const hasFhdQuality =
 			qualities.findIndex(quality => quality.value === 'fhd') !== -1
-		const seriesHasFhdQuality = !!seriesInfo.series.value.hls?.fhd
+		const seriesHasFhdQuality = !!seriesInfo.series.value?.hls?.fhd
 
 		if (!hasFhdQuality && !seriesHasFhdQuality) return
 		if (hasFhdQuality && !seriesHasFhdQuality) {
@@ -140,7 +139,7 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 				value: 'fhd'
 			}
 		])
-	}, [seriesInfo.series.value.hls?.fhd])
+	}, [seriesInfo.series.value?.hls?.fhd])
 
 	const onProgressPlayer = (progress: OnProgressProps) => {
 		if (progress.playedSeconds === 0) return
@@ -160,25 +159,37 @@ const Player: FC<PlayerProps> = ({ title, margin }) => {
 		(seriesInfo.series.value as Series)?.hls[seriesInfo.quality.value]
 	}`
 
+	const rutubeWarning =
+		title.player.rutube_playlist?.length !== 0 &&
+		title.player.playlist.length === 0
+
 	return (
 		<Flex margin={margin}>
-			<MyPlayer
-				ref={player}
-				url={videoUrl}
-				width='100%'
-				height='auto'
-				controls
-				qualities={qualities}
-				currentQuality={seriesInfo.quality}
-				onChangeQuality={changeQuality}
-				allSeries={allSeries}
-				currentSeries={seriesInfo.series}
-				onChangeSeries={changeSeries}
-				onProgress={onProgressPlayer}
-				onStart={onStartPlayer}
-				onNextVideo={onClickNextSeries}
-				onPrevVideo={onClickPrevSeries}
-			/>
+			{title.player.playlist.length !== 0 && (
+				<MyPlayer
+					ref={player}
+					url={videoUrl}
+					width='100%'
+					height='auto'
+					controls
+					qualities={qualities}
+					currentQuality={seriesInfo.quality}
+					onChangeQuality={changeQuality}
+					allSeries={allSeries}
+					currentSeries={seriesInfo.series}
+					onChangeSeries={changeSeries}
+					onProgress={onProgressPlayer}
+					onStart={onStartPlayer}
+					onNextVideo={onClickNextSeries}
+					onPrevVideo={onClickPrevSeries}
+				/>
+			)}
+			{rutubeWarning && (
+				<p>
+					У данного аниме отсутствуют прямые ссылки на серию, только rutube, а
+					данный способ просмотра аниме пока не поддерживается.
+				</p>
+			)}
 		</Flex>
 	)
 }

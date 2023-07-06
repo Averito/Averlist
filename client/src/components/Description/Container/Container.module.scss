@@ -1,0 +1,10 @@
+.container {
+  display: grid;
+  height: fit-content;
+
+  @media all and (max-width: 768px) {
+    background-color: #2d2252;
+    border-radius: 10px;
+    grid-gap: 0 !important;
+  }
+}

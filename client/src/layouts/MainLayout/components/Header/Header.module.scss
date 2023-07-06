@@ -35,7 +35,16 @@
   align-items: center;
 }
 
+.containerBlock1WithSearch {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
 .containerBlock1 {
+  justify-content: space-between;
+  width: min(100%, 650px);
+
   @media all and (max-width: 768px) {
     display: none;
   }
@@ -68,6 +77,7 @@
 .navList {
   display: flex;
   list-style: none;
+  gap: 30px;
 
   > li {
     position: relative;
@@ -105,17 +115,5 @@
         color: var(--secondary-color);
       }
     }
-  }
-}
-
-.login {
-  max-width: 150px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin: 0 0 0 8px;
-
-  @media all and (max-width: 768px) {
-    display: none;
   }
 }

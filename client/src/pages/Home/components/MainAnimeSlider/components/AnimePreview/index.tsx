@@ -17,7 +17,7 @@ export const AnimePreview: FC<AnimePreviewProps> = ({ series, title }) => {
 		<div
 			className={styles.wrapper}
 			style={{
-				background: `url("${ANILIBRIA_URI}${series?.preview}") 0 0/100% 100%`
+				background: `url("${ANILIBRIA_URI}${series?.preview}") 50% 50%/cover`
 			}}
 		>
 			<div className={styles.container}>

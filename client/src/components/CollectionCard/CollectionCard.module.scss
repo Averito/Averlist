@@ -4,6 +4,11 @@
   height: 300px;
   border-radius: 12px;
   overflow: hidden;
+  transition: box-shadow 0.5s ease, transform 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.15);
+  }
   
   @media all and (max-width: 1550px) {
     height: 260px;
@@ -16,6 +21,10 @@
   @media all and (max-width: 400px) {
     height: 180px;
   }
+
+  &.toRemove {
+    transform: scale(0);
+  }
 }
 
 .title {
@@ -23,6 +32,10 @@
   bottom: 15px;
   left: 15px;
   z-index: 3;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   > a {
     font-size: var(--large-font-size);
@@ -49,23 +62,6 @@
   pointer-events: none;
   z-index: 2;
   background: linear-gradient(0deg, black 2%, transparent 98%);
-}
-
-.publicAccess {
-  background: #24ac97;
-}
-
-.privateAccess {
-  background: crimson;
-}
-
-.publicAccess, .privateAccess {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
 }
 
 .animeList {
@@ -130,10 +126,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.favoriteCollection, .unfavoriteCollection {
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }

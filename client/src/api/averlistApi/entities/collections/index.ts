@@ -1,5 +1,7 @@
 import { Averlist } from '@averlistApi/types'
 import { axios } from '@averlistApi/averlist'
+import { GetAllCollectionsQueries } from '@averlistApi/entities/collections/types'
+import { queryParamsString } from '@helpers/queryParamsString'
 
 export const collections = {
 	async my(accessToken = ''): Promise<Averlist.Collection[]> {
@@ -10,12 +12,12 @@ export const collections = {
 		})
 		return response.data
 	},
-	async all(accessToken = ''): Promise<Averlist.Collection[]> {
-		const response = await axios.get<Averlist.Collection[]>('/collection/all', {
-			headers: {
-				Authorization: `Bearer ${accessToken}`
-			}
-		})
+	async all(params: GetAllCollectionsQueries): Promise<Averlist.Collection[]> {
+		const queryString = queryParamsString(params)
+
+		const response = await axios.get<Averlist.Collection[]>(
+			`/collection/all${queryString}`
+		)
 		return response.data
 	},
 	async myFavorites(accessToken = ''): Promise<Averlist.Collection[]> {
@@ -27,6 +29,17 @@ export const collections = {
 				}
 			}
 		)
+		return response.data
+	},
+	async getById(
+		collectionId: string,
+		accessToken = ''
+	): Promise<Averlist.Collection> {
+		const response = await axios.get<Averlist.Collection>(
+			`/collection/${collectionId}`,
+			{ headers: { token: accessToken } }
+		)
+
 		return response.data
 	},
 	async create(
@@ -47,7 +60,7 @@ export const collections = {
 	},
 	async addFavorite(collectionId: string): Promise<Averlist.Collection> {
 		const response = await axios.post<Averlist.Collection>(
-			`/collection/${collectionId}`
+			`/collection/add-favorite/${collectionId}`
 		)
 		return response.data
 	},

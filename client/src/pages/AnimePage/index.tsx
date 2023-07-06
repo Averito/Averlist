@@ -12,12 +12,7 @@ import { isAnimeDuplicate } from '@helpers/isAnimeDuplicate'
 import { AnimePageMobile } from '@pages/AnimePage/components/AnimePageMobile'
 import { AnimePageDesktop } from '@pages/AnimePage/components/AnimePageDesktop'
 import animeListStore from '@stores/animeList.store'
-import { DetectDeviceReturn } from '@helpers/detectDevice'
-
-interface AnimePageProps {
-	title: Title
-	devices: DetectDeviceReturn
-}
+import { AnimePageProps } from '@pages/AnimePage/AnimePage.types'
 
 const ANILIBRIA_URI = process.env.NEXT_PUBLIC_ANILIBRIA_URI
 

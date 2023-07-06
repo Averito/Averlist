@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+@import "./../src/assets/fonts/index.css";
 
 :root {
   --primary-color: rgb(52, 39, 95);
   --primary-text-color: #fafafa;
   --secondary-color: #d51b41;
+  --inputs-secondary-color: #7f38ab;
   --primary-font-size: 16px;
   --primary-font-weight: 400;
   --green: #6bea3b;
   --black: #374A6E;
   --gray: #8d8d8d;
+  --huge-font-size: 32px;
   --large-font-size: 20px;
   --medium-font-size: 14px;
   --small-font-size: 12px;
@@ -70,7 +72,7 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.2;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', 'Inter', sans-serif;
 }
 
 

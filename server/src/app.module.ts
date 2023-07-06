@@ -13,7 +13,8 @@ import { CollectionModule } from './collection/collection.module'
 		UserModule,
 		AuthModule,
 		MulterModule.register({
-			dest: './uploads'
+			dest: './uploads',
+			limits: { fileSize: 1024 * 1024 * 3 }
 		}),
 		MailerModule.forRootAsync({
 			imports: [ConfigModule],

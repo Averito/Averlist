@@ -27,8 +27,8 @@ export namespace Averlist {
 	export type ChangePassword = ChangePasswordInterface
 	export type ResetPassword = ResetPasswordInterface
 	export enum CollectionType {
-		PRIVATE = 'private',
-		PUBLIC = 'public'
+		PRIVATE = 'Приватно',
+		PUBLIC = 'Публично'
 	}
 	export enum AnimeStatus {
 		VIEWED = 'Просмотрено',

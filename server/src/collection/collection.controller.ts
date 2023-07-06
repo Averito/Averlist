@@ -1,6 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UploadedFile } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Query,
+	Req,
+	Res,
+	UploadedFile
+} from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { Express, Response } from 'express'
+import { Express, Request, Response } from 'express'
 import { Collection, User } from '@prisma/client'
 import { Auth } from '@decorators/auth.decorator'
 import { CollectionService } from './collection.service'
@@ -25,15 +37,36 @@ export class CollectionController {
 	}
 
 	@Get('all')
+	@Public()
 	@ApiOkResponse({ type: [CollectionDto] })
-	async getAllCollections(): Promise<Collection[]> {
-		return this.collectionService.allCollections()
+	async getAllCollections(
+		@Query('page') page: string,
+		@Query('pageSize') pageSize: string,
+		@Query('search') search?: string
+	): Promise<Collection[]> {
+		return this.collectionService.allCollections(
+			parseInt(page || '1'),
+			parseInt(pageSize || '20'),
+			search || ''
+		)
 	}
 
 	@Get('my-favorites')
 	@ApiOkResponse({ type: [CollectionDto] })
 	async getMyFavorites(@CurrentUser() user: User): Promise<Collection[]> {
 		return this.collectionService.myFavorites(user.id)
+	}
+
+	@Get(':collectionId')
+	@Public()
+	@ApiOkResponse({ type: CollectionDto })
+	async getCollectionById(
+		@Req() request: Request,
+		@Param('collectionId') collectionId: string
+	) {
+		const token = request.header('token')
+
+		return this.collectionService.getCollectionById(collectionId, token)
 	}
 
 	@Get('posters/:posterName')

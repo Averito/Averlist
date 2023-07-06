@@ -1,5 +1,6 @@
 .wrapper {
   height: 100vh;
+  background-repeat: no-repeat;
 
   @media all and (max-width: 768px) {
     display: none;

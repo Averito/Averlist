@@ -13,7 +13,7 @@ import { Averlist } from '@averlistApi/types'
 import { useProtectedRoute } from '@hooks/useProtectedRoute'
 
 export const LK: NextPage = observer(() => {
-	useProtectedRoute('/', userStore.isAuth)
+	useProtectedRoute('/login', userStore.isAuth)
 
 	return (
 		<>

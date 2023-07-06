@@ -60,6 +60,20 @@ export class UserService {
 							}
 						}
 					}
+				},
+				favoriteCollections: {
+					select: {
+						collection: {
+							include: {
+								anime_list: {
+									select: {
+										anime: true
+									}
+								},
+								createdBy: true
+							}
+						}
+					}
 				}
 			}
 		})

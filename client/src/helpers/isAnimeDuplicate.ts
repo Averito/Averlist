@@ -5,7 +5,7 @@ export const isAnimeDuplicate = (
 	newAnime: Averlist.Anime | Averlist.NewAnime
 ) => {
 	const animeList = animeListStore.animeList
-	if (!animeList) return false
+	if (!animeList.length) return false
 
-	return !!animeList.find(anime => anime.name === newAnime.name)
+	return !!animeList.find(anime => anime.anilibriaId === newAnime.anilibriaId)
 }

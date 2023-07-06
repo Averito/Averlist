@@ -11,18 +11,15 @@ import { AnimeListFilters } from '@pages/AnimeList/components/AnimeListFilters'
 import { useAnimeStatusQuery } from '@pages/AnimeList/hooks/useAnimeStatusQuery'
 import { useProtectedRoute } from '@hooks/useProtectedRoute'
 import userStore from '@stores/user.store'
+import { AnimeListProps } from '@pages/AnimeList/AnimeList.types'
 
 const AnimeListCreateAnimeModal = dynamic(
 	() => import('./components/AnimeListCreateAnimeModal'),
 	{ ssr: false }
 )
 
-interface AnimeListProps {
-	animeList: Averlist.Anime[]
-}
-
 export const AnimeList: NextPage<AnimeListProps> = observer(({ animeList }) => {
-	useProtectedRoute('/', userStore.isAuth)
+	useProtectedRoute('/login', userStore.isAuth)
 
 	const [showOnlyAnilibria, setShowOnlyAnilibria] = useState<boolean>(false)
 	const [searchValue, setSearchValue] = useState<string>('')
