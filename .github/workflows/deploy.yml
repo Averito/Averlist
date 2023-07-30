@@ -12,19 +12,16 @@ jobs:
             echo "${{ secrets.AVERLIST_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} > ~/.ssh/known_hosts
       - name: Clone Project
-        run: |
-          cd ~
-          git clone https://github.com/Averito/Averlist.git averlist -b master
-          cd ~/averlist/client
+        uses: actions/checkout@v3
       - name: Install Deps
         run: npm install
       - name: Get .env For Client
-        run: scp -r ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/backup/client/.env.local ~/averlist/client
+        run: scp -r ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/backup/client/.env.local client
       - name: Build Client
         run: npm run build
       - name: Connect And Pull
         run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/deploy-averlist.sh"
       - name: Clone Build To Server
-        run: scp -r ~/averlist/client/.next ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/averlist/client
+        run: scp -r client/.next ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/averlist/client
       - name: Cleanup
         run: rm -rf ~/.ssh
