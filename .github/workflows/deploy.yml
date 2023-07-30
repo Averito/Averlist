@@ -7,11 +7,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} >> ~/.ssh/known_hosts
       - name: Install SSH Keys
-        run: |
-            install -m 600 -D /dev/null ~/.ssh/id_rsa
-            echo "${{ secrets.AVERLIST_KEY }}" > ~/.ssh/id_rsa
-            ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} > ~/.ssh/known_hosts
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.AVERLIST_KEY }}
+          known_hosts: ${{ secrets.AVERLIST_KNOWN_HOST }}
       - name: Connect And Pull
         run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/deploy-averlist.sh"
       - name: Cleanup
