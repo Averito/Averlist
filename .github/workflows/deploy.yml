@@ -12,7 +12,7 @@ jobs:
             echo "${{ secrets.AVERLIST_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} > ~/.ssh/known_hosts
       - name: Clone Project
-        run: git clone https://github.com/Averito/Averlist.git averlist -b master && cd averlist/client
+        run: cd ~ && git clone https://github.com/Averito/Averlist.git averlist -b master && cd ~/averlist/client
       - name: Install Deps
         run: npm install
       - name: Get .env For Client
