@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run docker && npm run server:dev\" \"npm run client:dev\"",
     "build": "concurrently \"npm run server:build\" \"npm run client:build\"",
     "lint": "concurrently \"npm run server:lint\" \"npm run client:lint\"",
-    "install:project": "concurrently \"npm run server:install\" \"npm run client:install\"",
+    "install:project": "npm run server:install && npm run client:install",
     "server:start": "cd server && npm run start",
     "server:dev": "cd server && npm run start:dev",
     "server:build": "cd server && npm run build",
