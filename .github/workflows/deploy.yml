@@ -14,7 +14,7 @@ jobs:
       - name: Clone Project
         uses: actions/checkout@v3
       - name: Install Deps
-        run: npm run install -prefix client
+        run: npm install -prefix client
       - name: Get .env For Client
         run: scp -r ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/backup/client/.env.local client
       - name: Build Client
