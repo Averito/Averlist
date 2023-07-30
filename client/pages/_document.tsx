@@ -27,7 +27,7 @@ export default function MyDocument() {
           		})
           		(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
 		
-          		ym(92769638, 'init' {
+          		ym(92769638, 'init', {
           		  clickmap: true,
           		  trackLinks: true,
           		  accurateTrackBounce: true

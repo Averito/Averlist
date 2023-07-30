@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post
+} from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Anime, User } from '@prisma/client'
 import { Auth } from '@decorators/auth.decorator'

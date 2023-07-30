@@ -30,17 +30,10 @@ async function bootstrap() {
 		app.setGlobalPrefix('api/v1')
 	}
 
-	if (development) {
-		app.enableCors({
-			origin: 'http://localhost:3000',
-			credentials: true
-		})
-	} else {
-		app.enableCors({
-			origin: 'https://averlist.xyz',
-			credentials: true
-		})
-	}
+	app.enableCors({
+		origin: development ? 'http://localhost:3000' : 'https://averlist.xyz',
+		credentials: true
+	})
 
 	app.use(cookieParser())
 
@@ -48,4 +41,4 @@ async function bootstrap() {
 	console.log(`Server is running on http://localhost:${PORT}`.cyan.bold)
 }
 
-bootstrap()
+void bootstrap()

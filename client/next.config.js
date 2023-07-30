@@ -17,7 +17,8 @@ module.exports = withPWA({
 			'cdn.discordapp.com',
 			'sun2-4.userapi.com',
 			'sun2-11.userapi.com',
-			'localhost'
+			'localhost',
+			'192.168.1.55'
 		]
 	}
 })

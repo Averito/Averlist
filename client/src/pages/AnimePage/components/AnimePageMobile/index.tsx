@@ -57,7 +57,6 @@ export const AnimePageMobile: FC<AnimePageMobileProps> = ({
 				<p>{title.description}</p>
 			</div>
 			<Player title={title} margin='0 0 20px 0' />
-			<h2 className={styles.title}>Торренты:</h2>
 			<TorrentDownloads title={title} />
 			<h2 className={styles.title}>Популярность среди пользователей:</h2>
 			<AnimeListStats

@@ -1,0 +1,50 @@
+.container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 200px;
+  height: 300px;
+
+  @media screen and (max-width: 450px) {
+    width: 43vw;
+    height: 60vw;
+  }
+}
+
+.status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  font-size: var(--small-font-size);
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  opacity: 0.85;
+  filter: brightness(0.9);
+  backdrop-filter: blur(10px);
+}
+
+.name {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  padding: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+
+  > a {
+    font-size: var(--small-font-size);
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: crimson;
+    }
+  }
+}

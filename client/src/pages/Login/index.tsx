@@ -9,6 +9,7 @@ import { Meta } from '@components/Meta'
 import { useInput } from '@hooks/useInput'
 import { AuthLayout } from '@layouts/AuthLayout'
 import userStore from '@stores/user.store'
+import { errorToast } from '@helpers/toasts'
 
 export const Login: NextPage = () => {
 	const router = useRouter()
@@ -17,13 +18,20 @@ export const Login: NextPage = () => {
 	const [password, setPassword] = useInput()
 
 	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
-		event.preventDefault()
-		await userStore.login({
-			email,
-			password
-		})
+		try {
+			event.preventDefault()
+			await userStore.login({
+				email,
+				password
+			})
 
-		await router.push('/lk')
+			if (userStore.path) return await router.push(userStore.path)
+			await router.push('/lk')
+		} catch {
+			errorToast(
+				'Вход не удался, проверьте введённые данные или попробуйте позже'
+			)
+		}
 	}
 
 	const additionalText = (
