@@ -18,7 +18,7 @@ jobs:
       - name: Get .env For Client
         run: scp -r ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/backup/client/.env.local client
       - name: Build Client
-        run: npm run build
+        run: npm run build --prefix client
       - name: Connect And Pull
         run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/deploy-averlist.sh"
       - name: Clone Build To Server
