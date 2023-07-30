@@ -4,6 +4,7 @@ import {
 	useCallback,
 	useEffect,
 	useMemo,
+	useRef,
 	useState
 } from 'react'
 import {
@@ -139,18 +140,18 @@ export const PlayerControls: FC<PlayerControlsProps> = ({
 	}
 
 	const [show, setShow] = useState(false)
-	let timeout: ReturnType<typeof setTimeout>
+	let timeout = useRef<ReturnType<typeof setTimeout>>()
 
 	const onMouseEnterOrMoveWrapper: MouseEventHandler<HTMLDivElement> = () => {
-		if (timeout) clearTimeout(timeout)
+		if (timeout) clearTimeout(timeout.current)
 		setShow(true)
 
-		timeout = setTimeout(() => {
+		timeout.current = setTimeout(() => {
 			setShow(false)
 		}, HIDE_CONTROLS_ON_MOVE_MOUSE_TIME)
 	}
 	const onMouseLeaveWrapper: MouseEventHandler<HTMLDivElement> = () => {
-		timeout = setTimeout(() => {
+		timeout.current = setTimeout(() => {
 			setShow(false)
 		}, HIDE_CONTROLS_ON_LEAVE_MOUSE_TIME)
 	}

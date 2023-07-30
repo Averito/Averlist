@@ -11,14 +11,14 @@ export interface MenuItem {
 
 const menuWithoutAuth: MenuItem[] = [
 	{
-		id: 0,
+		id: 1,
 		name: 'Главная',
 		to: '/'
 	},
 	{
-		id: 1,
-		name: 'Новости',
-		to: '/news'
+		id: 2,
+		name: 'Коллекции',
+		to: '/collections'
 	},
 	{
 		id: 3,
@@ -47,11 +47,6 @@ const menuWithAuth: MenuItem[] = [
 		id: 4,
 		name: 'Коллекции',
 		to: '/lk/collections'
-	},
-	{
-		id: 5,
-		name: 'Новости',
-		to: '/news'
 	},
 	{
 		id: 3,

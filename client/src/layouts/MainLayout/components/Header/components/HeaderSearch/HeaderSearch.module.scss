@@ -1,0 +1,23 @@
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  cursor: pointer;
+}
+
+.searchInput {
+  border-color: #5d51bb !important;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+
+  @media screen and (max-width: 870px) {
+    max-width: 150px;
+  }
+
+  &.notActive {
+    padding: 0;
+    border: none;
+  }
+}

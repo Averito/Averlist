@@ -17,17 +17,12 @@ class CollectionsStore {
 
 	@action
 	public async createCollection(newCollection: Averlist.NewCollection) {
-		try {
-			const collection = await averlist.collections.create(newCollection)
-			successToast(`Коллекция ${collection.name} успешно создана!`)
+		const collection = await averlist.collections.create(newCollection)
+		successToast(`Коллекция ${collection.name} успешно создана!`)
 
-			runInAction(() => {
-				this.addCollection(collection)
-			})
-		} catch {
-			errorToast('Не удалось создать коллекцию')
-			throw new Error('Не удалось создать коллекцию')
-		}
+		runInAction(() => {
+			this.addCollection(collection)
+		})
 	}
 
 	@action
@@ -41,10 +36,15 @@ class CollectionsStore {
 	}
 
 	@action
-	public removeCollection(id: string) {
-		this._collections = this._collections.filter(
-			collection => collection.id !== id
-		)
+	public async removeCollection(id: string) {
+		const collection = await averlist.collections.remove(id)
+		successToast(`Коллекция "${collection.name}" успешно удалена!`)
+
+		runInAction(() => {
+			this._collections = this._collections.filter(
+				collection => collection.id !== id
+			)
+		})
 	}
 
 	@action
@@ -72,6 +72,20 @@ class CollectionsStore {
 			})
 		} catch {
 			errorToast('Что-то пошло не так, попробуйте позже')
+		}
+	}
+
+	@action
+	public async changeNameAsync(id: string, name: string) {
+		try {
+			await averlist.collections.editCollection({ name }, id)
+
+			runInAction(() => {
+				this.changeName(id, name)
+			})
+		} catch {
+			errorToast('Что-то пошло не так, попробуйте позже')
+			throw Error('Something went wrong')
 		}
 	}
 

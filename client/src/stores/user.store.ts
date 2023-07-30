@@ -8,7 +8,7 @@ import { errorToast, successToast } from '@helpers/toasts'
 import { averlist } from '@averlistApi/averlist'
 
 class UserStore {
-	@observable public isAuth = false
+	@observable public isAuth = true
 	@observable public user: Averlist.User = {} as Averlist.User
 
 	@observable private _currentAvatar: string = defaultAvatar.src
@@ -23,57 +23,55 @@ class UserStore {
 		return this._currentName
 	}
 
+	@observable private _path = ''
+	@computed
+	public get path() {
+		return this._path
+	}
+
 	constructor() {
 		makeObservable(this)
 	}
 
 	@action
-	public async registration(body: Averlist.Registration, showError = true) {
-		try {
-			const registrationResponse = await averlist.auth.registration(body)
+	public async registration(body: Averlist.Registration) {
+		const registrationResponse = await averlist.auth.registration(body)
 
-			if (body.emailActive) {
-				successToast('Регистрация прошло успешно')
-			} else {
-				successToast(
-					'Регистрация прошла успешно, на почту отправлено письмо о подтверждении (В течении 2ух минут)'
-				)
-			}
-
-			runInAction(() => {
-				this.userAuth()
-				this.setUser(registrationResponse.user)
-			})
-		} catch {
-			if (!showError) return
-			errorToast(
-				'Регистрация не удалась, проверьте введённые данные или попробуйте позже'
+		if (body.emailActive) {
+			successToast('Регистрация прошла успешно')
+		} else {
+			successToast(
+				'Регистрация прошла успешно, на почту отправлено письмо о подтверждении (В течении 2ух минут)'
 			)
 		}
+
+		runInAction(() => {
+			this.userAuth()
+			this.setUser(registrationResponse.user)
+		})
 	}
 
 	@action
 	public async login(body: Averlist.Login) {
-		try {
-			await averlist.auth.login(body)
-			const me = await averlist.users.me()
+		await averlist.auth.login(body)
+		const me = await averlist.users.me()
 
-			successToast('Добро пожаловать, мой Господин')
+		successToast('Добро пожаловать, мой Господин')
 
-			runInAction(() => {
-				this.userAuth()
-				this.setUser(me)
-			})
-		} catch {
-			errorToast(
-				'Вход не удался, проверьте введённые данные или попробуйте позже'
-			)
-		}
+		runInAction(() => {
+			this.userAuth()
+			this.setUser(me)
+		})
 	}
 
 	@action
 	public userAuth() {
 		this.isAuth = true
+	}
+
+	@action
+	public userNotAuth() {
+		this.isAuth = false
 	}
 
 	@action
@@ -101,6 +99,11 @@ class UserStore {
 	public setCurrentName(name?: string) {
 		this._currentName = getCurrentName(name)
 		if (name) this.user.name = name
+	}
+
+	@action
+	public setPath(path: string) {
+		this._path = path
 	}
 }
 

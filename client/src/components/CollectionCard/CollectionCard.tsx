@@ -1,17 +1,19 @@
-import { FC, memo, MouseEventHandler } from 'react'
+import { FC, memo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
+import { AiFillHeart } from 'react-icons/ai'
 
 import styles from './CollectionCard.module.scss'
 import { CollectionCardProps } from './CollectionCard.types'
-import { CollectionType } from '@averlistApi/entities/collections/types'
-import collectionsStore from '@stores/collections.store'
-import favoriteCollectionsStore from '@stores/favoriteCollections.store'
 import { Flex } from '@components'
 import { getCurrentAvatar } from '@helpers/getCurrentAvatar'
-import { Observer } from 'mobx-react-lite'
+import {
+	CollectionCardFavoriteButton,
+	CollectionCardRemoveButton,
+	CollectionCardTypeButton
+} from '@components/CollectionCard/components'
+import cs from 'classnames'
 
 const NEXT_PUBLIC_AVERLIST_POSTERS_URI =
 	process.env.NEXT_PUBLIC_AVERLIST_POSTERS_URI
@@ -27,26 +29,22 @@ export const CollectionCard: FC<CollectionCardProps> = memo(
 			void router.push(collectionHref)
 		}
 
-		const onClickChangeCollectionType = (
-			type: CollectionType
-		): MouseEventHandler<HTMLParagraphElement> => {
-			return event => {
-				event.stopPropagation()
-				void collectionsStore.changeType(collection.id, type)
-			}
-		}
-
-		const onClickUnFavoriteCollection = () => {
-			void favoriteCollectionsStore.unFavoriteCollection(collection.id)
-		}
-
-		const onClickFavoriteCollection = () => {
-			void favoriteCollectionsStore.favoriteCollection(collection.id)
+		const [isToRemove, setIsToRemove] = useState<boolean>(false)
+		const onRemoveLocal = () => {
+			setIsToRemove(true)
 		}
 
 		return (
-			<div className={styles.wrapper} onClick={onClickLocal}>
-				<Image src={posterSource} layout='fill' alt='Постер' />
+			<div
+				className={cs(styles.wrapper, { [styles.toRemove]: isToRemove })}
+				onClick={onClickLocal}
+			>
+				<Image
+					src={posterSource}
+					layout='fill'
+					alt='Постер'
+					objectFit='cover'
+				/>
 				<p className={styles.title}>
 					<Link href={collectionHref}>{collection.name}</Link>
 				</p>
@@ -89,45 +87,18 @@ export const CollectionCard: FC<CollectionCardProps> = memo(
 					</div>
 				)}
 				{myPage ? (
-					<>
-						{collection.type === CollectionType.PRIVATE ? (
-							<p
-								className={styles.privateAccess}
-								onClick={onClickChangeCollectionType(CollectionType.PUBLIC)}
-							>
-								Приватная
-							</p>
-						) : (
-							<p
-								className={styles.publicAccess}
-								onClick={onClickChangeCollectionType(CollectionType.PRIVATE)}
-							>
-								Публичная
-							</p>
-						)}
-					</>
+					<CollectionCardTypeButton
+						collectionId={collection.id}
+						collectionType={collection.type}
+					/>
 				) : (
-					<Observer>
-						{() => (
-							<>
-								{favoriteCollectionsStore.isFavorite(collection.id) ? (
-									<AiFillHeart
-										className={styles.favoriteCollection}
-										size={25}
-										color='crimson'
-										onClick={onClickUnFavoriteCollection}
-									/>
-								) : (
-									<AiOutlineHeart
-										className={styles.unfavoriteCollection}
-										size={25}
-										color='crimson'
-										onClick={onClickFavoriteCollection}
-									/>
-								)}
-							</>
-						)}
-					</Observer>
+					<CollectionCardFavoriteButton collectionId={collection.id} />
+				)}
+				{myPage && (
+					<CollectionCardRemoveButton
+						collectionId={collection.id}
+						onRemove={onRemoveLocal}
+					/>
 				)}
 			</div>
 		)

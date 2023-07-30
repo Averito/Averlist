@@ -8,6 +8,7 @@ import { useInput } from '@hooks/useInput'
 import { Averlist } from '@averlistApi/types'
 import userStore from '@stores/user.store'
 import { Meta } from '@components/Meta'
+import { errorToast } from '@helpers/toasts'
 
 export const SetPassword: NextPage = () => {
 	const router = useRouter()
@@ -28,16 +29,32 @@ export const SetPassword: NextPage = () => {
 				password
 			}
 
-			await userStore.registration(registrationBody, false)
-			await router.push('/lk')
+			try {
+				await userStore.registration(registrationBody)
+
+				if (userStore.path) return await router.push(userStore.path)
+				await router.push('/lk')
+			} catch {
+				errorToast(
+					'Регистрация не удалась, проверьте введённые данные или попробуйте позже'
+				)
+			}
 		} catch {
 			const loginBody: Averlist.Login = {
 				email: email as string,
 				password
 			}
 
-			await userStore.login(loginBody)
-			await router.push('/lk')
+			try {
+				await userStore.login(loginBody)
+
+				if (userStore.path) return await router.push(userStore.path)
+				await router.push('/lk')
+			} catch {
+				errorToast(
+					'Вход не удался, проверьте введённые данные или попробуйте позже'
+				)
+			}
 		}
 	}
 

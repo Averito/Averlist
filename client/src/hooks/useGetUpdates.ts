@@ -14,10 +14,11 @@ export type UseQueryTypesGetUpdates = Omit<
 
 export const useGetUpdates = (
 	queryObject: GetAnilibriaUpdatesQueryParams = queryObjectByDefault,
+	enabled: boolean,
 	useQueryOptions?: UseQueryTypesGetUpdates
 ) => {
 	return useQuery<Title[]>(
-		['getUpdates', queryObject],
+		['getUpdates', queryObject, enabled],
 		() => getAnilibriaUpdates(queryObject).then(response => response.data),
 		useQueryOptions
 	)

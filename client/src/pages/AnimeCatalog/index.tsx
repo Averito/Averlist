@@ -15,12 +15,8 @@ import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
 import { useInfinityScroll } from '@hooks/useInfinityScroll'
 import { useGetUpdates } from '@hooks/useGetUpdates'
 import animeCatalog from '@stores/animeCatalog.store'
-
-interface AnimeCatalogProps {
-	years: number[]
-	genres: string[]
-	titleList: Title[]
-}
+import { AnimeCatalogProps } from '@pages/AnimeCatalog/AnimeCatalog.types'
+import { useUrlQueryParams } from '@hooks/useUrlQueryParams'
 
 export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 	({ years, genres, titleList }) => {
@@ -28,12 +24,20 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 
 		const pageSize = 24
 
+		const [searchValue, setSearchValue] = useUrlQueryParams(
+			'search',
+			animeCatalog.searchValue,
+			value => {
+				animeCatalog.setSearchValue(searchValue)
+			}
+		)
+
 		const [firstRender, setFirstRender] = useState<boolean>(true)
-		const [searchValue, setSearchValue] = useState<string>('')
 		const [currentPage, setCurrentPage] = useState<number>(1)
 
-		const onChangeSearchValue = (value: string) => {
-			setSearchValue(value)
+		const onChangeSearchValue = async (value: string) => {
+			await setSearchValue(value)
+			animeCatalog.reset()
 			animeCatalog.setSearchValue(value)
 		}
 
@@ -61,8 +65,10 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 		useEffect(() => {
 			setFirstRender(false)
 
-			if (animeCatalog.searchValue)
-				return setSearchValue(animeCatalog.searchValue)
+			if (animeCatalog.searchValue) {
+				void setSearchValue(animeCatalog.searchValue)
+				return
+			}
 			if (animeCatalog.updatesTitleList.length >= titleList?.length) return
 
 			animeCatalog.addToUpdatesTitleList(titleList)
@@ -72,11 +78,17 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 
 		useGetSearchTitles(searchQueryObject, {
 			enabled: !getUpdatesEnable,
-			onSuccess: animeCatalog.addToSearchTitleList
+			onSuccess: (newPartOfSearchTitleList: Title[]) => {
+				if (getUpdatesEnable) return
+				animeCatalog.addToSearchTitleList(newPartOfSearchTitleList)
+			}
 		})
-		useGetUpdates(updatesQueryObject, {
+		useGetUpdates(updatesQueryObject, getUpdatesEnable, {
 			enabled: getUpdatesEnable,
-			onSuccess: animeCatalog.addToUpdatesTitleList
+			onSuccess: (newPartOfUpdatesTitleList: Title[]) => {
+				if (!getUpdatesEnable) return
+				animeCatalog.addToUpdatesTitleList(newPartOfUpdatesTitleList)
+			}
 		})
 
 		const onFetch = async () => {
@@ -90,6 +102,7 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 			if (
 				router.query?.years ||
 				router.query?.genres ||
+				searchValue.length ||
 				animeCatalog.searchValue.length
 			)
 				return setGetUpdatesEnable(false)
@@ -100,6 +113,7 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 			if (firstRender) return
 			animeCatalog.reset()
 		}, [router])
+
 		useEffect(() => {
 			if (firstRender) return
 			animeCatalog.resetUpdatesTitleList()
@@ -128,7 +142,7 @@ export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
 							value={searchValue}
 							onChange={onChangeSearchValue}
 							name='search'
-							placeholder='Поиск'
+							placeholder='Поиск (Минимум 3 символа)'
 							width='100%'
 							menuList={autocompleteMenuList}
 						/>

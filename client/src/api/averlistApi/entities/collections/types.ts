@@ -1,9 +1,10 @@
 import { User } from '@averlistApi/entities/users/types'
 import { Anime } from '@averlistApi/entities/anime/types'
+import { QueryObject } from 'anilibria-api-wrapper'
 
 export enum CollectionType {
-	PRIVATE = 'private',
-	PUBLIC = 'public'
+	PRIVATE = 'Приватно',
+	PUBLIC = 'Публично'
 }
 
 export interface Collection {
@@ -31,4 +32,10 @@ export interface NewCollection {
 export interface EditCollection {
 	name?: string
 	type?: CollectionType
+}
+
+export interface GetAllCollectionsQueries extends QueryObject {
+	page: number
+	pageSize: number
+	search: string
 }

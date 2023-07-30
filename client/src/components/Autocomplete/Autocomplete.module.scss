@@ -7,12 +7,18 @@
   border-radius: 4px;
   color: var(--primary-text-color);
   background-color: #1F1739;
-  border: none;
   font-weight: 400;
   width: 100%;
+  border: 1px solid #1F1739;
+  transition: border 0.2s ease;
+
+  &:hover {
+    border: 1px solid var(--inputs-secondary-color);
+  }
 
   &:focus {
     outline: none;
+    border: 1px solid var(--inputs-secondary-color);
   }
 }
 

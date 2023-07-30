@@ -28,14 +28,14 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 		close: onClose ?? (() => {})
 	})
 
-	let timeout: ReturnType<typeof setTimeout>
+	let timeout = useRef<ReturnType<typeof setTimeout>>()
 	const onMouseEnter: MouseEventHandler<HTMLDivElement> = () => {
-		clearTimeout(timeout)
+		clearTimeout(timeout.current)
 		setActive(true)
 		emit('open')
 	}
 	const onMouseLeave: MouseEventHandler<HTMLDivElement> = () => {
-		timeout = setTimeout(() => {
+		timeout.current = setTimeout(() => {
 			setActive(false)
 			emit('close')
 		}, 200)

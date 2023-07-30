@@ -6,13 +6,7 @@ import { HomeMobile } from '@pages/Home/components/HomeMobile'
 import { HomeDesktop } from '@pages/Home/components/HomeDesktop'
 import { reverseArray } from '@helpers/reverseArray'
 import { Meta } from '@components/Meta'
-
-interface HomeProps {
-	updatesTitleList: Title[]
-	changesTitleList: Title[]
-	firstFiveTitles: Title[]
-	scheduleOfWeek: Schedule[]
-}
+import { HomeProps } from '@pages/Home/Home.types'
 
 export const Home: NextPage<HomeProps> = ({
 	updatesTitleList,

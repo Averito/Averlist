@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Query, Res, UploadedFile } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Query,
+	Res,
+	UploadedFile
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator'
 import { User } from '@prisma/client'
@@ -83,15 +93,6 @@ export class UserController {
 		@CurrentUser() user: User
 	): Promise<User> {
 		return this.userService.setAvatar(avatar, crop, user.id, width, height)
-	}
-
-	@Delete('remove-friend/:friendId')
-	@ApiOkResponse({ type: UserDto })
-	async removeFriend(
-		@Param('friendId') friendId: string,
-		@CurrentUser() user: User
-	): Promise<User> {
-		return this.userService.removeFriend(friendId, user.id)
 	}
 
 	@Delete(':userId')

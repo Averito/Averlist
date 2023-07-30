@@ -42,13 +42,13 @@ export const PlayerVolume: FC<PlayerVolumeProps> = ({
 		setOpen(false)
 	})
 
-	let timeout: ReturnType<typeof setTimeout>
+	let timeout = useRef<ReturnType<typeof setTimeout>>()
 	const onMouseEnterVolume: MouseEventHandler<
 		SVGElement | HTMLDivElement
 	> = () => {
 		if (rdd.isMobile) return
 
-		clearTimeout(timeout)
+		clearTimeout(timeout.current)
 		setOpen(true)
 	}
 	const onMouseLeaveVolume: MouseEventHandler<
@@ -56,7 +56,7 @@ export const PlayerVolume: FC<PlayerVolumeProps> = ({
 	> = () => {
 		if (rdd.isMobile) return
 
-		timeout = setTimeout(() => {
+		timeout.current = setTimeout(() => {
 			setOpen(false)
 		}, 1000)
 	}
