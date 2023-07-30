@@ -1,0 +1,18 @@
+name: Deploy
+on:
+  pull_request:
+  push:
+    branches: master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Keys
+        run: |
+            install -m 600 -D /dev/null ~/.ssh/id_rsa
+            echo "${{ secrets.AVERLIST_KEY }}" > ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} > ~/.ssh/known_hosts
+      - name: Connect And Pull
+        run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/deploy-averlist.sh"
+      - name: Cleanup
+        run: rm -rf ~/.ssh
