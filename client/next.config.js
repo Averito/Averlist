@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 
-const withPWA = require('next-pwa')
-
-module.exports = withPWA({
+module.exports = {
 	reactStrictMode: false,
-	pwa: {
-		dest: 'public'
-	},
 	env: {
 		GOOGLE_RECAPTCHA_SITE_KEY: process.env.GOOGLE_RECAPTCHA_SITE_KEY
 	},
@@ -21,4 +16,4 @@ module.exports = withPWA({
 			'192.168.1.55'
 		]
 	}
-})
+}
