@@ -65,7 +65,7 @@ export const Hamburger: FC = () => {
 	useOutside(hamburger, hamburgerClose)
 
 	return (
-		<div>
+		<div className={styles.hamburgerWrapper}>
 			<span className={styles.hamburgerPlaceholder} />
 			<div
 				className={classnames(
