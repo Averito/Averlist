@@ -16,11 +16,6 @@ const menuWithoutAuth: MenuItem[] = [
 		to: '/'
 	},
 	{
-		id: 2,
-		name: 'Коллекции',
-		to: '/collections'
-	},
-	{
 		id: 3,
 		name: 'Каталог',
 		to: '/anime'
@@ -42,11 +37,6 @@ const menuWithAuth: MenuItem[] = [
 		id: 2,
 		name: 'Аниме список',
 		to: `/lk/anime-list?status=${Averlist.AnimeStatusQuery.ALL}`
-	},
-	{
-		id: 4,
-		name: 'Коллекции',
-		to: '/lk/collections'
 	},
 	{
 		id: 3,

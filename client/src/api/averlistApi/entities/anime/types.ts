@@ -1,5 +1,4 @@
 import { User } from '@averlistApi/entities/users/types'
-import { Collection } from '@averlistApi/entities/collections/types'
 
 export enum AnimeStatus {
 	VIEWED = 'Просмотрено',
@@ -20,7 +19,6 @@ export interface Anime {
 	anilibriaCode?: string
 	user: User
 	userId: string
-	collection?: Collection
 	collectionId?: string
 	created_at: Date
 	updated_at: Date

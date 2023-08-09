@@ -6,7 +6,6 @@ import { MailerModule } from '@nestjs-modules/mailer'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { getNodemailerConfig } from '@config/nodemailer.config'
 import { AnimeModule } from './anime/anime.module'
-import { CollectionModule } from './collection/collection.module'
 
 @Module({
 	imports: [
@@ -21,8 +20,7 @@ import { CollectionModule } from './collection/collection.module'
 			inject: [ConfigService],
 			useFactory: getNodemailerConfig
 		}),
-		AnimeModule,
-		CollectionModule
+		AnimeModule
 	],
 	controllers: [],
 	providers: []

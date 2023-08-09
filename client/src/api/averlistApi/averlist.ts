@@ -3,7 +3,6 @@ import oldAxios from 'axios'
 import { users } from '@averlistApi/entities/users'
 import { auth } from '@averlistApi/entities/auth'
 import { anime } from '@averlistApi/entities/anime'
-import { collections } from '@averlistApi/entities/collections'
 
 export const axios = oldAxios.create({
 	withCredentials: true,
@@ -13,6 +12,5 @@ export const axios = oldAxios.create({
 export const averlist = {
 	users,
 	auth,
-	anime,
-	collections
+	anime
 }

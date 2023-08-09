@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
+import { AiOutlineSearch } from 'react-icons/ai'
 import { FC } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -26,7 +27,7 @@ export const Header: FC = observer(() => {
 	const { menuWithoutAuth } = useMenu(userStore.isAuth)
 
 	const onClickOnTitle = () => {
-		router.push('/')
+		void router.push('/')
 	}
 
 	const mainPage =
@@ -56,16 +57,6 @@ export const Header: FC = observer(() => {
 			id: 2,
 			label: 'Аниме список',
 			href: `/lk/anime-list?status=${Averlist.AnimeStatusQuery.ALL}`
-		},
-		{
-			id: 3,
-			label: 'Мои коллекции',
-			href: '/lk/collections'
-		},
-		{
-			id: 4,
-			label: 'Мои любимые коллекции',
-			href: '/lk/collections/favorites'
 		},
 		{
 			id: 5,

@@ -7,8 +7,6 @@ import { useObserver } from 'mobx-react-lite'
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
 import animeListStore from '@stores/animeList.store'
-import collectionsStore from '@stores/collections.store'
-import favoriteCollectionsStore from '@stores/favoriteCollections.store'
 
 export const useAuth = () => {
 	const router = useRouter()
@@ -21,12 +19,6 @@ export const useAuth = () => {
 				userStore.userAuth()
 				userStore.setUser(me)
 				animeListStore.setAnimeList(me.anime_list ?? [])
-				collectionsStore.setCollections(me.collections ?? [])
-				favoriteCollectionsStore.setCollections(
-					me.favoriteCollections?.map(
-						favoriteCollection => favoriteCollection.collection
-					) ?? []
-				)
 
 				try {
 					if (!getCookie('refreshToken')) return

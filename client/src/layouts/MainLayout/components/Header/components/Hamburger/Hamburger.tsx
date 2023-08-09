@@ -8,6 +8,7 @@ import { useOutside } from '@hooks/useOutside'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
 import userStore from '@stores/user.store'
 import { averlist } from '@averlistApi/averlist'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 const NEXT_PUBLIC_DISCORD_INVITE_LINK =
 	process.env.NEXT_PUBLIC_DISCORD_INVITE_LINK
@@ -52,6 +53,10 @@ export const Hamburger: FC = () => {
 		await router.push('/')
 	}
 
+	const onClickHamburgerSearch = () => {
+		void router.push('/anime')
+	}
+
 	useEffect(() => {
 		document.body.style.overflow = active ? 'hidden' : 'hidden auto'
 	}, [active])
@@ -60,7 +65,7 @@ export const Hamburger: FC = () => {
 	useOutside(hamburger, hamburgerClose)
 
 	return (
-		<>
+		<div>
 			<span className={styles.hamburgerPlaceholder} />
 			<div
 				className={classnames(
@@ -104,6 +109,13 @@ export const Hamburger: FC = () => {
 					</div>
 				</div>
 			</div>
-		</>
+			<div className={styles.hamburgerSearch}>
+				<AiOutlineSearch
+					className={styles.searchIcon}
+					onClick={onClickHamburgerSearch}
+					size={22}
+				/>
+			</div>
+		</div>
 	)
 }

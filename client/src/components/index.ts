@@ -1,5 +1,4 @@
 import { AnimeListStats } from '@components/AnimeListStats'
-import { CollectionCard } from '@components/CollectionCard'
 import { AnimeSlider } from '@components/AnimeSlider'
 import { Autocomplete } from '@components/Autocomplete'
 import { Button } from '@components/Button'
@@ -20,7 +19,6 @@ import { AnimeCard } from '@components/AnimeCard'
 
 export {
 	AnimeListStats,
-	CollectionCard,
 	AnimeSlider,
 	Autocomplete,
 	Button,
