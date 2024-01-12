@@ -1,10 +1,13 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import Modal from '@components/Modal/Modal'
 import { AutocompleteMenu } from '@components/Autocomplete'
 import { Autocomplete } from '@components'
-import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
-import { getAnilibriaTitle, Title } from 'anilibria-api-wrapper'
+import {
+	anilibriaSearchTitles,
+	getAnilibriaTitle,
+	Title
+} from 'anilibria-api-wrapper'
 import { errorToast } from '@helpers/toasts'
 import { Averlist } from '@averlistApi/types'
 import { Select, SelectMenu } from '@components/Select'
@@ -24,17 +27,25 @@ const AnimeListCreateAnimeModal: FC<AnimeListCreateAnimeModalProps> = ({
 	onClose
 }) => {
 	const [animeName, setAnimeName] = useState<string>('')
+	const [searchTitleList, setSearchTitleList] = useState<Title[]>([])
 
-	const queryObject = {
-		filter: ['names', 'id'],
-		search: animeName,
-		limit: 15
-	}
-	const { data, refetch } = useGetSearchTitles(queryObject)
+	useEffect(() => {
+		const queryObject = {
+			filter: ['names', 'id'],
+			search: animeName,
+			limit: 15
+		}
 
-	const onChangeAnimeName = async (value: string) => {
+		const asyncWrapper = async () => {
+			const titles = await anilibriaSearchTitles(queryObject)
+			setSearchTitleList(titles.data)
+		}
+
+		void asyncWrapper()
+	}, [animeName])
+
+	const onChangeAnimeName = (value: string) => {
 		setAnimeName(value)
-		await refetch()
 	}
 
 	const [selectedTitle, setSelectedTitle] = useState<Title | null>(null)
@@ -45,8 +56,8 @@ const AnimeListCreateAnimeModal: FC<AnimeListCreateAnimeModalProps> = ({
 		setSelectedTitle(title.data)
 	}
 
-	const autocompleteMenus: AutocompleteMenu[] = data
-		? data
+	const autocompleteMenus: AutocompleteMenu[] = searchTitleList
+		? searchTitleList
 				.map(title => ({ id: title.id, name: title.names.ru }))
 				.filter(title => title.name.includes(animeName))
 		: []
