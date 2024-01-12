@@ -10,6 +10,8 @@ export const useUrlQueryParams = (
 	const [value, setValue] = useState<string>(initialValue)
 
 	useEffect(() => {
+		if (value === initialValue) return
+
 		void router.push(
 			{
 				pathname: router.pathname,
@@ -34,7 +36,7 @@ export const useUrlQueryParams = (
 				return
 			}
 
-			await setValue(initialValue)
+			setValue(initialValue)
 			onExtract?.(initialValue)
 		}
 		void asyncWrapper()

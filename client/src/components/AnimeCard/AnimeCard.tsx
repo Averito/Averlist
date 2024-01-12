@@ -39,6 +39,8 @@ export const AnimeCard: FC<AnimeCardProps> = observer(
 					alt='Постер'
 					layout='fill'
 					objectFit='cover'
+					loading='lazy'
+					property='false'
 				/>
 				<p className={styles.name}>
 					<Link href={`/anime/${anime.anilibriaCode}`}>{anime.name}</Link>

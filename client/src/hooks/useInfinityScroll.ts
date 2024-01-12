@@ -1,15 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 
 export const useInfinityScroll = (onFetch: () => unknown) => {
 	const [isFetch, setIsFetch] = useState<boolean>(false)
+	const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 	const onScroll = useCallback(() => {
 		const { innerHeight } = window
-		const { offsetHeight, scrollTop } = document.documentElement
+		const { scrollTop, scrollHeight } = document.documentElement
 
-		if (innerHeight + scrollTop === offsetHeight) {
-			return setIsFetch(true)
-		}
+		if (innerHeight + scrollTop + 30 < scrollHeight || timer.current || isFetch)
+			return
+		setIsFetch(true)
+
+		timer.current = setTimeout(() => {
+			timer.current = null
+		}, 600)
 	}, [])
 
 	useEffect(() => {
@@ -18,12 +23,14 @@ export const useInfinityScroll = (onFetch: () => unknown) => {
 	}, [onScroll])
 
 	useEffect(() => {
+		if (!isFetch) return
+
 		const asyncWrapper = async () => {
-			if (!isFetch) return
 			await onFetch()
 			setIsFetch(false)
 		}
-		asyncWrapper()
+
+		void asyncWrapper()
 	}, [isFetch, onFetch])
 
 	return { setIsFetch }

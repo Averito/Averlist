@@ -75,12 +75,12 @@ export const AnimePageDesktop: FC<AnimePageDesktopProps> = ({
 					</div>
 					<Player title={title} margin='0 0 20px 0' />
 					<TorrentDownloads title={title} />
-					<h2 className={styles.title}>Популярность среди пользователей:</h2>
-					<AnimeListStats
-						backgroundColor='transparent'
-						padding='0'
-						animeList={animeList}
-					/>
+					{/*<h2 className={styles.title}>Популярность среди пользователей:</h2>*/}
+					{/*<AnimeListStats*/}
+					{/*	backgroundColor='transparent'*/}
+					{/*	padding='0'*/}
+					{/*	animeList={animeList}*/}
+					{/*/>*/}
 				</div>
 			</div>
 		</div>

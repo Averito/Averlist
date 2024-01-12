@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import dayjs from 'dayjs'
 import {
 	getAnilibriaGenres,
@@ -12,13 +12,13 @@ import { queryObjectByDefault } from '@anilibriaApi/anilibria'
 
 export default AnimeCatalog
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	const { data: years } = await getAnilibriaYears()
 	const { data: genres } = await getAnilibriaGenres()
 
 	const queryObject: GetAnilibriaUpdatesQueryParams = {
 		filter: queryObjectByDefault.filter as string[],
-		limit: 44,
+		limit: 24,
 		since: new Date(`01-01-${dayjs().year()}`).getDate()
 	}
 	const updatesTitleList = await getAnilibriaUpdates(queryObject)
@@ -28,7 +28,6 @@ export const getStaticProps: GetStaticProps = async () => {
 			years,
 			genres,
 			titleList: updatesTitleList.data
-		},
-		revalidate: 60
+		}
 	}
 }
