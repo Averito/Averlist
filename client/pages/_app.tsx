@@ -1,7 +1,5 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import 'react-toastify/dist/ReactToastify.css'
 import 'ag-grid-community/styles/ag-grid.css'
@@ -14,13 +12,11 @@ import { Layout } from '@layouts/MainLayout'
 import { useAuth } from '@hooks/useAuth'
 import { ToastContainer } from 'react-toastify'
 
-const queryClient = new QueryClient()
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	useAuth()
 
 	return (
-		<QueryClientProvider client={queryClient}>
+		<>
 			<Head>
 				<meta charSet='utf-8' />
 				<link rel='icon' href='/favicon.ico' />
@@ -43,8 +39,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 				position='bottom-right'
 				toastStyle={{ backgroundColor: '#2b214f', color: '#e1dfdf' }}
 			/>
-			<ReactQueryDevtools />
-		</QueryClientProvider>
+		</>
 	)
 }
 

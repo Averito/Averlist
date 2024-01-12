@@ -20,14 +20,6 @@ export const Hamburger: FC = () => {
 
 	const { menus } = useMenu(userStore.isAuth)
 
-	const activeClass = active ? styles.hamburgerActive : styles.hamburgerInActive
-	const hamburgerBackgroundActive = active
-		? styles.hamburgerBackgroundActive
-		: styles.hamburgerBackgroundInActive
-	const toggleButtonClass = active
-		? styles.toggleButtonActive
-		: styles.toggleButtonInActive
-
 	const hamburgerClose = () => {
 		setActive(false)
 	}
@@ -63,6 +55,14 @@ export const Hamburger: FC = () => {
 
 	const hamburger = useRef<HTMLDivElement>(null)
 	useOutside(hamburger, hamburgerClose)
+
+	const activeClass = active ? styles.hamburgerActive : styles.hamburgerInActive
+	const hamburgerBackgroundActive = active
+		? styles.hamburgerBackgroundActive
+		: styles.hamburgerBackgroundInActive
+	const toggleButtonClass = active
+		? styles.toggleButtonActive
+		: styles.toggleButtonInActive
 
 	return (
 		<div className={styles.hamburgerWrapper}>

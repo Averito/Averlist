@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import { Title, Schedule } from 'anilibria-api-wrapper'
 
 import { MainAnimeSlider } from './components/MainAnimeSlider'
 import { HomeMobile } from '@pages/Home/components/HomeMobile'

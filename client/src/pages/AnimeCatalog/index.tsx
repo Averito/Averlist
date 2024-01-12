@@ -1,159 +1,170 @@
-import { useEffect, useMemo, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { NextPage } from 'next'
-import { Title } from 'anilibria-api-wrapper'
-import dayjs from 'dayjs'
 
 import styles from './AnimeCatalog.module.scss'
 import { Meta } from '@components/Meta'
 import { TitleCard } from '@components/TitleCard'
 import { Autocomplete } from '@components/Autocomplete/Autocomplete'
-import { QueryObject } from '@helpers/queryParamsString'
 import { Tags } from '@pages/AnimeCatalog/components/Tags'
-import { useGetSearchTitles } from '@hooks/useGetSearchTitles'
-import { useInfinityScroll } from '@hooks/useInfinityScroll'
-import { useGetUpdates } from '@hooks/useGetUpdates'
-import animeCatalog from '@stores/animeCatalog.store'
 import { AnimeCatalogProps } from '@pages/AnimeCatalog/AnimeCatalog.types'
 import { useUrlQueryParams } from '@hooks/useUrlQueryParams'
+import { AutocompleteMenu } from '@components/Autocomplete'
+import {
+	Title,
+	anilibriaSearchTitles,
+	getAnilibriaUpdates
+} from 'anilibria-api-wrapper'
+import { useInfinityScroll } from '@hooks/useInfinityScroll'
+import { queryObjectByDefault } from '@anilibriaApi/anilibria'
+import { PAGE_SIZE } from '@pages/AnimeCatalog/AnimeCatalog.config'
+import { uniqueIds } from '@helpers/uniqueIds'
 
-export const AnimeCatalog: NextPage<AnimeCatalogProps> = observer(
-	({ years, genres, titleList }) => {
-		const router = useRouter()
+export const AnimeCatalog: NextPage<AnimeCatalogProps> = ({
+	years,
+	genres,
+	titleList
+}) => {
+	const router = useRouter()
 
-		const pageSize = 24
+	const [searchFromUrl, setSearchFromUrl] = useUrlQueryParams(
+		'search',
+		String(router.query?.search || '')
+	)
 
-		const [searchValue, setSearchValue] = useUrlQueryParams(
-			'search',
-			animeCatalog.searchValue,
-			value => {
-				animeCatalog.setSearchValue(searchValue)
-			}
-		)
+	const [searchTitleList, setSearchTitleList] = useState<Title[]>([])
+	const [updatesTitleList, setUpdatesTitleList] = useState<Title[]>(titleList)
+	const [currentPage, setCurrentPage] = useState<number>(1)
 
-		const [firstRender, setFirstRender] = useState<boolean>(true)
-		const [currentPage, setCurrentPage] = useState<number>(1)
+	const onInfinityScroll = useCallback(() => {
+		setCurrentPage(prevState => prevState + 1)
+	}, [setCurrentPage])
 
-		const onChangeSearchValue = async (value: string) => {
-			await setSearchValue(value)
-			animeCatalog.reset()
-			animeCatalog.setSearchValue(value)
-		}
+	useInfinityScroll(onInfinityScroll)
 
-		const searchQueryObject = useMemo<QueryObject>(
-			() => ({
-				filter: ['id', 'names', 'description', 'posters', 'code'],
-				limit: pageSize,
-				after: (currentPage - 1) * pageSize,
-				search: searchValue,
-				year: router.query?.year ?? '',
-				genres: router.query?.genres ?? ''
-			}),
-			[router, currentPage, searchValue]
-		)
-		const updatesQueryObject = useMemo<QueryObject>(
-			() => ({
-				filter: ['id', 'names', 'description', 'posters', 'code'],
-				limit: pageSize,
-				after: (currentPage - 1) * pageSize,
-				since: new Date(`01-01-${dayjs().year()}`).getDate()
-			}),
-			[currentPage]
-		)
+	const searchValueTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const onChangeSearchValue = (value: string) => {
+		if (searchValueTimer.current) clearTimeout(searchValueTimer.current)
 
-		useEffect(() => {
-			setFirstRender(false)
+		setSearchFromUrl(value)
 
-			if (animeCatalog.searchValue) {
-				void setSearchValue(animeCatalog.searchValue)
-				return
-			}
-			if (animeCatalog.updatesTitleList.length >= titleList?.length) return
-
-			animeCatalog.addToUpdatesTitleList(titleList)
-		}, [titleList, firstRender])
-
-		const [getUpdatesEnable, setGetUpdatesEnable] = useState<boolean>(false)
-
-		useGetSearchTitles(searchQueryObject, {
-			enabled: !getUpdatesEnable,
-			onSuccess: (newPartOfSearchTitleList: Title[]) => {
-				if (getUpdatesEnable) return
-				animeCatalog.addToSearchTitleList(newPartOfSearchTitleList)
-			}
-		})
-		useGetUpdates(updatesQueryObject, getUpdatesEnable, {
-			enabled: getUpdatesEnable,
-			onSuccess: (newPartOfUpdatesTitleList: Title[]) => {
-				if (!getUpdatesEnable) return
-				animeCatalog.addToUpdatesTitleList(newPartOfUpdatesTitleList)
-			}
-		})
-
-		const onFetch = async () => {
-			setCurrentPage(prevCurrentPage => prevCurrentPage + 1)
-		}
-		useInfinityScroll(onFetch)
-
-		useEffect(() => {
+		searchValueTimer.current = setTimeout(() => {
 			setCurrentPage(1)
-
-			if (
-				router.query?.years ||
-				router.query?.genres ||
-				searchValue.length ||
-				animeCatalog.searchValue.length
-			)
-				return setGetUpdatesEnable(false)
-			setGetUpdatesEnable(true)
-		}, [router.query, searchValue])
-
-		useEffect(() => {
-			if (firstRender) return
-			animeCatalog.reset()
-		}, [router])
-
-		useEffect(() => {
-			if (firstRender) return
-			animeCatalog.resetUpdatesTitleList()
-		}, [searchValue])
-
-		const endedTitleList = animeCatalog.searchTitleList.length
-			? animeCatalog.searchTitleList
-			: animeCatalog.updatesTitleList
-
-		const autocompleteMenuList = endedTitleList.map(title => ({
-			id: title.id,
-			name: title.names?.ru || title.names?.en
-		}))
-
-		return (
-			<>
-				<Meta
-					title='Averlist | Аниме каталог'
-					description='Выбери что по нраву, мой юный господин...'
-				/>
-				<section className={styles.wrapper}>
-					<h1 className={styles.title}>Каталог</h1>
-					<Tags years={years} genres={genres} />
-					<div className={styles.searchBlock}>
-						<Autocomplete
-							value={searchValue}
-							onChange={onChangeSearchValue}
-							name='search'
-							placeholder='Поиск (Минимум 3 символа)'
-							width='100%'
-							menuList={autocompleteMenuList}
-						/>
-					</div>
-					<div className={styles.recommendations}>
-						{endedTitleList.map(title => (
-							<TitleCard title={title} key={title.id} />
-						))}
-					</div>
-				</section>
-			</>
-		)
+		}, 500)
 	}
-)
+
+	const searchActive =
+		searchFromUrl.length >= 3 || router.query.year || router.query.genre
+	const titles = searchActive ? searchTitleList : updatesTitleList
+
+	useEffect(() => {
+		setCurrentPage(1)
+	}, [router.query.years, router.query.genre])
+
+	useEffect(() => {
+		if (!searchActive) return
+
+		const selectedYears = ((router.query?.years as string) || '').split(',')
+		const selectedGenres = ((router.query?.genre as string) || '').split(',')
+
+		const asyncWrapper = async () => {
+			const newTitles = await anilibriaSearchTitles({
+				filter: queryObjectByDefault.filter as string[],
+				limit: PAGE_SIZE,
+				year: selectedYears,
+				genres: selectedGenres,
+				search: searchFromUrl
+			})
+
+			setSearchTitleList(newTitles.data)
+		}
+
+		void asyncWrapper()
+	}, [searchFromUrl, router.query.years, router.query.genre])
+
+	useEffect(() => {
+		if (!searchActive) return
+
+		const selectedYears = ((router.query?.years as string) || '').split(',')
+		const selectedGenres = ((router.query?.genre as string) || '').split(',')
+
+		const asyncWrapper = async () => {
+			const titles = await anilibriaSearchTitles({
+				filter: queryObjectByDefault.filter as string[],
+				limit: PAGE_SIZE,
+				after: PAGE_SIZE * (currentPage - 1),
+				year: selectedYears,
+				genres: selectedGenres,
+				search: searchFromUrl
+			})
+
+			setSearchTitleList(prevState =>
+				currentPage === 1
+					? titles.data
+					: uniqueIds([...prevState, ...titles.data])
+			)
+		}
+
+		void asyncWrapper()
+	}, [currentPage, router.query.years, router.query.genre])
+
+	useEffect(() => {
+		if (searchActive) return
+
+		const asyncWrapper = async () => {
+			const titles = await getAnilibriaUpdates({
+				filter: queryObjectByDefault.filter as string[],
+				limit: PAGE_SIZE,
+				after: PAGE_SIZE * (currentPage - 1)
+			})
+
+			setUpdatesTitleList(prevState =>
+				currentPage === 1
+					? titles.data
+					: uniqueIds([...prevState, ...titles.data])
+			)
+		}
+
+		void asyncWrapper()
+	}, [currentPage])
+
+	const autocompleteMenuList: AutocompleteMenu[] = useMemo(
+		() =>
+			(titles || [])
+				.filter(
+					title =>
+						title.names.ru.includes(searchFromUrl) ||
+						title.names.en.includes(searchFromUrl)
+				)
+				.map(title => ({ id: title.id, name: title.names.ru })),
+		[searchFromUrl]
+	)
+
+	return (
+		<>
+			<Meta
+				title='Averlist | Аниме каталог'
+				description='Выбери что по нраву, мой юный господин...'
+			/>
+			<section className={styles.wrapper}>
+				<h1 className={styles.title}>Каталог</h1>
+				<Tags years={years} genres={genres} />
+				<div className={styles.searchBlock}>
+					<Autocomplete
+						value={searchFromUrl}
+						onChange={onChangeSearchValue}
+						name='search'
+						placeholder='Поиск (Минимум 3 символа)'
+						width='100%'
+						menuList={autocompleteMenuList}
+					/>
+				</div>
+				<div className={styles.recommendations}>
+					{titles.map(title => (
+						<TitleCard title={title} key={title.id} />
+					))}
+				</div>
+			</section>
+		</>
+	)
+}
