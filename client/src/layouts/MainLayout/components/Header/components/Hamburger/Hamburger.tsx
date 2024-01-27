@@ -40,7 +40,6 @@ export const Hamburger: FC = () => {
 	}
 
 	const onClickLogout: MouseEventHandler<HTMLLIElement> = async () => {
-		await averlist.auth.logout()
 		userStore.logout()
 		await router.push('/')
 	}
