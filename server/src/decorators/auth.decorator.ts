@@ -1,8 +1,6 @@
-import { applyDecorators } from '@nestjs/common'
-import { ApiBearerAuth } from '@nestjs/swagger'
-import { AccessJwt } from './accessJwt.decorator'
-import { EmailActive } from './emailActive.decorator'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@guards/auth.guard'
 
 export const Auth = () => {
-	return applyDecorators(AccessJwt(), EmailActive(), ApiBearerAuth())
+	return UseGuards(new AuthGuard())
 }

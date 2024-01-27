@@ -1,7 +1,6 @@
 import oldAxios from 'axios'
 
 import { users } from '@averlistApi/entities/users'
-import { auth } from '@averlistApi/entities/auth'
 import { anime } from '@averlistApi/entities/anime'
 
 export const axios = oldAxios.create({
@@ -11,6 +10,5 @@ export const axios = oldAxios.create({
 
 export const averlist = {
 	users,
-	auth,
 	anime
 }

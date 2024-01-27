@@ -31,8 +31,12 @@ export const Description: FC<DescriptionProps> = ({ title }) => {
 						</>
 					)}
 				</p>
-				<p>Длительность:</p>
-				<p>{duration}</p>
+				{title.type.length && title.type.series && (
+					<>
+						<p>Длительность:</p>
+						<p>{duration}</p>
+					</>
+				)}
 				<p>Жанры:</p>
 				<p>{title.genres.join(', ')}</p>
 				{title.team.voice.join(', ') && (

@@ -19,7 +19,6 @@ export interface Anime {
 	anilibriaCode?: string
 	user: User
 	userId: string
-	collectionId?: string
 	created_at: Date
 	updated_at: Date
 }

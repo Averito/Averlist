@@ -1,14 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Role } from '@enums/role.enum'
 import { AnimeDto } from './anime.dto'
-import { CollectionDto } from './collection.dto'
 
 export class UserDto {
 	@ApiProperty({ name: 'id', default: 'uuid' })
 	id: string
-
-	@ApiProperty({ name: 'login' })
-	login: string
 
 	@ApiProperty({ name: 'name' })
 	name: string
@@ -16,40 +12,14 @@ export class UserDto {
 	@ApiProperty({ name: 'email', uniqueItems: true })
 	email: string
 
-	@ApiProperty({
-		name: 'emailActive',
-		description: 'Verified email or not',
-		default: false
-	})
-	emailActive: boolean
-
 	@ApiProperty({ name: 'avatar' })
 	avatar: string
-
-	@ApiProperty({ name: 'password_hash' })
-	password: string
-
-	@ApiProperty({ name: 'refreshTokenHash' })
-	refreshTokenHash: string
-
-	@ApiProperty({ name: 'anotherAccessToken' })
-	anotherAccessToken?: string
-
-	@ApiProperty({
-		name: 'activate_link',
-		description: 'link for email activate',
-		default: 'uuid'
-	})
-	activate_link: string
 
 	@ApiProperty({ name: 'role', enum: Role, default: Role.USER })
 	role: Role
 
 	@ApiProperty({ name: 'anime_list' })
 	anime_list: AnimeDto[]
-
-	@ApiProperty({ name: 'collections' })
-	collections: CollectionDto[]
 
 	@ApiProperty({ name: 'created_at', default: 'DateTime' })
 	created_at: Date

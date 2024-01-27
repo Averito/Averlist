@@ -11,71 +11,36 @@ datasource db {
 }
 
 model User {
-  id                  String                       @id @default(uuid())
-  login               String
-  name                String
-  email               String                       @unique
-  emailActive         Boolean                      @default(false)
-  avatar              String?
-  password            String
-  refreshTokenHash    String?
-  activate_link       String                       @unique
-  role                String                       @default("user")
-  anime_list          Anime[]
-  collections         Collection[]
-  favoriteCollections FavoriteCollectionsOnUsers[]
-  created_at          DateTime                     @default(now())
-  updated_at          DateTime                     @updatedAt
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  avatar     String?
+  role       String   @default("user")
+  anime_list Anime[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("users")
 }
 
+model OAuthSession {
+  id           String  @id
+  accessToken  String?
+  refreshToken String?
+}
+
 model Anime {
-  id            String              @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   poster        String?
   status        String
   aniuId        String?
   anilibriaId   Int?
   anilibriaCode String?
-  user          User                @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
   userId        String
-  collection    AnimeOnCollection[]
-  created_at    DateTime            @default(now())
-  updated_at    DateTime            @updatedAt
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   @@map("anime")
-}
-
-model AnimeOnCollection {
-  anime        Anime      @relation(fields: [animeId], references: [id])
-  animeId      String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-
-  @@id([animeId, collectionId])
-}
-
-model Collection {
-  id          String                       @id @default(uuid())
-  name        String
-  poster      String
-  type        String
-  anime_list  AnimeOnCollection[]
-  createdBy   User                         @relation(fields: [createdById], references: [id])
-  createdById String
-  favoritesBy FavoriteCollectionsOnUsers[]
-  created_at  DateTime                     @default(now())
-  updated_at  DateTime                     @updatedAt
-
-  @@map("collections")
-}
-
-model FavoriteCollectionsOnUsers {
-  user         User       @relation(fields: [userId], references: [id])
-  userId       String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-
-  @@id([userId, collectionId])
 }

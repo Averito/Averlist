@@ -25,11 +25,10 @@ import { EditUserNameBodyDto } from '@DTO/editUserNameBody.dto'
 import { ImageFile } from '@decorators/imageFile.decorator'
 import { ApiFile } from '@decorators/apiFile.decorator'
 import { Public } from '@decorators/public.decorator'
-import { AccessJwt } from '@decorators/accessJwt.decorator'
-import { EmailActive } from '@decorators/emailActive.decorator'
+import { Auth } from '@decorators/auth.decorator'
 
 @Controller('users')
-@AccessJwt()
+@Auth()
 @ApiBearerAuth()
 @ApiTags('Users')
 export class UserController {
@@ -43,7 +42,6 @@ export class UserController {
 	}
 
 	@Get('all')
-	@EmailActive()
 	@ApiOkResponse({
 		type: [GetAllUsersResponseDto],
 		description: 'get all users'
