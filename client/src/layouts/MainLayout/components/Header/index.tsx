@@ -38,11 +38,6 @@ export const Header: FC = observer(() => {
 	const dropdownMenusWithoutAuth = [
 		{
 			id: 1,
-			label: 'Регистрация',
-			href: '/registration'
-		},
-		{
-			id: 2,
 			label: 'Войти',
 			href: '/login'
 		}
@@ -62,7 +57,6 @@ export const Header: FC = observer(() => {
 			id: 5,
 			label: 'Выход',
 			onClick: async () => {
-				await averlist.auth.logout()
 				userStore.logout()
 				await router.push('/')
 			}
@@ -76,14 +70,7 @@ export const Header: FC = observer(() => {
 	const avatarHref = userStore.isAuth ? '/lk' : '/login'
 
 	return (
-		<IgnorePaths
-			ignorePaths={[
-				'/registration',
-				'/login',
-				'/reset-password',
-				'/set-password'
-			]}
-		>
+		<IgnorePaths ignorePaths={['/login']}>
 			<header className={classnames(styles.container, mainPage)}>
 				<Hamburger />
 				<div className={styles.containerBlock1}>

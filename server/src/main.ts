@@ -1,12 +1,15 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import passport from 'passport'
 import { AppModule } from './app.module'
 import * as packageJSON from '../package.json'
 import 'colors'
 
 const PORT = process.env.PORT || 3000
 const MODE = process.env.MODE
+const COOKIE_SECRET = process.env.COOKIE_SECRET || ''
 const development = MODE === 'development'
 
 async function bootstrap() {
@@ -29,6 +32,22 @@ async function bootstrap() {
 	if (!development) {
 		app.setGlobalPrefix('api/v1')
 	}
+
+	app.use(
+		session({
+			name: 'averlist-session',
+			secret: COOKIE_SECRET,
+			resave: false,
+			saveUninitialized: false,
+			cookie: {
+				maxAge: 1000 * 60 * 60 * 24,
+				secure: !development,
+				sameSite: true
+			}
+		})
+	)
+	app.use(passport.initialize())
+	app.use(passport.session())
 
 	app.enableCors({
 		origin: development ? 'http://localhost:3000' : 'https://averlist.xyz',

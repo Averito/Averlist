@@ -1,83 +1,58 @@
-import { FormEventHandler } from 'react'
+import { MouseEventHandler } from 'react'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import { FaGoogle } from 'react-icons/fa'
+import { FaYandex } from 'react-icons/fa'
+import { FaDiscord } from 'react-icons/fa'
+import { SlSocialVkontakte } from 'react-icons/sl'
 
 import styles from './Login.module.scss'
-import { Input } from '@components/Input'
-import { Meta } from '@components/Meta'
-import { useInput } from '@hooks/useInput'
-import { AuthLayout } from '@layouts/AuthLayout'
-import userStore from '@stores/user.store'
-import { errorToast } from '@helpers/toasts'
+import saoAuthLayout from '@assets/images/saoAuthLayout.webp'
+import { Meta } from '@components'
+import { useRouter } from 'next/router'
 
 export const Login: NextPage = () => {
 	const router = useRouter()
 
-	const [email, setEmail] = useInput()
-	const [password, setPassword] = useInput()
-
-	const onSubmit: FormEventHandler<HTMLFormElement> = async event => {
-		try {
-			event.preventDefault()
-			await userStore.login({
-				email,
-				password
-			})
-
-			if (userStore.path) return await router.push(userStore.path)
-			await router.push('/lk')
-		} catch {
-			errorToast(
-				'Вход не удался, проверьте введённые данные или попробуйте позже'
-			)
-		}
+	const signInGoogle: MouseEventHandler<HTMLDivElement> = () => {
+		void router.push('/api/v1/auth/google')
 	}
 
-	const additionalText = (
-		<div className={styles.additionalText}>
-			<div className={styles.resetPassword}>
-				<p>Забыли пароль?</p>
-				<Link href='/reset-password'>Сбросить пароль</Link>
-			</div>
-			<div className={styles.registration}>
-				<p>Ещё нет аккаунта?</p>
-				<Link href='/registration'>Регистрация</Link>
-			</div>
-		</div>
-	)
+	const signInYandex: MouseEventHandler<HTMLDivElement> = () => {
+		void router.push('/api/v1/auth/yandex')
+	}
+
+	const signInDiscord: MouseEventHandler<HTMLDivElement> = () => {
+		void router.push('/api/v1/auth/discord')
+	}
+	const signInVK: MouseEventHandler<HTMLDivElement> = () => {
+		void router.push('/api/v1/auth/vk')
+	}
+
+	const containerBackground = {
+		background: `url("${saoAuthLayout.src}") no-repeat 50% 105%/320px 320px`
+	}
 
 	return (
 		<>
 			<Meta title='Averlist | Вход' description='Логин Averlist' />
-			<AuthLayout
-				title='Логин'
-				buttonText='Войти'
-				onSubmit={onSubmit}
-				additionalText={additionalText}
-			>
-				<div className={styles.block}></div>
-				<div className={styles.block}>
-					<Input
-						type='email'
-						value={email}
-						onChange={setEmail}
-						placeholder='example@gmail.com'
-						width='100%'
-						label='Почта'
-					/>
+			<div className={styles.container} style={containerBackground}>
+				<div className={styles.form}>
+					<div className={styles.servicesButtons}>
+						<div className={styles.button} onClick={signInGoogle}>
+							<FaGoogle size={30} color='white' />
+						</div>
+						<div className={styles.button} onClick={signInYandex}>
+							<FaYandex size={30} color='white' />
+						</div>
+						<div className={styles.button} onClick={signInDiscord}>
+							<FaDiscord size={30} color='white' />
+						</div>
+						<div className={styles.button} onClick={signInVK}>
+							<SlSocialVkontakte size={30} color='white' />
+						</div>
+					</div>
 				</div>
-				<div className={styles.block}>
-					<Input
-						type='password'
-						value={password}
-						onChange={setPassword}
-						placeholder='Пароль'
-						width='100%'
-						label='Пароль'
-					/>
-				</div>
-			</AuthLayout>
+			</div>
 		</>
 	)
 }

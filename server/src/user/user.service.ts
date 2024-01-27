@@ -16,8 +16,7 @@ export class UserService {
 	public async getAllForAdmin(): Promise<User[]> {
 		return this.prisma.user.findMany({
 			include: {
-				anime_list: true,
-				collections: true
+				anime_list: true
 			}
 		})
 	}
@@ -32,8 +31,7 @@ export class UserService {
 				id: true,
 				name: true,
 				avatar: true,
-				anime_list: true,
-				collections: true
+				anime_list: true
 			},
 			take: limit,
 			skip: (currentPage - 1) * limit
@@ -45,41 +43,12 @@ export class UserService {
 				id: userId
 			},
 			include: {
-				anime_list: true,
-				collections: {
-					include: {
-						favoritesBy: {
-							select: {
-								user: true
-							}
-						},
-						createdBy: true,
-						anime_list: {
-							select: {
-								anime: true
-							}
-						}
-					}
-				},
-				favoriteCollections: {
-					select: {
-						collection: {
-							include: {
-								anime_list: {
-									select: {
-										anime: true
-									}
-								},
-								createdBy: true
-							}
-						}
-					}
-				}
+				anime_list: true
 			}
 		})
 	}
 	public async editName(userId: string, name: string): Promise<User> {
-		return await this.prisma.user.update({
+		return this.prisma.user.update({
 			where: { id: userId },
 			data: {
 				name
@@ -121,7 +90,7 @@ export class UserService {
 
 		if (user.avatar) await removePrevFile('avatars', user.avatar)
 
-		return await this.prisma.user.update({
+		return this.prisma.user.update({
 			where: {
 				id: userId
 			},

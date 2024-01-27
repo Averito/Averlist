@@ -7,13 +7,13 @@ function generateSiteMap(titles: Title[]) {
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`
 
 	const urls = [
-		{ url: `${process.env.NEXTAUTH_URL}/`, priority: 1 },
-		{ url: `${process.env.NEXTAUTH_URL}/anime`, priority: 0.9 }
+		{ url: `${process.env.HOST_URL}/`, priority: 1 },
+		{ url: `${process.env.HOST_URL}/anime`, priority: 0.9 }
 	]
 
 	titles.forEach(title => {
 		urls.push({
-			url: `${process.env.NEXTAUTH_URL}/anime/${title.code}`,
+			url: `${process.env.HOST_URL}/anime/${title.code}`,
 			priority: 0.8
 		})
 	})

@@ -34,37 +34,6 @@ class UserStore {
 	}
 
 	@action
-	public async registration(body: Averlist.Registration) {
-		const registrationResponse = await averlist.auth.registration(body)
-
-		if (body.emailActive) {
-			successToast('Регистрация прошла успешно')
-		} else {
-			successToast(
-				'Регистрация прошла успешно, на почту отправлено письмо о подтверждении (В течении 2ух минут)'
-			)
-		}
-
-		runInAction(() => {
-			this.userAuth()
-			this.setUser(registrationResponse.user)
-		})
-	}
-
-	@action
-	public async login(body: Averlist.Login) {
-		await averlist.auth.login(body)
-		const me = await averlist.users.me()
-
-		successToast('Добро пожаловать, мой Господин')
-
-		runInAction(() => {
-			this.userAuth()
-			this.setUser(me)
-		})
-	}
-
-	@action
 	public userAuth() {
 		this.isAuth = true
 	}

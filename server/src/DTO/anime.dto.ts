@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { AnimeStatus } from '@enums/animeStatus.enum'
 import { UserDto } from './user.dto'
-import { CollectionDto } from './collection.dto'
 import { Anime } from '@prisma/client'
 
 export class AnimeDto implements Anime {
@@ -43,15 +42,6 @@ export class AnimeDto implements Anime {
 
 	@ApiProperty({ name: 'userId' })
 	userId: string
-
-	@ApiProperty({
-		name: 'collection',
-		description: 'The collection the anime is in'
-	})
-	collection?: CollectionDto
-
-	@ApiProperty({ name: 'collectionId' })
-	collectionId: string
 
 	@ApiProperty({ name: 'created_at', default: 'DateTime' })
 	created_at: Date

@@ -1,10 +1,20 @@
-.title {
-  font-size: 24px;
-  margin-bottom: 20px;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0 10px;
 }
 
-.block {
-  margin-bottom: 15px;
+.form {
+  padding: 12px 24px;
+  background-color: #2b214f;
+  border-radius: 8px;
+  width: fit-content;
+
+  @media all and (max-width: 768px) {
+    padding: 12px;
+  }
 }
 
 .submitButtonWrapper {
@@ -16,23 +26,31 @@
   max-width: fit-content;
 }
 
-.additionalText {
+.servicesButtons {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
 }
 
-.resetPassword, .registration {
-  display: flex;
-  margin-bottom: 8px;
+.button {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #6d56bb;
+  transition: filter 0.3s ease;
 
-  > p {
-    font-size: 13px;
-    margin: 0 10px 0 0;
+  &:hover {
+    filter: brightness(0.9);
   }
 
-  > a {
-    font-size: 13px;
-    color: lightseagreen;
+  &:not(:last-of-type) {
+    margin-right: 10px;
   }
+
+  svg {
+    display: block;
+  }
+}
+
+.additionalText {
+  margin-bottom: 10px;
 }

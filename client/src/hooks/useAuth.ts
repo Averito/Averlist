@@ -1,8 +1,5 @@
-import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-
-import { useObserver } from 'mobx-react-lite'
 
 import { averlist } from '@averlistApi/averlist'
 import userStore from '@stores/user.store'
@@ -19,13 +16,6 @@ export const useAuth = () => {
 				userStore.userAuth()
 				userStore.setUser(me)
 				animeListStore.setAnimeList(me.anime_list ?? [])
-
-				try {
-					if (!getCookie('refreshToken')) return
-					await averlist.auth.getAccess(getCookie('refreshToken') as string)
-				} catch (e) {
-					return
-				}
 			} catch {
 				userStore.userNotAuth()
 			}
