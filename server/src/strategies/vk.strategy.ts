@@ -16,7 +16,7 @@ export class VkStrategy extends PassportStrategy(Strategy, 'vk') {
 			{
 				clientID: configService.get('VK_CLIENT_ID'),
 				clientSecret: configService.get('VK_CLIENT_SECRET'),
-				callbackURL: configService.get('Vk_REDIRECT_URI'),
+				callbackURL: configService.get('VK_REDIRECT_URI'),
 				profileFields: ['id', 'displayName', 'photos', 'emails'],
 				scope: ['email'],
 				lang: 'ru'
