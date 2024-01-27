@@ -13,9 +13,9 @@ import { useRouter } from 'next/router'
 export const Login: NextPage = () => {
 	const router = useRouter()
 
-	const signInGoogle: MouseEventHandler<HTMLDivElement> = () => {
-		void router.push('/api/v1/auth/google')
-	}
+	// const signInGoogle: MouseEventHandler<HTMLDivElement> = () => {
+	// 	void router.push('/api/v1/auth/google')
+	// }
 
 	const signInYandex: MouseEventHandler<HTMLDivElement> = () => {
 		void router.push('/api/v1/auth/yandex')
@@ -38,9 +38,9 @@ export const Login: NextPage = () => {
 			<div className={styles.container} style={containerBackground}>
 				<div className={styles.form}>
 					<div className={styles.servicesButtons}>
-						<div className={styles.button} onClick={signInGoogle}>
-							<FaGoogle size={30} color='white' />
-						</div>
+						{/*<div className={styles.button} onClick={signInGoogle}>*/}
+						{/*	<FaGoogle size={30} color='white' />*/}
+						{/*</div>*/}
 						<div className={styles.button} onClick={signInYandex}>
 							<FaYandex size={30} color='white' />
 						</div>

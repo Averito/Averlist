@@ -12,6 +12,7 @@ import styles from './Dropdown.module.scss'
 import { useOutside } from '@hooks/useOutside'
 import { defineEmits } from '@helpers/defineEmits'
 import { DropdownProps } from './Dropdown.types'
+import { useRouter } from 'next/router'
 
 export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 	options,
@@ -21,6 +22,7 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 	margin,
 	children
 }) => {
+	const router = useRouter()
 	const [active, setActive] = useState<boolean>(false)
 
 	const emit = defineEmits<'open' | 'close'>({
@@ -51,6 +53,12 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 
 		setActive(true)
 		emit('open')
+	}
+
+	const goTo = (href: string) => {
+		return () => {
+			void router.push(href)
+		}
 	}
 
 	const dropdownChildren = useRef<HTMLDivElement>(null)
@@ -85,7 +93,7 @@ export const Dropdown: FC<PropsWithChildren<DropdownProps>> = ({
 					{options.map(option => (
 						<React.Fragment key={option.id}>
 							{option.href ? (
-								<div className={styles.menuItem} onClick={option.onClick}>
+								<div className={styles.menuItem} onClick={goTo(option.href)}>
 									<Link href={option.href}>{option.label}</Link>
 								</div>
 							) : (

@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
-import { AiOutlineSearch } from 'react-icons/ai'
 import { FC } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -12,7 +11,6 @@ import { Dropdown } from '@components/Dropdown'
 import userStore from '@stores/user.store'
 import { useMenu } from '@layouts/MainLayout/components/Header/hooks/useMenu'
 import { Averlist } from '@averlistApi/types'
-import { averlist } from '@averlistApi/averlist'
 import {
 	HeaderSearch,
 	Hamburger
@@ -75,13 +73,13 @@ export const Header: FC = observer(() => {
 				<Hamburger />
 				<div className={styles.containerBlock1}>
 					<div className={styles.containerBlock1WithSearch}>
-						<h1
+						<a
 							className={styles.title}
 							data-text='Averlist'
 							onClick={onClickOnTitle}
 						>
 							Averlist
-						</h1>
+						</a>
 						<HeaderSearch />
 					</div>
 					<nav>

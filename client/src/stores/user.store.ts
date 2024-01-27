@@ -6,6 +6,7 @@ import { getCurrentAvatar } from '@helpers/getCurrentAvatar'
 import { getCurrentName } from '@helpers/getCurrentName'
 import { errorToast, successToast } from '@helpers/toasts'
 import { averlist } from '@averlistApi/averlist'
+import { deleteCookie } from 'cookies-next'
 
 class UserStore {
 	@observable public isAuth = true
@@ -53,6 +54,7 @@ class UserStore {
 
 	@action
 	public logout() {
+		deleteCookie('averlist-session')
 		this.isAuth = false
 		this.user = {} as Averlist.User
 		this._currentAvatar = defaultAvatar.src
