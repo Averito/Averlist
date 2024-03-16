@@ -20,7 +20,6 @@ export class VkStrategy extends PassportStrategy(Strategy, 'vk') {
 				profileFields: ['id', 'displayName', 'photos', 'emails'],
 				scope: ['email'],
 				lang: 'ru'
-
 			},
 			async (
 				accessToken: string,
