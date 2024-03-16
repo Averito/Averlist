@@ -48,7 +48,7 @@ async function bootstrap() {
 	app.use(passport.session())
 
 	app.enableCors({
-		origin: development ? 'http://localhost:3000' : 'https://averlist.xyz',
+		origin: development ? 'http://localhost:3000' : 'https://averlist.ru',
 		credentials: true
 	})
 

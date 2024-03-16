@@ -8,7 +8,7 @@ module.exports = {
 	images: {
 		domains: [
 			'dl-20211030-963.anilib.top',
-			'averlist.xyz',
+			'averlist.ru',
 			'cdn.discordapp.com',
 			'sun2-4.userapi.com',
 			'sun2-11.userapi.com',
