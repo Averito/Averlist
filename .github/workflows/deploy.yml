@@ -11,19 +11,7 @@ jobs:
             install -m 600 -D /dev/null ~/.ssh/id_rsa
             echo "${{ secrets.AVERLIST_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.AVERLIST_HOST }} > ~/.ssh/known_hosts
-      - name: Clone Project
-        uses: actions/checkout@v3
-      - name: Install Deps
-        run: npm install -prefix client
-      - name: Get .env For Client
-        run: scp -r ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/backup/client/.env.local client
-      - name: Build Client
-        run: npm run build --prefix client
       - name: Connect And Pull
-        run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/deploy-averlist.sh"
-      - name: Clone Build To Server
-        run: scp -r client/.next ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }}:/home/averlist/client
-      - name: Start pm2
-        run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh /root/post-deploy-averlist.sh"
+        run: ssh ${{ secrets.AVERLIST_USER }}@${{ secrets.AVERLIST_HOST }} "sh ~/averlist/deploy-averlist.sh"
       - name: Cleanup
         run: rm -rf ~/.ssh
