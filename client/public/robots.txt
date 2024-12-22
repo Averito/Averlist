@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://averlist.ru/sitemap.xml
+Sitemap: https://averlist.averitora.ru/sitemap.xml
